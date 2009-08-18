@@ -134,10 +134,16 @@
    <property name="text">
     <string>&amp;Save Project</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="actionCo_mpile">
    <property name="text">
     <string>Co&amp;mpile...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F5</string>
    </property>
   </action>
   <action name="actionDecompile">
@@ -154,10 +160,16 @@
    <property name="text">
     <string>Pr&amp;eference</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
   </action>
   <action name="actionExit">
    <property name="text">
     <string>E&amp;xit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="actionToolBar">
@@ -216,10 +228,16 @@
    <property name="text">
     <string>&amp;Undo</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
   </action>
   <action name="action_Redo">
    <property name="text">
     <string>&amp;Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
   <action name="actionPr_eference_2">
@@ -231,40 +249,64 @@
    <property name="text">
     <string>&amp;Run</string>
    </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
   </action>
   <action name="action_Property">
    <property name="text">
     <string>&amp;Properties</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
    </property>
   </action>
   <action name="action_Import">
    <property name="text">
     <string>&amp;Import</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
   </action>
   <action name="action_Cut">
    <property name="text">
     <string>&amp;Cut</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
    </property>
   </action>
   <action name="actionCopy">
    <property name="text">
     <string>Copy</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
   </action>
   <action name="actionPaste">
    <property name="text">
     <string>Paste</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
    </property>
   </action>
   <action name="actionDelete">
    <property name="text">
     <string>Delete</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
   </action>
   <action name="actionSelect_All">
    <property name="text">
     <string>Select All</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
    </property>
   </action>
   <action name="action_Replace">
