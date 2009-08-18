@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Mon Aug 17 16:50:05 2009
+** Created: Tue Aug 18 17:52:35 2009
 **      by: Qt User Interface Compiler version 4.4.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -222,11 +222,15 @@ public:
     actionClose_Project->setText(QApplication::translate("MainWindow", "Close &Project", 0, QApplication::UnicodeUTF8));
     actionClose_All->setText(QApplication::translate("MainWindow", "&Close All", 0, QApplication::UnicodeUTF8));
     action_Save_Project->setText(QApplication::translate("MainWindow", "&Save Project", 0, QApplication::UnicodeUTF8));
+    action_Save_Project->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0, QApplication::UnicodeUTF8));
     actionCo_mpile->setText(QApplication::translate("MainWindow", "Co&mpile...", 0, QApplication::UnicodeUTF8));
+    actionCo_mpile->setShortcut(QApplication::translate("MainWindow", "Ctrl+F5", 0, QApplication::UnicodeUTF8));
     actionDecompile->setText(QApplication::translate("MainWindow", "&Decompile...", 0, QApplication::UnicodeUTF8));
     actionChm_Information->setText(QApplication::translate("MainWindow", "Chm &Information", 0, QApplication::UnicodeUTF8));
     actionPr_eference->setText(QApplication::translate("MainWindow", "Pr&eference", 0, QApplication::UnicodeUTF8));
+    actionPr_eference->setShortcut(QApplication::translate("MainWindow", "Ctrl+P", 0, QApplication::UnicodeUTF8));
     actionExit->setText(QApplication::translate("MainWindow", "E&xit", 0, QApplication::UnicodeUTF8));
+    actionExit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0, QApplication::UnicodeUTF8));
     actionToolBar->setText(QApplication::translate("MainWindow", "ToolBar", 0, QApplication::UnicodeUTF8));
     actionStatusBar->setText(QApplication::translate("MainWindow", "StatusBar", 0, QApplication::UnicodeUTF8));
     actionCompiled_Help_File->setText(QApplication::translate("MainWindow", "Compiled Help File...", 0, QApplication::UnicodeUTF8));
@@ -236,16 +240,26 @@ public:
     action_Compile->setText(QApplication::translate("MainWindow", "&Compile", 0, QApplication::UnicodeUTF8));
     action_Build->setText(QApplication::translate("MainWindow", "&Build", 0, QApplication::UnicodeUTF8));
     action_Undo->setText(QApplication::translate("MainWindow", "&Undo", 0, QApplication::UnicodeUTF8));
+    action_Undo->setShortcut(QApplication::translate("MainWindow", "Ctrl+Z", 0, QApplication::UnicodeUTF8));
     action_Redo->setText(QApplication::translate("MainWindow", "&Redo", 0, QApplication::UnicodeUTF8));
+    action_Redo->setShortcut(QApplication::translate("MainWindow", "Ctrl+R", 0, QApplication::UnicodeUTF8));
     actionPr_eference_2->setText(QApplication::translate("MainWindow", "&Find", 0, QApplication::UnicodeUTF8));
     action_Run->setText(QApplication::translate("MainWindow", "&Run", 0, QApplication::UnicodeUTF8));
+    action_Run->setShortcut(QApplication::translate("MainWindow", "F5", 0, QApplication::UnicodeUTF8));
     action_Property->setText(QApplication::translate("MainWindow", "&Properties", 0, QApplication::UnicodeUTF8));
+    action_Property->setShortcut(QApplication::translate("MainWindow", "Ctrl+P", 0, QApplication::UnicodeUTF8));
     action_Import->setText(QApplication::translate("MainWindow", "&Import", 0, QApplication::UnicodeUTF8));
+    action_Import->setShortcut(QApplication::translate("MainWindow", "Ctrl+I", 0, QApplication::UnicodeUTF8));
     action_Cut->setText(QApplication::translate("MainWindow", "&Cut", 0, QApplication::UnicodeUTF8));
+    action_Cut->setShortcut(QApplication::translate("MainWindow", "Ctrl+X", 0, QApplication::UnicodeUTF8));
     actionCopy->setText(QApplication::translate("MainWindow", "Copy", 0, QApplication::UnicodeUTF8));
+    actionCopy->setShortcut(QApplication::translate("MainWindow", "Ctrl+C", 0, QApplication::UnicodeUTF8));
     actionPaste->setText(QApplication::translate("MainWindow", "Paste", 0, QApplication::UnicodeUTF8));
+    actionPaste->setShortcut(QApplication::translate("MainWindow", "Ctrl+V", 0, QApplication::UnicodeUTF8));
     actionDelete->setText(QApplication::translate("MainWindow", "Delete", 0, QApplication::UnicodeUTF8));
+    actionDelete->setShortcut(QApplication::translate("MainWindow", "Ctrl+D", 0, QApplication::UnicodeUTF8));
     actionSelect_All->setText(QApplication::translate("MainWindow", "Select All", 0, QApplication::UnicodeUTF8));
+    actionSelect_All->setShortcut(QApplication::translate("MainWindow", "Ctrl+A", 0, QApplication::UnicodeUTF8));
     action_Replace->setText(QApplication::translate("MainWindow", "&Replace", 0, QApplication::UnicodeUTF8));
     actionClean->setText(QApplication::translate("MainWindow", "Clean Project", 0, QApplication::UnicodeUTF8));
     menu_File->setTitle(QApplication::translate("MainWindow", "&File", 0, QApplication::UnicodeUTF8));

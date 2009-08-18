@@ -22,7 +22,6 @@ private:
     QVector<QTabWidget*> tabList;
     QVector<QPlainTextEdit*> editorList;
     QVector<QWebView*> browserList;
-
     QToolButton* closeButton;
 private slots:
     void closeCurrentTab();
