@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="qt.qrc">
+    <normaloff>:/images/logo.png</normaloff>:/images/logo.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_File">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="action_New"/>
+    <addaction name="action_Open"/>
+    <addaction name="actionClose_Project"/>
+    <addaction name="actionClose_All"/>
+    <addaction name="action_Save_Project"/>
+    <addaction name="separator"/>
+    <addaction name="action_Import"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="actionToolBar"/>
+    <addaction name="actionStatusBar"/>
+    <addaction name="separator"/>
+    <addaction name="actionCompiled_Help_File"/>
+    <addaction name="actionHTML_Help_Message"/>
+   </widget>
+   <widget class="QMenu" name="menu_Test">
+    <property name="title">
+     <string>&amp;Build</string>
+    </property>
+    <addaction name="action_Compile"/>
+    <addaction name="actionClean"/>
+    <addaction name="separator"/>
+    <addaction name="action_Run"/>
+   </widget>
+   <widget class="QMenu" name="menuT_ool">
+    <property name="title">
+     <string>&amp;Window</string>
+    </property>
+    <addaction name="action_Option"/>
+   </widget>
+   <widget class="QMenu" name="menu_Help">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="action_About"/>
+   </widget>
+   <widget class="QMenu" name="menu_Edit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="action_Undo"/>
+    <addaction name="action_Redo"/>
+    <addaction name="separator"/>
+    <addaction name="action_Cut"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPaste"/>
+    <addaction name="separator"/>
+    <addaction name="actionDelete"/>
+    <addaction name="actionSelect_All"/>
+    <addaction name="separator"/>
+    <addaction name="actionPr_eference_2"/>
+    <addaction name="action_Replace"/>
+   </widget>
+   <widget class="QMenu" name="menu_Project">
+    <property name="title">
+     <string>&amp;Project</string>
+    </property>
+    <addaction name="action_Property"/>
+   </widget>
+   <addaction name="menu_File"/>
+   <addaction name="menu_Edit"/>
+   <addaction name="menu_View"/>
+   <addaction name="menu_Project"/>
+   <addaction name="menu_Test"/>
+   <addaction name="menuT_ool"/>
+   <addaction name="menu_Help"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="action_New">
+   <property name="text">
+    <string>&amp;New</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="action_Open">
+   <property name="text">
+    <string>&amp;Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionClose_Project">
+   <property name="text">
+    <string>Close &amp;Project</string>
+   </property>
+  </action>
+  <action name="actionClose_All">
+   <property name="text">
+    <string>&amp;Close All</string>
+   </property>
+  </action>
+  <action name="action_Save_Project">
+   <property name="text">
+    <string>&amp;Save Project</string>
+   </property>
+  </action>
+  <action name="actionCo_mpile">
+   <property name="text">
+    <string>Co&amp;mpile...</string>
+   </property>
+  </action>
+  <action name="actionDecompile">
+   <property name="text">
+    <string>&amp;Decompile...</string>
+   </property>
+  </action>
+  <action name="actionChm_Information">
+   <property name="text">
+    <string>Chm &amp;Information</string>
+   </property>
+  </action>
+  <action name="actionPr_eference">
+   <property name="text">
+    <string>Pr&amp;eference</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>E&amp;xit</string>
+   </property>
+  </action>
+  <action name="actionToolBar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>ToolBar</string>
+   </property>
+  </action>
+  <action name="actionStatusBar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>StatusBar</string>
+   </property>
+  </action>
+  <action name="actionCompiled_Help_File">
+   <property name="text">
+    <string>Compiled Help File...</string>
+   </property>
+  </action>
+  <action name="actionHTML_Help_Message">
+   <property name="text">
+    <string>HTML Help Message</string>
+   </property>
+  </action>
+  <action name="action_About">
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="action_Option">
+   <property name="text">
+    <string>&amp;Preference</string>
+   </property>
+  </action>
+  <action name="action_Compile">
+   <property name="text">
+    <string>&amp;Compile</string>
+   </property>
+  </action>
+  <action name="action_Build">
+   <property name="text">
+    <string>&amp;Build</string>
+   </property>
+  </action>
+  <action name="action_Undo">
+   <property name="text">
+    <string>&amp;Undo</string>
+   </property>
+  </action>
+  <action name="action_Redo">
+   <property name="text">
+    <string>&amp;Redo</string>
+   </property>
+  </action>
+  <action name="actionPr_eference_2">
+   <property name="text">
+    <string>&amp;Find</string>
+   </property>
+  </action>
+  <action name="action_Run">
+   <property name="text">
+    <string>&amp;Run</string>
+   </property>
+  </action>
+  <action name="action_Property">
+   <property name="text">
+    <string>&amp;Properties</string>
+   </property>
+  </action>
+  <action name="action_Import">
+   <property name="text">
+    <string>&amp;Import</string>
+   </property>
+  </action>
+  <action name="action_Cut">
+   <property name="text">
+    <string>&amp;Cut</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="text">
+    <string>Copy</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="text">
+    <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionSelect_All">
+   <property name="text">
+    <string>Select All</string>
+   </property>
+  </action>
+  <action name="action_Replace">
+   <property name="text">
+    <string>&amp;Replace</string>
+   </property>
+  </action>
+  <action name="actionClean">
+   <property name="text">
+    <string>Clean Project</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="qt.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -1,0 +1,444 @@
+<!DOCTYPE QtCreatorProject>
+<qtcreator>
+ <data>
+  <variable>RunConfiguration0-CommandLineArguments</variable>
+  <valuelist type="QVariantList" />
+ </data>
+ <data>
+  <variable>RunConfiguration0-ProFile</variable>
+  <value type="QString" >ChmEditor.pro</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-RunConfiguration.name</variable>
+  <value type="QString" >ChmEditor</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-UseDyldImageSuffix</variable>
+  <value type="bool" >false</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-UseTerminal</variable>
+  <value type="bool" >false</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-UserEnvironmentChanges</variable>
+  <valuelist type="QVariantList" />
+ </data>
+ <data>
+  <variable>RunConfiguration0-UserSetName</variable>
+  <value type="bool" >false</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-type</variable>
+  <value type="QString" >Qt4ProjectManager.Qt4RunConfiguration</value>
+ </data>
+ <data>
+  <variable>activeRunConfiguration</variable>
+  <value type="int" >0</value>
+ </data>
+ <data>
+  <variable>activebuildconfiguration</variable>
+  <value type="QString" >Release</value>
+ </data>
+ <data>
+  <variable>buildConfiguration-Debug</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
+   <value key="QtVersionId" type="int" >0</value>
+   <value key="addQDumper" type="" ></value>
+   <value key="buildDirectory" type="QString" >E:\qtstudy\ChmEditor</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildConfiguration-Release</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
+   <value key="QtVersionId" type="int" >0</value>
+   <value key="addQDumper" type="" ></value>
+   <value key="buildDirectory" type="QString" >E:\qtstudy\ChmEditor</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Debug-buildstep0</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList" >
+    <value type="QString" >ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
+    <value type="QString" >APPDATA=C:\Documents and Settings\2171330010478\Application Data</value>
+    <value type="QString" >APR_ICONV_PATH=D:\Subversion\iconv</value>
+    <value type="QString" >BREWDIR=D:\BREWSD~1.0</value>
+    <value type="QString" >CLASSPATH=D:\jdk1.6.0_03\lib\dt.jar;D:\jdk1.6.0_03\lib\tools.jar;%CATALINA_HOME%\common\lib\servlet.jar;D:\JavaCard\comm\comm.jar</value>
+    <value type="QString" >CLIENTNAME=Console</value>
+    <value type="QString" >COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
+    <value type="QString" >COMPUTERNAME=NEC-ASBJ02368</value>
+    <value type="QString" >COMSPEC=C:\WINDOWS\system32\cmd.exe</value>
+    <value type="QString" >CYGWIN=nodosfilewarning</value>
+    <value type="QString" >DEFLOGDIR=C:\Documents and Settings\All Users\Application Data\McAfee\DesktopProtection</value>
+    <value type="QString" >FP_NO_HOST_CHECK=NO</value>
+    <value type="QString" >GIT_SSH=D:\TortoiseSVN\bin\TortoisePlink.exe</value>
+    <value type="QString" >HOMEDRIVE=C:</value>
+    <value type="QString" >HOMEPATH=\Documents and Settings\2171330010478</value>
+    <value type="QString" >INCLUDE=D:\Microsoft Visual Studio .NET 2003\SDK\v1.1\include\</value>
+    <value type="QString" >JAVA_HOME=D:\jdk1.6.0_03</value>
+    <value type="QString" >JC_CONNECTED_HOME=C:\JCDK3.0.1_ConnectedEdition</value>
+    <value type="QString" >JC_HOME=D:\JavaCard</value>
+    <value type="QString" >LANG=ja</value>
+    <value type="QString" >LIB=D:\Microsoft Visual Studio .NET 2003\SDK\v1.1\Lib\</value>
+    <value type="QString" >LOGONSERVER=\\GID-CN-SUB11</value>
+    <value type="QString" >NUMBER_OF_PROCESSORS=2</value>
+    <value type="QString" >OS=Windows_NT</value>
+    <value type="QString" >PATH=C:\MinGW\bin;E:\qt\bin;D:\CSL Arm Toolchain\bin;C:\Program Files\Common Files\Symbian\Tools;d:\ruby\bin;D:\jdk1.6.0_03\bin;D:\PHP5\;D:\Tcl\bin;d:\imagemagick-5.5.7-q8;D:\Perl5\site\bin;D:\Perl5\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;%RAMD%:\;C:\;%CDROM%:\;D:\cvsnt;d:\UltraEdit-32;d:\GTK\2.0\bin;D:\Subversion\bin;D:\MySQL\bin;C:\MinGW\bin;E:\qt\bin;D:\docbook\bin;D:\CDBE\bat;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;C:\Program Files\VoiceAge\Common;D:\BlackBerry JDE 4.3.0\bin;D:\WTK22\bin;C:\Program Files\Rational\common;D:\TortoiseSVN\bin;D:\awk\bin;D:\Bakefile;D:\JavaCard\bin;D:\ant\bin;D:\jdk1.6.0_03\bin;C:\Program Files\CVSNT\</value>
+    <value type="QString" >PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.tcl;.RB;.RBW</value>
+    <value type="QString" >PHPRC=D:\PHP5\</value>
+    <value type="QString" >PROCESSOR_ARCHITECTURE=x86</value>
+    <value type="QString" >PROCESSOR_IDENTIFIER=x86 Family 6 Model 15 Stepping 13, GenuineIntel</value>
+    <value type="QString" >PROCESSOR_LEVEL=6</value>
+    <value type="QString" >PROCESSOR_REVISION=0f0d</value>
+    <value type="QString" >PROGRAMFILES=C:\Program Files</value>
+    <value type="QString" >QTDIR=E:/qt</value>
+    <value type="QString" >RUBYOPT=-rubygems</value>
+    <value type="QString" >SAMSUNGSDK=d:\SamsungSDK\</value>
+    <value type="QString" >SESSIONNAME=Console</value>
+    <value type="QString" >SYNCMAN=d:\SamsungSDK\syncMan\SecTransfer.exe</value>
+    <value type="QString" >SYSTEMDRIVE=C:</value>
+    <value type="QString" >SYSTEMROOT=C:\WINDOWS</value>
+    <value type="QString" >TEMP=C:\DOCUME~1\217133~1\LOCALS~1\Temp</value>
+    <value type="QString" >TMP=C:\DOCUME~1\217133~1\LOCALS~1\Temp</value>
+    <value type="QString" >USERDNSDOMAIN=IDM.GAD.NEC.COM.CN</value>
+    <value type="QString" >USERDOMAIN=IDM</value>
+    <value type="QString" >USERNAME=2171330010478</value>
+    <value type="QString" >USERPROFILE=C:\Documents and Settings\2171330010478</value>
+    <value type="QString" >VISUALSVN_SERVER=D:\Program Files\VisualSVN Server\</value>
+    <value type="QString" >VS71COMNTOOLS=D:\Microsoft Visual Studio .NET 2003\Common7\Tools\</value>
+    <value type="QString" >VS80COMNTOOLS=C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\</value>
+    <value type="QString" >VSEDEFLOGDIR=C:\Documents and Settings\All Users\Application Data\McAfee\DesktopProtection</value>
+    <value type="QString" >WINDIR=C:\WINDOWS</value>
+    <value type="QString" >__COMPAT_LAYER=EnableNXShowUI </value>
+   </valuelist>
+   <valuelist key="abstractProcess.arguments" type="QVariantList" >
+    <value type="QString" >E:/qtstudy/ChmEditor/ChmEditor.pro</value>
+    <value type="QString" >-spec</value>
+    <value type="QString" >win32-g++</value>
+    <value type="QString" >-r</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString" >E:/qt/bin/qmake.exe</value>
+   <value key="abstractProcess.enabled" type="bool" >false</value>
+   <value key="abstractProcess.workingDirectory" type="QString" >E:/qtstudy/ChmEditor</value>
+   <value key="buildConfiguration" type="int" >2</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Debug-buildstep1</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList" >
+    <value type="QString" >ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
+    <value type="QString" >APPDATA=C:\Documents and Settings\2171330010478\Application Data</value>
+    <value type="QString" >APR_ICONV_PATH=D:\Subversion\iconv</value>
+    <value type="QString" >BREWDIR=D:\BREWSD~1.0</value>
+    <value type="QString" >CLASSPATH=D:\jdk1.6.0_03\lib\dt.jar;D:\jdk1.6.0_03\lib\tools.jar;%CATALINA_HOME%\common\lib\servlet.jar;D:\JavaCard\comm\comm.jar</value>
+    <value type="QString" >CLIENTNAME=Console</value>
+    <value type="QString" >COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
+    <value type="QString" >COMPUTERNAME=NEC-ASBJ02368</value>
+    <value type="QString" >COMSPEC=C:\WINDOWS\system32\cmd.exe</value>
+    <value type="QString" >CYGWIN=nodosfilewarning</value>
+    <value type="QString" >DEFLOGDIR=C:\Documents and Settings\All Users\Application Data\McAfee\DesktopProtection</value>
+    <value type="QString" >FP_NO_HOST_CHECK=NO</value>
+    <value type="QString" >GIT_SSH=D:\TortoiseSVN\bin\TortoisePlink.exe</value>
+    <value type="QString" >HOMEDRIVE=C:</value>
+    <value type="QString" >HOMEPATH=\Documents and Settings\2171330010478</value>
+    <value type="QString" >INCLUDE=D:\Microsoft Visual Studio .NET 2003\SDK\v1.1\include\</value>
+    <value type="QString" >JAVA_HOME=D:\jdk1.6.0_03</value>
+    <value type="QString" >JC_CONNECTED_HOME=C:\JCDK3.0.1_ConnectedEdition</value>
+    <value type="QString" >JC_HOME=D:\JavaCard</value>
+    <value type="QString" >LANG=ja</value>
+    <value type="QString" >LIB=D:\Microsoft Visual Studio .NET 2003\SDK\v1.1\Lib\</value>
+    <value type="QString" >LOGONSERVER=\\GID-CN-SUB11</value>
+    <value type="QString" >NUMBER_OF_PROCESSORS=2</value>
+    <value type="QString" >OS=Windows_NT</value>
+    <value type="QString" >PATH=C:\MinGW\bin;E:\qt\bin;D:\CSL Arm Toolchain\bin;C:\Program Files\Common Files\Symbian\Tools;d:\ruby\bin;D:\jdk1.6.0_03\bin;D:\PHP5\;D:\Tcl\bin;d:\imagemagick-5.5.7-q8;D:\Perl5\site\bin;D:\Perl5\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;%RAMD%:\;C:\;%CDROM%:\;D:\cvsnt;d:\UltraEdit-32;d:\GTK\2.0\bin;D:\Subversion\bin;D:\MySQL\bin;C:\MinGW\bin;E:\qt\bin;D:\docbook\bin;D:\CDBE\bat;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;C:\Program Files\VoiceAge\Common;D:\BlackBerry JDE 4.3.0\bin;D:\WTK22\bin;C:\Program Files\Rational\common;D:\TortoiseSVN\bin;D:\awk\bin;D:\Bakefile;D:\JavaCard\bin;D:\ant\bin;D:\jdk1.6.0_03\bin;C:\Program Files\CVSNT\</value>
+    <value type="QString" >PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.tcl;.RB;.RBW</value>
+    <value type="QString" >PHPRC=D:\PHP5\</value>
+    <value type="QString" >PROCESSOR_ARCHITECTURE=x86</value>
+    <value type="QString" >PROCESSOR_IDENTIFIER=x86 Family 6 Model 15 Stepping 13, GenuineIntel</value>
+    <value type="QString" >PROCESSOR_LEVEL=6</value>
+    <value type="QString" >PROCESSOR_REVISION=0f0d</value>
+    <value type="QString" >PROGRAMFILES=C:\Program Files</value>
+    <value type="QString" >QTDIR=E:/qt</value>
+    <value type="QString" >RUBYOPT=-rubygems</value>
+    <value type="QString" >SAMSUNGSDK=d:\SamsungSDK\</value>
+    <value type="QString" >SESSIONNAME=Console</value>
+    <value type="QString" >SYNCMAN=d:\SamsungSDK\syncMan\SecTransfer.exe</value>
+    <value type="QString" >SYSTEMDRIVE=C:</value>
+    <value type="QString" >SYSTEMROOT=C:\WINDOWS</value>
+    <value type="QString" >TEMP=C:\DOCUME~1\217133~1\LOCALS~1\Temp</value>
+    <value type="QString" >TMP=C:\DOCUME~1\217133~1\LOCALS~1\Temp</value>
+    <value type="QString" >USERDNSDOMAIN=IDM.GAD.NEC.COM.CN</value>
+    <value type="QString" >USERDOMAIN=IDM</value>
+    <value type="QString" >USERNAME=2171330010478</value>
+    <value type="QString" >USERPROFILE=C:\Documents and Settings\2171330010478</value>
+    <value type="QString" >VISUALSVN_SERVER=D:\Program Files\VisualSVN Server\</value>
+    <value type="QString" >VS71COMNTOOLS=D:\Microsoft Visual Studio .NET 2003\Common7\Tools\</value>
+    <value type="QString" >VS80COMNTOOLS=C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\</value>
+    <value type="QString" >VSEDEFLOGDIR=C:\Documents and Settings\All Users\Application Data\McAfee\DesktopProtection</value>
+    <value type="QString" >WINDIR=C:\WINDOWS</value>
+    <value type="QString" >__COMPAT_LAYER=EnableNXShowUI </value>
+   </valuelist>
+   <valuelist key="abstractProcess.arguments" type="QVariantList" >
+    <value type="QString" >-w</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString" >C:/MinGW/bin/mingw32-make.exe</value>
+   <value key="abstractProcess.enabled" type="bool" >true</value>
+   <value key="abstractProcess.workingDirectory" type="QString" >E:/qtstudy/ChmEditor</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Debug-cleanstep0</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Release-buildstep0</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList" >
+    <value type="QString" >ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
+    <value type="QString" >APPDATA=C:\Documents and Settings\2171330010478\Application Data</value>
+    <value type="QString" >APR_ICONV_PATH=D:\Subversion\iconv</value>
+    <value type="QString" >BREWDIR=D:\BREWSD~1.0</value>
+    <value type="QString" >CLASSPATH=D:\jdk1.6.0_03\lib\dt.jar;D:\jdk1.6.0_03\lib\tools.jar;%CATALINA_HOME%\common\lib\servlet.jar;D:\JavaCard\comm\comm.jar</value>
+    <value type="QString" >COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
+    <value type="QString" >COMPUTERNAME=NEC-ASBJ02368</value>
+    <value type="QString" >COMSPEC=C:\WINDOWS\system32\cmd.exe</value>
+    <value type="QString" >CYGWIN=nodosfilewarning</value>
+    <value type="QString" >DEFLOGDIR=C:\Documents and Settings\All Users\Application Data\McAfee\DesktopProtection</value>
+    <value type="QString" >FP_NO_HOST_CHECK=NO</value>
+    <value type="QString" >GIT_SSH=D:\TortoiseSVN\bin\TortoisePlink.exe</value>
+    <value type="QString" >HOMEDRIVE=C:</value>
+    <value type="QString" >HOMEPATH=\Documents and Settings\2171330010478</value>
+    <value type="QString" >INCLUDE=D:\Microsoft Visual Studio .NET 2003\SDK\v1.1\include\</value>
+    <value type="QString" >JAVA_HOME=D:\jdk1.6.0_03</value>
+    <value type="QString" >JC_CONNECTED_HOME=C:\JCDK3.0.1_ConnectedEdition</value>
+    <value type="QString" >JC_HOME=D:\JavaCard</value>
+    <value type="QString" >LIB=D:\Microsoft Visual Studio .NET 2003\SDK\v1.1\Lib\</value>
+    <value type="QString" >LOGONSERVER=\\GID-CN-SUB11</value>
+    <value type="QString" >NUMBER_OF_PROCESSORS=2</value>
+    <value type="QString" >OS=Windows_NT</value>
+    <value type="QString" >PATH=C:\MinGW\bin;E:\qt\bin;D:\CSL Arm Toolchain\bin;C:\Program Files\Common Files\Symbian\Tools;d:\ruby\bin;D:\jdk1.6.0_03\bin;D:\PHP5\;D:\Tcl\bin;d:\imagemagick-5.5.7-q8;D:\Perl5\site\bin;D:\Perl5\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;%RAMD%:\;C:\;%CDROM%:\;D:\cvsnt;d:\UltraEdit-32;d:\GTK\2.0\bin;D:\Subversion\bin;D:\MySQL\bin;C:\MinGW\bin;E:\qt\bin;D:\docbook\bin;D:\CDBE\bat;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;C:\Program Files\VoiceAge\Common;D:\BlackBerry JDE 4.3.0\bin;D:\WTK22\bin;C:\Program Files\Rational\common;D:\TortoiseSVN\bin;D:\awk\bin;D:\Bakefile;D:\JavaCard\bin;D:\ant\bin;D:\jdk1.6.0_03\bin;C:\Program Files\CVSNT\</value>
+    <value type="QString" >PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.tcl;.RB;.RBW</value>
+    <value type="QString" >PHPRC=D:\PHP5\</value>
+    <value type="QString" >PROCESSOR_ARCHITECTURE=x86</value>
+    <value type="QString" >PROCESSOR_IDENTIFIER=x86 Family 6 Model 15 Stepping 13, GenuineIntel</value>
+    <value type="QString" >PROCESSOR_LEVEL=6</value>
+    <value type="QString" >PROCESSOR_REVISION=0f0d</value>
+    <value type="QString" >PROGRAMFILES=C:\Program Files</value>
+    <value type="QString" >QTDIR=E:/qt</value>
+    <value type="QString" >RUBYOPT=-rubygems</value>
+    <value type="QString" >SAMSUNGSDK=d:\SamsungSDK\</value>
+    <value type="QString" >SESSIONNAME=Console</value>
+    <value type="QString" >SYNCMAN=d:\SamsungSDK\syncMan\SecTransfer.exe</value>
+    <value type="QString" >SYSTEMDRIVE=C:</value>
+    <value type="QString" >SYSTEMROOT=C:\WINDOWS</value>
+    <value type="QString" >TEMP=C:\DOCUME~1\217133~1\LOCALS~1\Temp</value>
+    <value type="QString" >TMP=C:\DOCUME~1\217133~1\LOCALS~1\Temp</value>
+    <value type="QString" >USERDNSDOMAIN=IDM.GAD.NEC.COM.CN</value>
+    <value type="QString" >USERDOMAIN=IDM</value>
+    <value type="QString" >USERNAME=2171330010478</value>
+    <value type="QString" >USERPROFILE=C:\Documents and Settings\2171330010478</value>
+    <value type="QString" >VISUALSVN_SERVER=D:\Program Files\VisualSVN Server\</value>
+    <value type="QString" >VS71COMNTOOLS=D:\Microsoft Visual Studio .NET 2003\Common7\Tools\</value>
+    <value type="QString" >VS80COMNTOOLS=C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\</value>
+    <value type="QString" >VSEDEFLOGDIR=C:\Documents and Settings\All Users\Application Data\McAfee\DesktopProtection</value>
+    <value type="QString" >WINDIR=C:\WINDOWS</value>
+    <value type="QString" >__COMPAT_LAYER=EnableNXShowUI </value>
+   </valuelist>
+   <valuelist key="abstractProcess.arguments" type="QVariantList" >
+    <value type="QString" >E:/qtstudy/ChmEditor/ChmEditor.pro</value>
+    <value type="QString" >-spec</value>
+    <value type="QString" >win32-g++</value>
+    <value type="QString" >-r</value>
+    <value type="QString" >CONFIG+=release</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString" >E:/qt/bin/qmake.exe</value>
+   <value key="abstractProcess.enabled" type="bool" >false</value>
+   <value key="abstractProcess.workingDirectory" type="QString" >E:/qtstudy/ChmEditor</value>
+   <value key="buildConfiguration" type="int" >0</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Release-buildstep1</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList" >
+    <value type="QString" >ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
+    <value type="QString" >APPDATA=C:\Documents and Settings\2171330010478\Application Data</value>
+    <value type="QString" >APR_ICONV_PATH=D:\Subversion\iconv</value>
+    <value type="QString" >BREWDIR=D:\BREWSD~1.0</value>
+    <value type="QString" >CLASSPATH=D:\jdk1.6.0_03\lib\dt.jar;D:\jdk1.6.0_03\lib\tools.jar;%CATALINA_HOME%\common\lib\servlet.jar;D:\JavaCard\comm\comm.jar</value>
+    <value type="QString" >COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
+    <value type="QString" >COMPUTERNAME=NEC-ASBJ02368</value>
+    <value type="QString" >COMSPEC=C:\WINDOWS\system32\cmd.exe</value>
+    <value type="QString" >CYGWIN=nodosfilewarning</value>
+    <value type="QString" >DEFLOGDIR=C:\Documents and Settings\All Users\Application Data\McAfee\DesktopProtection</value>
+    <value type="QString" >FP_NO_HOST_CHECK=NO</value>
+    <value type="QString" >GIT_SSH=D:\TortoiseSVN\bin\TortoisePlink.exe</value>
+    <value type="QString" >HOMEDRIVE=C:</value>
+    <value type="QString" >HOMEPATH=\Documents and Settings\2171330010478</value>
+    <value type="QString" >INCLUDE=D:\Microsoft Visual Studio .NET 2003\SDK\v1.1\include\</value>
+    <value type="QString" >JAVA_HOME=D:\jdk1.6.0_03</value>
+    <value type="QString" >JC_CONNECTED_HOME=C:\JCDK3.0.1_ConnectedEdition</value>
+    <value type="QString" >JC_HOME=D:\JavaCard</value>
+    <value type="QString" >LIB=D:\Microsoft Visual Studio .NET 2003\SDK\v1.1\Lib\</value>
+    <value type="QString" >LOGONSERVER=\\GID-CN-SUB11</value>
+    <value type="QString" >NUMBER_OF_PROCESSORS=2</value>
+    <value type="QString" >OS=Windows_NT</value>
+    <value type="QString" >PATH=C:\MinGW\bin;E:\qt\bin;D:\CSL Arm Toolchain\bin;C:\Program Files\Common Files\Symbian\Tools;d:\ruby\bin;D:\jdk1.6.0_03\bin;D:\PHP5\;D:\Tcl\bin;d:\imagemagick-5.5.7-q8;D:\Perl5\site\bin;D:\Perl5\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;%RAMD%:\;C:\;%CDROM%:\;D:\cvsnt;d:\UltraEdit-32;d:\GTK\2.0\bin;D:\Subversion\bin;D:\MySQL\bin;C:\MinGW\bin;E:\qt\bin;D:\docbook\bin;D:\CDBE\bat;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;C:\Program Files\VoiceAge\Common;D:\BlackBerry JDE 4.3.0\bin;D:\WTK22\bin;C:\Program Files\Rational\common;D:\TortoiseSVN\bin;D:\awk\bin;D:\Bakefile;D:\JavaCard\bin;D:\ant\bin;D:\jdk1.6.0_03\bin;C:\Program Files\CVSNT\</value>
+    <value type="QString" >PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.tcl;.RB;.RBW</value>
+    <value type="QString" >PHPRC=D:\PHP5\</value>
+    <value type="QString" >PROCESSOR_ARCHITECTURE=x86</value>
+    <value type="QString" >PROCESSOR_IDENTIFIER=x86 Family 6 Model 15 Stepping 13, GenuineIntel</value>
+    <value type="QString" >PROCESSOR_LEVEL=6</value>
+    <value type="QString" >PROCESSOR_REVISION=0f0d</value>
+    <value type="QString" >PROGRAMFILES=C:\Program Files</value>
+    <value type="QString" >QTDIR=E:/qt</value>
+    <value type="QString" >RUBYOPT=-rubygems</value>
+    <value type="QString" >SAMSUNGSDK=d:\SamsungSDK\</value>
+    <value type="QString" >SESSIONNAME=Console</value>
+    <value type="QString" >SYNCMAN=d:\SamsungSDK\syncMan\SecTransfer.exe</value>
+    <value type="QString" >SYSTEMDRIVE=C:</value>
+    <value type="QString" >SYSTEMROOT=C:\WINDOWS</value>
+    <value type="QString" >TEMP=C:\DOCUME~1\217133~1\LOCALS~1\Temp</value>
+    <value type="QString" >TMP=C:\DOCUME~1\217133~1\LOCALS~1\Temp</value>
+    <value type="QString" >USERDNSDOMAIN=IDM.GAD.NEC.COM.CN</value>
+    <value type="QString" >USERDOMAIN=IDM</value>
+    <value type="QString" >USERNAME=2171330010478</value>
+    <value type="QString" >USERPROFILE=C:\Documents and Settings\2171330010478</value>
+    <value type="QString" >VISUALSVN_SERVER=D:\Program Files\VisualSVN Server\</value>
+    <value type="QString" >VS71COMNTOOLS=D:\Microsoft Visual Studio .NET 2003\Common7\Tools\</value>
+    <value type="QString" >VS80COMNTOOLS=C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\</value>
+    <value type="QString" >VSEDEFLOGDIR=C:\Documents and Settings\All Users\Application Data\McAfee\DesktopProtection</value>
+    <value type="QString" >WINDIR=C:\WINDOWS</value>
+    <value type="QString" >__COMPAT_LAYER=EnableNXShowUI </value>
+   </valuelist>
+   <valuelist key="abstractProcess.arguments" type="QVariantList" >
+    <value type="QString" >-w</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString" >C:/MinGW/bin/mingw32-make.exe</value>
+   <value key="abstractProcess.enabled" type="bool" >true</value>
+   <value key="abstractProcess.workingDirectory" type="QString" >E:/qtstudy/ChmEditor</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Release-cleanstep0</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList" >
+    <value type="QString" >ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
+    <value type="QString" >APPDATA=C:\Documents and Settings\2171330010478\Application Data</value>
+    <value type="QString" >APR_ICONV_PATH=D:\Subversion\iconv</value>
+    <value type="QString" >BREWDIR=D:\BREWSD~1.0</value>
+    <value type="QString" >CLASSPATH=D:\jdk1.6.0_03\lib\dt.jar;D:\jdk1.6.0_03\lib\tools.jar;%CATALINA_HOME%\common\lib\servlet.jar;D:\JavaCard\comm\comm.jar</value>
+    <value type="QString" >COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
+    <value type="QString" >COMPUTERNAME=NEC-ASBJ02368</value>
+    <value type="QString" >COMSPEC=C:\WINDOWS\system32\cmd.exe</value>
+    <value type="QString" >CYGWIN=nodosfilewarning</value>
+    <value type="QString" >DEFLOGDIR=C:\Documents and Settings\All Users\Application Data\McAfee\DesktopProtection</value>
+    <value type="QString" >FP_NO_HOST_CHECK=NO</value>
+    <value type="QString" >GIT_SSH=D:\TortoiseSVN\bin\TortoisePlink.exe</value>
+    <value type="QString" >HOMEDRIVE=C:</value>
+    <value type="QString" >HOMEPATH=\Documents and Settings\2171330010478</value>
+    <value type="QString" >INCLUDE=D:\Microsoft Visual Studio .NET 2003\SDK\v1.1\include\</value>
+    <value type="QString" >JAVA_HOME=D:\jdk1.6.0_03</value>
+    <value type="QString" >JC_CONNECTED_HOME=C:\JCDK3.0.1_ConnectedEdition</value>
+    <value type="QString" >JC_HOME=D:\JavaCard</value>
+    <value type="QString" >LIB=D:\Microsoft Visual Studio .NET 2003\SDK\v1.1\Lib\</value>
+    <value type="QString" >LOGONSERVER=\\GID-CN-SUB11</value>
+    <value type="QString" >NUMBER_OF_PROCESSORS=2</value>
+    <value type="QString" >OS=Windows_NT</value>
+    <value type="QString" >PATH=C:\MinGW\bin;E:\qt\bin;D:\CSL Arm Toolchain\bin;C:\Program Files\Common Files\Symbian\Tools;d:\ruby\bin;D:\jdk1.6.0_03\bin;D:\PHP5\;D:\Tcl\bin;d:\imagemagick-5.5.7-q8;D:\Perl5\site\bin;D:\Perl5\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;%RAMD%:\;C:\;%CDROM%:\;D:\cvsnt;d:\UltraEdit-32;d:\GTK\2.0\bin;D:\Subversion\bin;D:\MySQL\bin;C:\MinGW\bin;E:\qt\bin;D:\docbook\bin;D:\CDBE\bat;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;C:\Program Files\VoiceAge\Common;D:\BlackBerry JDE 4.3.0\bin;D:\WTK22\bin;C:\Program Files\Rational\common;D:\TortoiseSVN\bin;D:\awk\bin;D:\Bakefile;D:\JavaCard\bin;D:\ant\bin;D:\jdk1.6.0_03\bin;C:\Program Files\CVSNT\</value>
+    <value type="QString" >PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.tcl;.RB;.RBW</value>
+    <value type="QString" >PHPRC=D:\PHP5\</value>
+    <value type="QString" >PROCESSOR_ARCHITECTURE=x86</value>
+    <value type="QString" >PROCESSOR_IDENTIFIER=x86 Family 6 Model 15 Stepping 13, GenuineIntel</value>
+    <value type="QString" >PROCESSOR_LEVEL=6</value>
+    <value type="QString" >PROCESSOR_REVISION=0f0d</value>
+    <value type="QString" >PROGRAMFILES=C:\Program Files</value>
+    <value type="QString" >QTDIR=E:/qt</value>
+    <value type="QString" >RUBYOPT=-rubygems</value>
+    <value type="QString" >SAMSUNGSDK=d:\SamsungSDK\</value>
+    <value type="QString" >SESSIONNAME=Console</value>
+    <value type="QString" >SYNCMAN=d:\SamsungSDK\syncMan\SecTransfer.exe</value>
+    <value type="QString" >SYSTEMDRIVE=C:</value>
+    <value type="QString" >SYSTEMROOT=C:\WINDOWS</value>
+    <value type="QString" >TEMP=C:\DOCUME~1\217133~1\LOCALS~1\Temp</value>
+    <value type="QString" >TMP=C:\DOCUME~1\217133~1\LOCALS~1\Temp</value>
+    <value type="QString" >USERDNSDOMAIN=IDM.GAD.NEC.COM.CN</value>
+    <value type="QString" >USERDOMAIN=IDM</value>
+    <value type="QString" >USERNAME=2171330010478</value>
+    <value type="QString" >USERPROFILE=C:\Documents and Settings\2171330010478</value>
+    <value type="QString" >VISUALSVN_SERVER=D:\Program Files\VisualSVN Server\</value>
+    <value type="QString" >VS71COMNTOOLS=D:\Microsoft Visual Studio .NET 2003\Common7\Tools\</value>
+    <value type="QString" >VS80COMNTOOLS=C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\</value>
+    <value type="QString" >VSEDEFLOGDIR=C:\Documents and Settings\All Users\Application Data\McAfee\DesktopProtection</value>
+    <value type="QString" >WINDIR=C:\WINDOWS</value>
+    <value type="QString" >__COMPAT_LAYER=EnableNXShowUI </value>
+   </valuelist>
+   <valuelist key="abstractProcess.arguments" type="QVariantList" >
+    <value type="QString" >clean</value>
+    <value type="QString" >-w</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString" >C:/MinGW/bin/mingw32-make.exe</value>
+   <value key="abstractProcess.enabled" type="bool" >true</value>
+   <value key="abstractProcess.workingDirectory" type="QString" >E:/qtstudy/ChmEditor</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfigurations</variable>
+  <valuelist type="QVariantList" >
+   <value type="QString" >Debug</value>
+   <value type="QString" >Release</value>
+  </valuelist>
+ </data>
+ <data>
+  <variable>buildstep0</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" ></value>
+   <value key="mkspec" type="QString" ></value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildstep1</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" ></value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildsteps</variable>
+  <valuelist type="QVariantList" >
+   <value type="QString" >trolltech.qt4projectmanager.qmake</value>
+   <value type="QString" >trolltech.qt4projectmanager.make</value>
+  </valuelist>
+ </data>
+ <data>
+  <variable>cleanstep0</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" ></value>
+   <value key="clean" type="bool" >true</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>cleansteps</variable>
+  <valuelist type="QVariantList" >
+   <value type="QString" >trolltech.qt4projectmanager.make</value>
+  </valuelist>
+ </data>
+ <data>
+  <variable>defaultFileEncoding</variable>
+  <value type="QByteArray" >System</value>
+ </data>
+ <data>
+  <variable>project</variable>
+  <valuemap type="QVariantMap" />
+ </data>
+</qtcreator>
