@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Tue Aug 18 17:52:35 2009
+** Created: Wed Aug 19 14:43:52 2009
 **      by: Qt User Interface Compiler version 4.4.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -56,6 +56,8 @@ public:
     QAction *actionSelect_All;
     QAction *action_Replace;
     QAction *actionClean;
+    QAction *action_Save;
+    QAction *actionSave_All;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menu_File;
@@ -141,6 +143,10 @@ public:
     action_Replace->setObjectName(QString::fromUtf8("action_Replace"));
     actionClean = new QAction(MainWindow);
     actionClean->setObjectName(QString::fromUtf8("actionClean"));
+    action_Save = new QAction(MainWindow);
+    action_Save->setObjectName(QString::fromUtf8("action_Save"));
+    actionSave_All = new QAction(MainWindow);
+    actionSave_All->setObjectName(QString::fromUtf8("actionSave_All"));
     centralWidget = new QWidget(MainWindow);
     centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
     MainWindow->setCentralWidget(centralWidget);
@@ -178,6 +184,9 @@ public:
     menu_File->addAction(actionClose_Project);
     menu_File->addAction(actionClose_All);
     menu_File->addAction(action_Save_Project);
+    menu_File->addSeparator();
+    menu_File->addAction(action_Save);
+    menu_File->addAction(actionSave_All);
     menu_File->addSeparator();
     menu_File->addAction(action_Import);
     menu_File->addSeparator();
@@ -262,6 +271,9 @@ public:
     actionSelect_All->setShortcut(QApplication::translate("MainWindow", "Ctrl+A", 0, QApplication::UnicodeUTF8));
     action_Replace->setText(QApplication::translate("MainWindow", "&Replace", 0, QApplication::UnicodeUTF8));
     actionClean->setText(QApplication::translate("MainWindow", "Clean Project", 0, QApplication::UnicodeUTF8));
+    action_Save->setText(QApplication::translate("MainWindow", "&Save", 0, QApplication::UnicodeUTF8));
+    action_Save->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0, QApplication::UnicodeUTF8));
+    actionSave_All->setText(QApplication::translate("MainWindow", "Save All", 0, QApplication::UnicodeUTF8));
     menu_File->setTitle(QApplication::translate("MainWindow", "&File", 0, QApplication::UnicodeUTF8));
     menu_View->setTitle(QApplication::translate("MainWindow", "&View", 0, QApplication::UnicodeUTF8));
     menu_Test->setTitle(QApplication::translate("MainWindow", "&Build", 0, QApplication::UnicodeUTF8));

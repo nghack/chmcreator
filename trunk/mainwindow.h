@@ -26,11 +26,15 @@
 #include "qtabeditor.h"
 #include "qchm.h"
 #include "qpropertydialog.h"
+#include "colorlisteditor.h"
+#include "delegate.h"
 
 namespace Ui
 {
     class MainWindow;
 }
+using namespace QtConcurrent;
+
 #define COMPILED_FILE QString("OPTIONS/Compiled file")
 #define CONTENTS_FILE QString("OPTIONS/Contents file")
 #define INDEX_FILE QString("OPTIONS/Index file")
@@ -74,6 +78,7 @@ private:
     QMdiArea mdiArea;
     QPropertyDialog* property;
 private slots:
+    void on_action_Save_triggered();
     void on_action_Property_triggered();
     void on_action_Run_triggered();
     void on_action_Compile_triggered();

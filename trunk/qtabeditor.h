@@ -4,6 +4,7 @@
 #include <QtGui>
 #include <QWebView>
 #include <QTabWidget>
+#include "qhtmleditor.h"
 
 class QTabEditor : public QTabWidget
 {
@@ -12,6 +13,10 @@ public:
     QTabEditor();
     ~QTabEditor();
     int addTab (const QString& fileName);
+    void save();
+    void saveAll();
+public slots:
+    void changeStatus(bool);
 private:
     QString getFileName(const QString& fileName){
         name = fileName;
@@ -19,9 +24,7 @@ private:
     }
     QString name;
     QStringList list;
-    QVector<QTabWidget*> tabList;
-    QVector<QPlainTextEdit*> editorList;
-    QVector<QWebView*> browserList;
+    QVector<QHTMLEditor*> tabList;
     QToolButton* closeButton;
 private slots:
     void closeCurrentTab();
