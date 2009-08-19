@@ -82,7 +82,7 @@ QVariant QTreeModel::objectUrl(const QModelIndex &index) const
 
     QTreeItem *item = static_cast<QTreeItem*>(index.internalPointer());
 
-    return item->objectUrl();;
+    return item->objectUrl();
 }
 //! [3]
 
@@ -92,7 +92,7 @@ Qt::ItemFlags QTreeModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return 0;
 
-    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 //! [4]
 

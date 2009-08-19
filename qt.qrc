@@ -10,5 +10,7 @@
         <file>images/openFolder.png</file>
         <file>images/closeFolder.png</file>
         <file>images/close.png</file>
+        <file>images/source.png</file>
+        <file>images/editor.png</file>
     </qresource>
 </RCC>

@@ -1,6 +1,7 @@
 #ifndef QTREEMODELHANDLER_H
 #define QTREEMODELHANDLER_H
 
+#include <QUrl>
 #include "qhhchandler.h"
 #include "QTreeModel.h"
 

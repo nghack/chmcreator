@@ -17,7 +17,7 @@ void QTreeModelHandler::startElement(const QString& tagName,const QMap<QString,Q
         if(keyName=="Name"){
             line = keyValue;
         }else if(keyName.compare("Local",Qt::CaseInsensitive)==0){
-            result->addModelData(4*depth,line,keyValue);
+            result->addModelData(4*depth,line,QUrl(keyValue).toString());
             line.clear();
         }
     }

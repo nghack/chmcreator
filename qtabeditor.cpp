@@ -3,6 +3,7 @@
 QTabEditor::QTabEditor()
 {
     setTabPosition(QTabWidget::North);
+
     closeButton = new QToolButton();
     closeButton->setIcon(QIcon(":/images/close.png"));
     closeButton->adjustSize();
@@ -11,20 +12,17 @@ QTabEditor::QTabEditor()
 }
 void QTabEditor::closeCurrentTab()
 {
-    removeTab(currentIndex());
+    int index = currentIndex();
+    list.removeAt(index);
+    tabList.remove(index);
+    removeTab(index);
 }
 QTabEditor::~QTabEditor()
 {
-    foreach(QPlainTextEdit* editor,editorList){
+    foreach(QHTMLEditor* editor,tabList){
         delete editor;
     }
-    foreach(QWebView* browser,browserList){
-        delete browser;
-    }
-    foreach(QTabWidget* widget,tabList){
-        delete widget;
-    }
-    //delete closeButton;
+    delete closeButton;
 }
 int QTabEditor::addTab (const QString& fileName){
     if(list.contains(fileName,Qt::CaseInsensitive)){
@@ -35,37 +33,33 @@ int QTabEditor::addTab (const QString& fileName){
     list.append(filePath);
 
 
-    QTabWidget* tabWidget = new QTabWidget;
+    QHTMLEditor* tabWidget = new QHTMLEditor(filePath);
     tabList.append(tabWidget);
 
-/*
-    QToolButton *closeTabButton = new QToolButton(this);
-    closeTabButton->setEnabled(false);
-    closeTabButton->setAutoRaise(true);
-    closeTabButton->setToolTip(tr("Close current page"));
-    closeTabButton->setIcon(QIcon(QString::fromUtf8(":/trolltech/assistant/images/%1/closetab.png").arg(system)));
-
-    tabWidget->setCornerWidget(closeTabButton, Qt::TopRightCorner);
-    connect(closeTabButton, SIGNAL(clicked()), this, SLOT(closeTab()));
-*/
-    tabWidget->setTabPosition(QTabWidget::South);
-
-    QWebView* browser = new QWebView;
-    browserList.append(browser);
-    tabWidget->addTab(browser,QIcon(""),"Preview");
-    browser->load(QUrl(fileName));
-
-    QPlainTextEdit* editor = new QPlainTextEdit;
-    editorList.append(editor);
-    tabWidget->addTab(editor,QIcon(""),"Source");
-
-    QFile data(fileName);
-    if (data.open(QFile::ReadWrite)) {
-        QTextStream out(&data);
-        editor->setPlainText(out.readAll());
-    }
+    connect(tabWidget, SIGNAL(textChanged(bool)), this, SLOT(changeStatus(bool)));
 
     int index = QTabWidget::addTab(tabWidget,QIcon(":/images/new.png"),getFileName(filePath));
     this->setCurrentWidget(tabWidget);
     return index;
+}
+void QTabEditor::changeStatus(bool isChanged)
+{
+    int index = currentIndex();
+    if(index<0)
+        return;
+    QString text = tabText(index);
+    if(isChanged){
+        if(!text.endsWith('*'))
+            setTabText(index,text+"*");
+    }else{        
+        setTabText(index,text.left(text.length()-1));
+    }
+}
+void QTabEditor::save()
+{
+    QHTMLEditor* editor = (QHTMLEditor*)this->currentWidget();
+    editor->save();
+}
+void QTabEditor::saveAll()
+{
 }
