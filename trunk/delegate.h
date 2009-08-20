@@ -1,13 +1,7 @@
 #ifndef DELEGATE_H
 #define DELEGATE_H
 
-#include <QItemDelegate>
-#include <QModelIndex>
-#include <QObject>
-#include <QSize>
-#include <QSpinBox>
-#include <QPushButton>
-#include <QDirModel>
+#include <QtGui>
 #include "QTreeItem.h"
 #include "qmodifyfiledialog.h"
 

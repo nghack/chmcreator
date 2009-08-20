@@ -20,8 +20,11 @@ public:
     int row() const;
     QVariant objectUrl() const;
     QTreeItem *parent();
+    int nodeType(){return type;}//1=folder,0=file
+    void setNodeType(int nodeType){type = nodeType;}
 
 private:
+    int type;
     QList<QTreeItem*> childItems;
     QList<QVariant> itemData;
     QTreeItem *parentItem;

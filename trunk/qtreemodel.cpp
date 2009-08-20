@@ -45,32 +45,20 @@ QVariant QTreeModel::data(const QModelIndex &index, int role) const
 
         if (index.isValid())
             parentItem = static_cast<QTreeItem*>(index.internalPointer());
+        if(index.column()!=0)
+            return QVariant();
         QIcon icon;
         if(parentItem->childCount()>0){
+            parentItem->setNodeType(1);
             icon.addPixmap(QPixmap(QString::fromUtf8(":/images/closeFolder.png")), QIcon::Normal, QIcon::Off);
             icon.addPixmap(QPixmap(QString::fromUtf8(":/images/openFolder.png")), QIcon::Normal, QIcon::On);
         }else{
             icon.addPixmap(QPixmap(QString::fromUtf8(":/images/page.png")), QIcon::Normal, QIcon::Off);
         }
         return icon;
-        //        switch(node->item){
-        //            case Node::Root:
-        //                return QIcon(":/images/save.png");
-        //            case Node::Downloading:
-        //                return QIcon(":/images/open.png");
-        //            case Node::Downloaded:
-        //                return QIcon(":/images/new.png");
-        //            case Node::Daily:
-        //                return QIcon(":/images/view.png");
-        //            case Node::Timespace:
-        //                return QIcon(":/images/logo.png");
-        //        }
     }
     if (role != Qt::DisplayRole)
         return QVariant();
-
-
-
     QTreeItem *item = static_cast<QTreeItem*>(index.internalPointer());
 
     return item->data(index.column());
