@@ -13,6 +13,8 @@ QTreeItem::QTreeItem(const QList<QVariant> &data, QTreeItem *parent)
 {
     parentItem = parent;
     itemData = data;
+
+    type = 0;
 }
 //! [0]
 

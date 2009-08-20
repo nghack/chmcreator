@@ -31,9 +31,10 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     dockProject->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
     addDockWidget(Qt::LeftDockWidgetArea, dockProject);
 
-    dockProject->setWidget(new QTreeView);
+    QContentsTreeView* viewTree = new QContentsTreeView;
+    dockProject->setWidget(viewTree);
 
-
+    this->connect(viewTree,SIGNAL(clicked(QModelIndex)),this,SLOT(on_action_NewItem_triggered(QModelIndex)));
 
     connect(pro,SIGNAL(readyRead()),this,SLOT(console()));
 
@@ -41,15 +42,6 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     setWindowState(Qt::WindowMaximized);
 
     connect(((QTreeView*)dockProject->widget()), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_action_TreeView_Clicked_triggered(const QModelIndex &)));
-
-//    QItemEditorFactory *factory = new QItemEditorFactory;
-//
-//    QItemEditorCreatorBase *colorListCreator =
-//        new QStandardItemEditorCreator<ColorListEditor>();
-//
-//    factory->registerEditor(QVariant::Color, colorListCreator);
-//
-//    QItemEditorFactory::setDefaultFactory(factory);
 }
 
 MainWindow::~MainWindow()
@@ -332,4 +324,9 @@ void MainWindow::on_action_Property_triggered()
 void MainWindow::on_action_Save_triggered()
 {
     centerView->save();
+}
+
+void MainWindow::on_action_NewItem_triggered()
+{
+
 }

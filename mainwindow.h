@@ -28,6 +28,8 @@
 #include "colorlisteditor.h"
 #include "delegate.h"
 #include "configdialog.h"
+#include "qcontentstreeview.h"
+
 namespace Ui
 {
     class MainWindow;
@@ -78,6 +80,7 @@ private:
     QProjectPropertiesDialog* property;
 private slots:
     void on_action_Save_triggered();
+    void on_action_NewItem_triggered();
     void on_action_Property_triggered();
     void on_action_Run_triggered();
     void on_action_Compile_triggered();
