@@ -19,11 +19,12 @@ SOURCES += main.cpp \
     hhcobject.cpp \
     hhkobject.cpp \
     qtabeditor.cpp \
-    qpropertydialog.cpp \
     qhtmleditor.cpp \
     colorlisteditor.cpp \
     delegate.cpp \
-    qmodifyfiledialog.cpp
+    qmodifyfiledialog.cpp \
+    configdialog.cpp \
+    pages.cpp
 INCLUDEPATH += include \
     ../QtChm
 HEADERS += mainwindow.h \
@@ -36,11 +37,12 @@ HEADERS += mainwindow.h \
     hhcobject.h \
     hhkobject.h \
     qtabeditor.h \
-    qpropertydialog.h \
     qhtmleditor.h \
     colorlisteditor.h \
     delegate.h \
-    qmodifyfiledialog.h
+    qmodifyfiledialog.h \
+    pages.h \
+    configdialog.h
 LIBS += -L../bin \
     -lQtChm
 FORMS += mainwindow.ui \

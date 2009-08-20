@@ -9,7 +9,7 @@ static QString tmpFilePath;
  }
 
 MainWindow::MainWindow(QString app,QWidget *parent)
-        : QMainWindow(parent), ui(new Ui::MainWindow),myapp(app),centerView(new QTabEditor),currentProject(0),property(new QPropertyDialog(app))
+        : QMainWindow(parent), ui(new Ui::MainWindow),myapp(app),centerView(new QTabEditor),currentProject(0),property(new QProjectPropertiesDialog)
 {
     ui->setupUi(this);
     pro = new QProcess;
