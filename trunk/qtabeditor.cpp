@@ -51,14 +51,15 @@ void QTabEditor::changeStatus(bool isChanged)
     if(isChanged){
         if(!text.endsWith('*'))
             setTabText(index,text+"*");
-    }else{        
-        setTabText(index,text.left(text.length()-1));
+    }else{
+        if(text.endsWith('*'))
+            setTabText(index,text.left(text.length()-1));
     }
 }
 void QTabEditor::save()
 {
     QHTMLEditor* editor = (QHTMLEditor*)this->currentWidget();
-    editor->save();
+    if(editor!=0&&editor->isChanged())editor->save();
 }
 void QTabEditor::saveAll()
 {

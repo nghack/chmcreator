@@ -1,7 +1,7 @@
 #ifndef TABDIALOG_H
 #define TABDIALOG_H
 
-#include <QDialog>
+#include <QtGui>
 
 QT_BEGIN_NAMESPACE
 class QDialogButtonBox;
@@ -21,28 +21,33 @@ public:
 
 
 //! [1]
-class PermissionsTab : public QWidget
+class FilesTab : public QWidget
 {
     Q_OBJECT
 
 public:
-    PermissionsTab(const QFileInfo &fileInfo, QWidget *parent = 0);
+    FilesTab(const QFileInfo &fileInfo, QWidget *parent = 0);
 };
 //! [1]
 
 
 //! [2]
-class ApplicationsTab : public QWidget
+class ComplierTab : public QWidget
 {
     Q_OBJECT
 
 public:
-    ApplicationsTab(const QFileInfo &fileInfo, QWidget *parent = 0);
+    ComplierTab(const QFileInfo &fileInfo, QWidget *parent = 0);
 };
-//! [2]
 
+class WindowTab : public QWidget
+{
+    Q_OBJECT
 
-//! [3]
+public:
+    WindowTab(const QFileInfo &fileInfo, QWidget *parent = 0);
+};
+
 class QPropertyDialog : public QDialog
 {
     Q_OBJECT

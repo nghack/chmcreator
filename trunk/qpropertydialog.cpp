@@ -10,8 +10,9 @@ QPropertyDialog::QPropertyDialog(const QString &fileName, QWidget *parent)
 
     tabWidget = new QTabWidget;
     tabWidget->addTab(new GeneralTab(fileInfo), tr("General"));
-    tabWidget->addTab(new PermissionsTab(fileInfo), tr("Permissions"));
-    tabWidget->addTab(new ApplicationsTab(fileInfo), tr("Applications"));
+    tabWidget->addTab(new FilesTab(fileInfo), tr("Files"));
+    tabWidget->addTab(new ComplierTab(fileInfo), tr("Complier"));
+    tabWidget->addTab(new WindowTab(fileInfo), tr("Window Style"));
 //! [0]
 
 //! [1] //! [2]
@@ -39,25 +40,38 @@ QPropertyDialog::QPropertyDialog(const QString &fileName, QWidget *parent)
 GeneralTab::GeneralTab(const QFileInfo &fileInfo, QWidget *parent)
     : QWidget(parent)
 {
-    QLabel *fileNameLabel = new QLabel(tr("File Name:"));
+    QLabel *fileNameLabel = new QLabel(tr("Title:"));
     QLineEdit *fileNameEdit = new QLineEdit(fileInfo.fileName());
 
-    QLabel *pathLabel = new QLabel(tr("Path:"));
-    QLabel *pathValueLabel = new QLabel(fileInfo.absoluteFilePath());
-    pathValueLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    QLabel *pathLabel = new QLabel(tr("Default File:"));
+    QComboBox *pathValueLabel = new QComboBox();
 
-    QLabel *sizeLabel = new QLabel(tr("Size:"));
+    QLabel *sizeLabel = new QLabel(tr("Default Window:"));
     qlonglong size = fileInfo.size()/1024;
-    QLabel *sizeValueLabel = new QLabel(tr("%1 K").arg(size));
-    sizeValueLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    QLineEdit *sizeValueLabel = new QLineEdit(tr("%1 K").arg(size));
 
-    QLabel *lastReadLabel = new QLabel(tr("Last Read:"));
-    QLabel *lastReadValueLabel = new QLabel(fileInfo.lastRead().toString());
-    lastReadValueLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    QGroupBox* groupBox = new QGroupBox;
+    groupBox->setTitle(tr("International Setting"));
 
-    QLabel *lastModLabel = new QLabel(tr("Last Modified:"));
-    QLabel *lastModValueLabel = new QLabel(fileInfo.lastModified().toString());
-    lastModValueLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    QGridLayout *groupLayout = new QGridLayout;
+
+    QLabel *languageLabel = new QLabel(tr("Language:"));
+    QComboBox* languageBox = new QComboBox;
+    //QPushButton* languageButton = new QPushButton;
+
+    QLabel *fontLabel = new QLabel(tr("Font:"));
+    QLineEdit* fontBox = new QLineEdit;
+    QPushButton* fontButton = new QPushButton;
+
+    groupLayout->addWidget(languageLabel, 0, 0);
+    groupLayout->addWidget(languageBox, 1, 0,1, 2);
+    //groupLayout->addWidget(languageButton, 1, 1);
+
+    groupLayout->addWidget(fontLabel, 2, 0);
+    groupLayout->addWidget(fontBox, 3, 0);
+    groupLayout->addWidget(fontButton, 3, 1);
+
+    groupBox->setLayout(groupLayout);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(fileNameLabel);
@@ -66,17 +80,14 @@ GeneralTab::GeneralTab(const QFileInfo &fileInfo, QWidget *parent)
     mainLayout->addWidget(pathValueLabel);
     mainLayout->addWidget(sizeLabel);
     mainLayout->addWidget(sizeValueLabel);
-    mainLayout->addWidget(lastReadLabel);
-    mainLayout->addWidget(lastReadValueLabel);
-    mainLayout->addWidget(lastModLabel);
-    mainLayout->addWidget(lastModValueLabel);
+    mainLayout->addWidget(groupBox);
     mainLayout->addStretch(1);
     setLayout(mainLayout);
 }
 //! [6]
 
 //! [7]
-PermissionsTab::PermissionsTab(const QFileInfo &fileInfo, QWidget *parent)
+FilesTab::FilesTab(const QFileInfo &fileInfo, QWidget *parent)
     : QWidget(parent)
 {
     QGroupBox *permissionsGroup = new QGroupBox(tr("Permissions"));
@@ -125,7 +136,7 @@ PermissionsTab::PermissionsTab(const QFileInfo &fileInfo, QWidget *parent)
 //! [7]
 
 //! [8]
-ApplicationsTab::ApplicationsTab(const QFileInfo &fileInfo, QWidget *parent)
+ComplierTab::ComplierTab(const QFileInfo &fileInfo, QWidget *parent)
     : QWidget(parent)
 {
     QLabel *topLabel = new QLabel(tr("Open with:"));
@@ -145,6 +156,33 @@ ApplicationsTab::ApplicationsTab(const QFileInfo &fileInfo, QWidget *parent)
     else
         alwaysCheckBox = new QCheckBox(tr("Always use this application to "
             "open files with the extension '%1'").arg(fileInfo.suffix()));
+
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(topLabel);
+    layout->addWidget(applicationsListBox);
+    layout->addWidget(alwaysCheckBox);
+    setLayout(layout);
+}
+WindowTab::WindowTab(const QFileInfo &fileInfo, QWidget *parent)
+        : QWidget(parent)
+{
+    QLabel *topLabel = new QLabel(tr("Open with:"));
+
+    QListWidget *applicationsListBox = new QListWidget;
+    QStringList applications;
+
+    for (int i = 1; i <= 30; ++i)
+        applications.append(tr("Application %1").arg(i));
+    applicationsListBox->insertItems(0, applications);
+
+    QCheckBox *alwaysCheckBox;
+
+    if (fileInfo.suffix().isEmpty())
+        alwaysCheckBox = new QCheckBox(tr("Always use this application to "
+                                          "open this type of file"));
+    else
+        alwaysCheckBox = new QCheckBox(tr("Always use this application to "
+                                          "open files with the extension '%1'").arg(fileInfo.suffix()));
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(topLabel);

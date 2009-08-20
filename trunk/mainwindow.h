@@ -25,10 +25,9 @@
 #include "chmproject.h"
 #include "qtabeditor.h"
 #include "qchm.h"
-#include "qpropertydialog.h"
 #include "colorlisteditor.h"
 #include "delegate.h"
-
+#include "configdialog.h"
 namespace Ui
 {
     class MainWindow;
@@ -76,7 +75,7 @@ private:
 
     QProcess* pro;
     QMdiArea mdiArea;
-    QPropertyDialog* property;
+    QProjectPropertiesDialog* property;
 private slots:
     void on_action_Save_triggered();
     void on_action_Property_triggered();
