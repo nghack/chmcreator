@@ -41,10 +41,8 @@ QVariant QTreeModel::data(const QModelIndex &index, int role) const
         return QVariant();
     //Node *node = nodeFromIndex(index);
     if (role == Qt::DecorationRole){
-        QTreeItem *parentItem;
+        QTreeItem *parentItem = static_cast<QTreeItem*>(index.internalPointer());
 
-        if (index.isValid())
-            parentItem = static_cast<QTreeItem*>(index.internalPointer());
         if(index.column()!=0)
             return QVariant();
         QIcon icon;
@@ -80,7 +78,7 @@ Qt::ItemFlags QTreeModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return 0;
 
-    return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 //! [4]
 
@@ -155,11 +153,11 @@ void QTreeModel::addModelData(int position,const QString& data,const QString& ur
     columnData<<data<<url;
 
     if (position > indentations.last()) {
-        if (parents.last()->childCount() > 0) {
+       if (parents.last()->childCount() > 0) {
             parents << parents.last()->child(parents.last()->childCount()-1);
             indentations << position;
         }
-    } else if(position > indentations.last()){
+//    } else if(position < indentations.last()){
 
     }else{
         while (position < indentations.last() && parents.count() > 0) {

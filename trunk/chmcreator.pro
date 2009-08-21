@@ -21,7 +21,6 @@ SOURCES += main.cpp \
     qtabeditor.cpp \
     qhtmleditor.cpp \
     colorlisteditor.cpp \
-    delegate.cpp \
     qmodifyfiledialog.cpp \
     configdialog.cpp \
     pages.cpp \
@@ -40,7 +39,6 @@ HEADERS += mainwindow.h \
     qtabeditor.h \
     qhtmleditor.h \
     colorlisteditor.h \
-    delegate.h \
     qmodifyfiledialog.h \
     pages.h \
     configdialog.h \

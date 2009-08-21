@@ -6,13 +6,16 @@
 NewWizard::NewWizard(QWidget *parent)
     : QWizard(parent)
 {
-    addPage(new TypePage);
+    settings = 0;
+//    addPage(new TypePage);
     addPage(new NamePage);
+    addPage(new SettingPage);
 //    addPage(new CodeStylePage);
 //    addPage(new OutputFilesPage);
 //    addPage(new ConclusionPage);
 
     setWindowTitle(tr("New Wizard"));
+    //settings.f= QSettings(field("projectName").toString()+".hhp",QSettings::IniFormat)
 //! [2]
 }
 //! [1] //! [2]
@@ -29,27 +32,27 @@ void NewWizard::accept()
 //! [6]
 
 //! [7]
-TypePage::TypePage(QWidget *parent)
+SettingPage::SettingPage(QWidget *parent)
     : QWizardPage(parent)
 {
-    setTitle("Select a Wizard");
-    setSubTitle("Select a Wizard");
+    setTitle("CHM Setting");
+    setSubTitle("Define CHM Build Settings.");
 
-    QLabel *projectNameLabel1 = new QLabel("Project Name:");
-    QListWidget *projectNameLineEdit1 = new QListWidget;
+    QFileInfo finf(".");
+    tabWidget = new QTabWidget;
+    tabWidget->addTab(new GeneralTab,QIcon(""),"General");
+    tabWidget->addTab(new UpdatePage,QIcon(""),"Compiler");
+    tabWidget->addTab(new QueryPage,QIcon(""),"Windows Types");
+    tabWidget->addTab(new ConfigurationPage,QIcon(""),"General");
+    tabWidget->addTab(new FilesTab(finf),QIcon(""),"General");
+    tabWidget->addTab(new ComplierTab(finf),QIcon(""),"General");
+    tabWidget->addTab(new WindowTab(finf),QIcon(""),"General");
 
-    QVBoxLayout *layout0 = new QVBoxLayout;
-    QStringList list;
-    list.append("Chm Project");
-    list.append("Text");
-    list.append("HTML File");
 
-    projectNameLineEdit1->addItems(list);
-    projectNameLineEdit1->item(0)->setSelected(true);
-
-    layout0->addWidget(projectNameLabel1);
-    layout0->addWidget(projectNameLineEdit1);
-    setLayout(layout0);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->addWidget(tabWidget);
+//    mainLayout->addStretch(1);
+    setLayout(mainLayout);
 }
 //! [7]
 
@@ -57,7 +60,7 @@ TypePage::TypePage(QWidget *parent)
 NamePage::NamePage(QWidget *parent)
     : QWizardPage(parent)
 {
-    setTitle("Create A Chm Project");
+    setTitle("Create a CHM Project");
     setSubTitle("Enter a Project Name.");
 
     QLabel *projectNameLabel = new QLabel("Project Name:");

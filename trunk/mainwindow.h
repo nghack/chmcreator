@@ -26,9 +26,9 @@
 #include "qtabeditor.h"
 #include "qchm.h"
 #include "colorlisteditor.h"
-#include "delegate.h"
 #include "configdialog.h"
 #include "qcontentstreeview.h"
+#include "qmodifyfiledialog.h"
 
 namespace Ui
 {
@@ -36,11 +36,6 @@ namespace Ui
 }
 using namespace QtConcurrent;
 
-#define COMPILED_FILE QString("OPTIONS/Compiled file")
-#define CONTENTS_FILE QString("OPTIONS/Contents file")
-#define INDEX_FILE QString("OPTIONS/Index file")
-
-#define INFOTYPES QString("INFOTYPES")
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

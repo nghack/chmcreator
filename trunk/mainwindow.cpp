@@ -9,7 +9,7 @@ static QString tmpFilePath;
  }
 
 MainWindow::MainWindow(QString app,QWidget *parent)
-        : QMainWindow(parent), ui(new Ui::MainWindow),myapp(app),centerView(new QTabEditor),currentProject(0),property(new QProjectPropertiesDialog)
+        : QMainWindow(parent), ui(new Ui::MainWindow),myapp(app),centerView(new QTabEditor),currentProject(0),property(0)
 {
     ui->setupUi(this);
     pro = new QProcess;
@@ -186,6 +186,13 @@ void MainWindow::on_action_Open_triggered()
 }
 void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
 {
+    if(index.column()!=0){
+        QModifyFileDialog dialog;
+        dialog.setModel(currentProject->getProjectPath());
+        dialog.exec();
+        QMessageBox::about(0,dialog.getSelectFile(QString("not")),dialog.getSelectFile(QString("not")));
+        return;
+    }
     QTreeItem *parentItem;
     parentItem = static_cast<QTreeItem*>(index.internalPointer());
 
@@ -254,18 +261,14 @@ void MainWindow::on_actionStatusBar_triggered()
 
 void MainWindow::on_action_Build_triggered()
 {
-    QProcess pro;
-    pro.start("hhc E:\\qtstudy\\bin\\workspace\\test.hhp");
 }
 
 void MainWindow::compile()
 {
     QProcess pro;
-    qDebug()<<QString("hhc ")+currentProject->getProjectFileName();
     pro.startDetached(QString("hhc ")+currentProject->getProjectFileName());
 }
 void MainWindow::loadProject(const QString& proFile){
-    //mdiArea.addScrollBarWidget(centerView,Qt::AlignCenter);
     qDebug()<<proFile;
     if(currentProject!=0){
         delete currentProject;
@@ -273,18 +276,8 @@ void MainWindow::loadProject(const QString& proFile){
     currentProject = new CHMProject(proFile);
 
     QTreeView* treeView = (QTreeView*)dockProject->widget();
-    QTreeModel* model = new QTreeModel(currentProject->getProjectName().left(currentProject->getProjectName().indexOf('.'))+".chm");
 
-    QTreeModelHandler handler(model);
-    QHHCParser parser;
-    parser.parse(currentProject->getProjectPath()+"/"+currentProject->value("OPTIONS/Contents file",currentProject->getProjectPath()+"/"+QString("index.hhc")).toString(),&handler);
-
-    QFileInfo fileInfo(proFile);
-    QString fiiii = fileInfo.absolutePath();
-    QButtonDelegate* delett = new QButtonDelegate(fiiii);
-    treeView->setItemDelegate(delett);
-
-    treeView->setModel(model);
+    treeView->setModel(currentProject->getHHCObject()->getTreeModel());
 }
 
 void MainWindow::on_action_Compile_triggered()
@@ -317,13 +310,20 @@ void MainWindow::on_action_Run_triggered()
 
 void MainWindow::on_action_Property_triggered()
 {
-    if(currentProject!=0)property->setWindowTitle((QString("Properties for %1").arg(currentProject->getProjectName())));
-    property->exec();
+    if(currentProject!=0){
+        if(property!=0){
+            delete property;
+        }
+        property = new QProjectPropertiesDialog(currentProject);
+        property->setWindowTitle((QString("Properties for %1").arg(currentProject->getProjectName())));
+        property->exec();
+    }    
 }
 
 void MainWindow::on_action_Save_triggered()
 {
-    centerView->save();
+    centerView->save();\
+    if(currentProject!=0)currentProject->getHHCObject()->save();
 }
 
 void MainWindow::on_action_NewItem_triggered()

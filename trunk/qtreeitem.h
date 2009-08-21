@@ -22,9 +22,9 @@ public:
     QTreeItem *parent();
     int nodeType(){return type;}//1=folder,0=file
     void setNodeType(int nodeType){type = nodeType;}
-
+    QList<QTreeItem*> childItemList(){return childItems;}
 private:
-    int type;
+    int type;    
     QList<QTreeItem*> childItems;
     QList<QVariant> itemData;
     QTreeItem *parentItem;

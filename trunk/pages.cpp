@@ -109,29 +109,34 @@ QueryPage::QueryPage(QWidget *parent)
     mainLayout->addStretch(1);
     setLayout(mainLayout);
 }
-GeneralTab::GeneralTab(const QFileInfo &fileInfo, QWidget *parent)
+//#define COMPILED_FILE QString("OPTIONS/Compiled file")
+//#define CONTENTS_FILE QString("OPTIONS/Contents file")
+//#define INDEX_FILE QString("OPTIONS/Index file")
+//#define LOG_FILE QString("OPTIONS/Error log file")
+//
+//#define INFOTYPES QString("INFOTYPES")
+GeneralTab::GeneralTab(QSettings* setting,QWidget *parent)
     : QWidget(parent)
 {
     QLabel *fileNameLabel = new QLabel(tr("Title:"));
-    QLineEdit *fileNameEdit = new QLineEdit(fileInfo.fileName());
+    QLineEdit *fileNameEdit = new QLineEdit(setting==0?"":setting->value(TITLE).toString());
 
     QLabel *targetLabel = new QLabel(tr("Compiled File:"));
-    QLineEdit *targetNameEdit = new QLineEdit(fileInfo.fileName());
+    QLineEdit *targetNameEdit = new QLineEdit(setting==0?"":setting->value(COMPILED_FILE).toString());
 
     QLabel *contentsLabel = new QLabel(tr("Contents File:"));
-    QLineEdit *contentsNameEdit = new QLineEdit(fileInfo.fileName());
+    QLineEdit *contentsNameEdit = new QLineEdit(setting==0?"":setting->value(CONTENTS_FILE).toString());
 
     QLabel *indexLabel = new QLabel(tr("Indexes File:"));
-    QLineEdit *indexNameEdit = new QLineEdit(fileInfo.fileName());
+    QLineEdit *indexNameEdit = new QLineEdit(setting==0?"":setting->value(INDEX_FILE).toString());
 
     QLabel *logLabel = new QLabel(tr("Log File:"));
-    QLineEdit *logNameEdit = new QLineEdit(fileInfo.fileName());
+    QLineEdit *logNameEdit = new QLineEdit(setting==0?"":setting->value(LOG_FILE).toString());
 
     QLabel *pathLabel = new QLabel(tr("Default File:"));
     QComboBox *pathValueLabel = new QComboBox();
 
     QLabel *sizeLabel = new QLabel(tr("Default Window:"));
-    qlonglong size = fileInfo.size()/1024;
     QComboBox *sizeValueLabel = new QComboBox;
 
     QGroupBox* groupBox = new QGroupBox;

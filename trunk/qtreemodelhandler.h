@@ -3,6 +3,7 @@
 
 #include <QUrl>
 #include "qhhchandler.h"
+#include "qtreemodelhandler.h"
 #include "QTreeModel.h"
 
 class QTreeModelHandler : public QHHCHandler
