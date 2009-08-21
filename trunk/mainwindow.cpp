@@ -36,7 +36,8 @@ MainWindow::MainWindow(QString app,QWidget *parent)
 
     this->connect(viewTree,SIGNAL(clicked(QModelIndex)),this,SLOT(on_action_NewItem_triggered(QModelIndex)));
 
-    connect(pro,SIGNAL(readyRead()),this,SLOT(console()));
+    connect(pro,SIGNAL(readyReadStandardError()),this,SLOT(console()));
+    connect(pro,SIGNAL(readyReadStandardOutput()),this,SLOT(console()));
 
     setCentralWidget(centerView);
     setWindowState(Qt::WindowMaximized);
