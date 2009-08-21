@@ -3,14 +3,14 @@
 #include "configdialog.h"
 #include "pages.h"
 
-QProjectPropertiesDialog::QProjectPropertiesDialog()
+QProjectPropertiesDialog::QProjectPropertiesDialog(QSettings* setting)
 {
     contentsWidget = new QTreeWidget;
     contentsWidget->header()->hide();
 
     QFileInfo fileInfo(".");
     pagesWidget = new QStackedWidget;
-    pagesWidget->addWidget(new GeneralTab(fileInfo));
+    pagesWidget->addWidget(new GeneralTab(setting));
     pagesWidget->addWidget(new UpdatePage);
     pagesWidget->addWidget(new QueryPage);
     pagesWidget->addWidget(new ConfigurationPage);
@@ -18,11 +18,13 @@ QProjectPropertiesDialog::QProjectPropertiesDialog()
     pagesWidget->addWidget(new ComplierTab(fileInfo));
     pagesWidget->addWidget(new WindowTab(fileInfo));
 
-    QPushButton *closeButton = new QPushButton(tr("Close"));
+    QDialogButtonBox *buttonBox = new QDialogButtonBox;
+    buttonBox->addButton(QDialogButtonBox::Ok);
+    buttonBox->addButton(QDialogButtonBox::Cancel);
 
     createIcons();
 
-    connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(close()));
 
     QHBoxLayout *horizontalLayout = new QHBoxLayout;
     horizontalLayout->addWidget(contentsWidget);
@@ -30,11 +32,12 @@ QProjectPropertiesDialog::QProjectPropertiesDialog()
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
     buttonsLayout->addStretch(1);
-    buttonsLayout->addWidget(closeButton);
+    buttonsLayout->addWidget(buttonBox);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addLayout(horizontalLayout);
-    mainLayout->addLayout(buttonsLayout);
+//    mainLayout->addLayout(buttonsLayout);
+    mainLayout->addWidget(buttonBox);
     setLayout(mainLayout);
 
     setWindowTitle(tr("Config Dialog"));

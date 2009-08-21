@@ -2,14 +2,13 @@
 
 CHMProject::CHMProject(QString projectFile):QSettings(projectFile,QSettings::IniFormat),hhcFile(0),hhkFile(0)
 {
+    QFileInfo fileInfo(projectFile);
+    projectPath = fileInfo.absolutePath();
     QString temp = projectFile;
-    filePath = temp;
-    projectPath = temp.left(temp.lastIndexOf('/'));
-    temp = projectFile;
     projectName = temp.right(temp.length()-temp.lastIndexOf('/')-1);
 
-    hhcFile = new HHCObject(value("OPTIONS/Contents file",QString("index.hhc")).toString());
-    hhkFile = new HHKObject(value("OPTIONS/Index file",QString("index.hhk")).toString());
+    hhcFile = new HHCObject(projectName,projectPath+QString("/")+value("OPTIONS/Contents file",QString("index.hhc")).toString());
+    hhkFile = new HHKObject(projectPath+value("OPTIONS/Index file",QString("index.hhk")).toString());
 }
 CHMProject::~CHMProject()
 {

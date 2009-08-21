@@ -2,6 +2,15 @@
 #define PAGES_H
 
 #include <QtGui>
+#include "chmproject.h"
+
+class GeneralTab : public QWidget
+{
+    Q_OBJECT
+
+public:
+    GeneralTab(QSettings* setting=0,QWidget *parent = 0);
+};
 
 class ConfigurationPage : public QWidget
 {
@@ -19,13 +28,6 @@ class UpdatePage : public QWidget
 {
 public:
     UpdatePage(QWidget *parent = 0);
-};
-class GeneralTab : public QWidget
-{
-    Q_OBJECT
-
-public:
-    GeneralTab(const QFileInfo &fileInfo, QWidget *parent = 0);
 };
 //! [0]
 

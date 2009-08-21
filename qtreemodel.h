@@ -28,6 +28,8 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant objectUrl(const QModelIndex &index) const;
     void addModelData(int position,const QString& data,const QString& url);
+    QList<QTreeItem*>& getTreeItemList(){return parents;}
+    QTreeItem* getRootItem(){return rootItem;}
 private:
 
 

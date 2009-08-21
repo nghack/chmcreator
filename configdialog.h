@@ -14,7 +14,7 @@ class QProjectPropertiesDialog : public QDialog
     Q_OBJECT
 
 public:
-    QProjectPropertiesDialog();
+    QProjectPropertiesDialog(QSettings* setting);
 
 public slots:
     void changePage(QTreeWidgetItem *current, QTreeWidgetItem *previous);

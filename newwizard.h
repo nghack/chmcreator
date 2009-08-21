@@ -1,7 +1,8 @@
 #ifndef CLASSWIZARD_H
 #define CLASSWIZARD_H
 
-#include <QWizard>
+#include <QtGui>
+#include "pages.h"
 
 QT_BEGIN_NAMESPACE
 class QCheckBox;
@@ -23,19 +24,21 @@ public:
     QString getWizardName();
     private:
     QString name;
+    QSettings* settings;
 };
 //! [0]
 
 //! [1]
-class TypePage : public QWizardPage
+class SettingPage : public QWizardPage
 {
     Q_OBJECT
 
 public:
-    TypePage(QWidget *parent = 0);
+    SettingPage(QWidget *parent = 0);
 
 private:
     QLabel *label;
+    QTabWidget* tabWidget;
 };
 //! [1]
 
