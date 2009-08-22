@@ -80,3 +80,8 @@ QVariant QTreeItem::objectUrl() const
     return itemData.value(1);
 }
 //! [8]
+bool QTreeItem::removeRow(int row)
+{
+    childItems.removeAt(row);
+    return true;
+}

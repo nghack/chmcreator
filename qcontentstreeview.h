@@ -3,15 +3,20 @@
 
 #include <QtGui>
 #include "QTreeItem.h"
+#include "newfiledialog.h"
 
+class MainWindow;
+extern QSettings settings;
 class QContentsTreeView : public QTreeView
 {
+    Q_OBJECT
 public:
-    QContentsTreeView();
+    QContentsTreeView(MainWindow* mainWindow);
     ~QContentsTreeView();
     void createActions();
     void mouseReleaseEvent(QMouseEvent *event);
 private:
+     MainWindow* mainWindow;
      QMenu* menu;
 
      QAction *openAct;
@@ -22,6 +27,17 @@ private:
      QAction *deleteAct;
      QAction *renameAct;
      QAction *propertyAct;
+
+     NewFileDialog dialog;
+private slots:
+     void openFile();
+     void newFile();
+     void addExistFile();
+     void copyFile();
+     void pasteFile();
+     void deleteFile();
+     void renameFile();
+     void property();
 };
 
 #endif // QCONTENTSTREEVIEW_H

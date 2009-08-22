@@ -2,6 +2,8 @@
 
 CHMProject::CHMProject(QString projectFile):QSettings(projectFile,QSettings::IniFormat),hhcFile(0),hhkFile(0)
 {
+    filePath = projectFile;
+
     QFileInfo fileInfo(projectFile);
     projectPath = fileInfo.absolutePath();
     QString temp = projectFile;

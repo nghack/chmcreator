@@ -5,10 +5,7 @@ HHCObject::HHCObject(QString title,QString fileName)
     this->title = title;
     this->fileName = fileName;
 
-    QMessageBox::about(0,"",fileName);
     treeModel = new QTreeModel(title);
-
-    connect(treeModel,SIGNAL(dataChanged(QModelIndex,QModelIndex)),this,SLOT(dataChanged(QModelIndex,QModelIndex)));
 
     QTreeModelHandler handler(treeModel);
     QHHCParser parser;
@@ -44,7 +41,10 @@ void HHCObject::writeTreeItem(QTextStream& outStream,QTreeItem* item)
 }
 void HHCObject::save()
 {
-    QFile file("e:/qtstudy/bin/ttttttttttttttttttttttt.txt");
+    saveAs(fileName);
+}
+void HHCObject::saveAs(const QString fileName){
+    QFile file(fileName);
      if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
          return;
     QTextStream outStream(&file);
@@ -61,7 +61,4 @@ void HHCObject::save()
     }
     outStream<<"</UL>\n";
     outStream<<"</BODY></HTML>\n";
-}
-void HHCObject::saveAs(const QString fileName){
-
 }

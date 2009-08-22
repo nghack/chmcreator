@@ -30,11 +30,9 @@ public:
     void addModelData(int position,const QString& data,const QString& url);
     QList<QTreeItem*>& getTreeItemList(){return parents;}
     QTreeItem* getRootItem(){return rootItem;}
+    virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 private:
-
-
     QTreeItem *rootItem;
-
     QList<QTreeItem*> parents;
     QList<int> indentations;
 };
