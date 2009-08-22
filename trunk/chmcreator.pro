@@ -24,7 +24,8 @@ SOURCES += main.cpp \
     qmodifyfiledialog.cpp \
     configdialog.cpp \
     pages.cpp \
-    qcontentstreeview.cpp
+    qcontentstreeview.cpp \
+    newfiledialog.cpp
 INCLUDEPATH += include \
     ../QtChm
 HEADERS += mainwindow.h \
@@ -42,9 +43,12 @@ HEADERS += mainwindow.h \
     qmodifyfiledialog.h \
     pages.h \
     configdialog.h \
-    qcontentstreeview.h
+    qcontentstreeview.h \
+    newfiledialog.h \
+    global.h
 LIBS += -L../bin \
     -lQtChm
 FORMS += mainwindow.ui \
-    qmodifyfiledialog.ui
+    qmodifyfiledialog.ui \
+    newfiledialog.ui
 RESOURCES += qt.qrc

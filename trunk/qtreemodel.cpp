@@ -3,7 +3,6 @@
 #include "qTreeItem.h"
 #include "QTreeModel.h"
 
-//! [0]
 QTreeModel::QTreeModel(QString title,QObject *parent)
         : QAbstractItemModel(parent)
 {
@@ -14,17 +13,15 @@ QTreeModel::QTreeModel(QString title,QObject *parent)
 
     parents << rootItem;
     indentations << 0;
-}
-//! [0]
 
-//! [1]
+    //addModelData(-4,title,"");
+}
+
 QTreeModel::~QTreeModel()
 {
     delete rootItem;
 }
-//! [1]
 
-//! [2]
 int QTreeModel::columnCount(const QModelIndex &parent) const
 {
     if (parent.isValid())
@@ -167,4 +164,14 @@ void QTreeModel::addModelData(int position,const QString& data,const QString& ur
     }
     // Append a new item to the current parent's list of children.
     parents.last()->appendChild(new QTreeItem(columnData, parents.last()));
+}
+bool QTreeModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+    if (!parent.isValid()){
+        rootItem->removeRow(row);
+        return true;
+    }
+    QTreeItem *item = static_cast<QTreeItem*>(parent.internalPointer());
+    item->removeRow(row);
+    return true;
 }

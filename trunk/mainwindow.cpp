@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+extern QSettings settings;
 static QString tmpFilePath;
 
  void spin(QChm* iteration)
@@ -31,7 +32,7 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     dockProject->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
     addDockWidget(Qt::LeftDockWidgetArea, dockProject);
 
-    QContentsTreeView* viewTree = new QContentsTreeView;
+    QContentsTreeView* viewTree = new QContentsTreeView(this);
     dockProject->setWidget(viewTree);
 
     this->connect(viewTree,SIGNAL(clicked(QModelIndex)),this,SLOT(on_action_NewItem_triggered(QModelIndex)));
@@ -270,11 +271,13 @@ void MainWindow::compile()
     pro.startDetached(QString("hhc ")+currentProject->getProjectFileName());
 }
 void MainWindow::loadProject(const QString& proFile){
-    qDebug()<<proFile;
     if(currentProject!=0){
         delete currentProject;
     }
     currentProject = new CHMProject(proFile);
+
+    settings.setValue(PROJECT_PATH,currentProject->getProjectPath());
+    settings.setValue(PROJECT_NAME,currentProject->getProjectName());
 
     QTreeView* treeView = (QTreeView*)dockProject->widget();
 
@@ -330,4 +333,10 @@ void MainWindow::on_action_Save_triggered()
 void MainWindow::on_action_NewItem_triggered()
 {
 
+}
+void MainWindow::saveHHC()
+{
+    if(currentProject==0)
+        return;
+    currentProject->getHHCObject()->save();
 }

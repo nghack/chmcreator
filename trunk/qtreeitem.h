@@ -23,6 +23,7 @@ public:
     int nodeType(){return type;}//1=folder,0=file
     void setNodeType(int nodeType){type = nodeType;}
     QList<QTreeItem*> childItemList(){return childItems;}
+    bool removeRow(int row);
 private:
     int type;    
     QList<QTreeItem*> childItems;

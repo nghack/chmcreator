@@ -2,19 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QtGui>
-#include <QToolBar>
-#include <QTextEdit>
-#include <QLabel>
-#include <QTreeView>
-#include <QListWidget>
-#include <QDockWidget>
-#include <QMessageBox>
-#include <QWizard>
-#include <QWizardPage>
-#include <QLineEdit>
-#include <QVBoxLayout>
-#include <QProcess>
 #include <QWebView>
+
+#include "global.h"
+
 #include "newwizard.h"
 #include "chmproject.h"
 #include "QTreeModel.h"
@@ -45,6 +36,7 @@ public:
     void loadProject(const QString& proFile);
     ~MainWindow();
 
+    void saveHHC();
 private:
     Ui::MainWindow *ui;
     QString myapp;
@@ -88,6 +80,7 @@ private slots:
     void on_action_About_triggered();
     void on_action_NewAccepted_triggered();
     void console();
+public slots:
     void on_action_TreeView_Clicked_triggered(const QModelIndex &index);
 };
 
