@@ -146,6 +146,11 @@ GeneralTab::GeneralTab(QSettings* setting,QWidget *parent)
 
     QLabel *languageLabel = new QLabel(tr("Language:"));
     QComboBox* languageBox = new QComboBox;
+    QLocaleMap localeMap;
+    QList<QString> tempContry = localeMap.getLocale().keys();
+    foreach(QString contry,tempContry){
+        languageBox->addItem(contry);
+    }
 
     QLabel *fontLabel = new QLabel(tr("Font:"));
     QLineEdit* fontBox = new QLineEdit;
