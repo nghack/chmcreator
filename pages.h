@@ -3,6 +3,7 @@
 
 #include <QtGui>
 #include "chmproject.h"
+#include "qlocalemap.h"
 
 class GeneralTab : public QWidget
 {

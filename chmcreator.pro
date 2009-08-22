@@ -25,7 +25,8 @@ SOURCES += main.cpp \
     configdialog.cpp \
     pages.cpp \
     qcontentstreeview.cpp \
-    newfiledialog.cpp
+    newfiledialog.cpp \
+    qlocalemap.cpp
 INCLUDEPATH += include \
     ../QtChm
 HEADERS += mainwindow.h \
@@ -45,7 +46,8 @@ HEADERS += mainwindow.h \
     configdialog.h \
     qcontentstreeview.h \
     newfiledialog.h \
-    global.h
+    global.h \
+    qlocalemap.h
 LIBS += -L../bin \
     -lQtChm
 FORMS += mainwindow.ui \

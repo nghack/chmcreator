@@ -25,6 +25,7 @@ QProjectPropertiesDialog::QProjectPropertiesDialog(QSettings* setting)
     createIcons();
 
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(close()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(close()));
 
     QHBoxLayout *horizontalLayout = new QHBoxLayout;
     horizontalLayout->addWidget(contentsWidget);
@@ -36,7 +37,7 @@ QProjectPropertiesDialog::QProjectPropertiesDialog(QSettings* setting)
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addLayout(horizontalLayout);
-//    mainLayout->addLayout(buttonsLayout);
+    //    mainLayout->addLayout(buttonsLayout);
     mainLayout->addWidget(buttonBox);
     setLayout(mainLayout);
 
@@ -79,6 +80,15 @@ void QProjectPropertiesDialog::changePage(QTreeWidgetItem *current, QTreeWidgetI
 {
     if (!current)
         current = previous;
-
     pagesWidget->setCurrentWidget(map.value(current));
+}
+void QProjectPropertiesDialog::accept ()
+{
+
+    close();
+}
+void QProjectPropertiesDialog::reject ()
+{
+    emit this->close();
+    close();
 }

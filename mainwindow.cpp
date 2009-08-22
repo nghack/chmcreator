@@ -133,13 +133,13 @@ void MainWindow::createToolBar()
     compileToolBar = addToolBar(tr("Compile"));
 
     //Editor Tool Bar
-    newProjectAct = new QAction(QIcon(":/images/new.png"), tr("&Next Page"),this);
+    newProjectAct = new QAction(QIcon(":/images/new.png"), tr("&New Project"),this);
     connect(newProjectAct, SIGNAL(triggered()), this, SLOT(on_action_New_triggered()));
 
-    openProjectAct = new QAction(QIcon(":/images/open.png"), tr("&New Letter"),this);
+    openProjectAct = new QAction(QIcon(":/images/open.png"), tr("&Open Project or chm file"),this);
     connect(openProjectAct, SIGNAL(triggered()), this, SLOT(on_action_Open_triggered()));
 
-    saveProjectAct = new QAction(QIcon(":/images/save.png"), tr("&Save"),this);
+    saveProjectAct = new QAction(QIcon(":/images/save.png"), tr("&Save File"),this);
     connect(saveProjectAct, SIGNAL(triggered()), this, SLOT(on_action_Save_triggered()));
 
 
@@ -148,10 +148,10 @@ void MainWindow::createToolBar()
     fileToolBar->addAction(saveProjectAct);
 
     //Editor Tool Bar
-    compileProjectAct = new QAction(QIcon(":/images/compile.png"), tr("&Next Page"),this);
+    compileProjectAct = new QAction(QIcon(":/images/compile.png"), tr("&Compile Project"),this);
     connect(compileProjectAct, SIGNAL(triggered()), this, SLOT(nextPage()));
 
-    viewProjectAct = new QAction(QIcon(":/images/view.png"), tr("&Next Page"),this);
+    viewProjectAct = new QAction(QIcon(":/images/view.png"), tr("&View Project"),this);
     connect(viewProjectAct, SIGNAL(triggered()), this, SLOT(nextPage()));
 
     compileToolBar->addAction(compileProjectAct);
@@ -172,7 +172,7 @@ void MainWindow::on_action_Open_triggered()
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open"),
                                                     tr("chm file or project"),
-                                                    tr("HHP Project Files (*.hhp);;CHM File (*.chm)"),
+                                                    tr("HHP Project or chm File (*.hhp *.chm)"),
                                                     &selectedFilter,
                                                     options);
     if (!fileName.isEmpty()){

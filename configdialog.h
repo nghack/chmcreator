@@ -4,12 +4,12 @@
 #include <QtGui>
 
 QT_BEGIN_NAMESPACE
-class QListWidget;
+        class QListWidget;
 class QListWidgetItem;
 class QStackedWidget;
 QT_END_NAMESPACE
 
-class QProjectPropertiesDialog : public QDialog
+        class QProjectPropertiesDialog : public QDialog
 {
     Q_OBJECT
 
@@ -18,7 +18,8 @@ public:
 
 public slots:
     void changePage(QTreeWidgetItem *current, QTreeWidgetItem *previous);
-
+    virtual void accept ();
+    virtual void reject ();
 private:
     void createIcons();
     QTreeWidgetItem* createItem(QTreeWidgetItem *widget,const QString& title);
