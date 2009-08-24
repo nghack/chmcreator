@@ -2,61 +2,45 @@
 
 #include "newwizard.h"
 
-//! [0] //! [1]
 NewWizard::NewWizard(QWidget *parent)
     : QWizard(parent)
 {
-    settings = 0;
-//    addPage(new TypePage);
+    settings = new QSettings("config/tempProject.ini",QSettings::IniFormat);
+    settings->clear();
+    QSettings templateSetting("config/template.hhp",QSettings::IniFormat);
+    QStringList keyList = templateSetting.allKeys();
+    foreach(QString key,keyList){
+        settings->setValue(key,templateSetting.value(key));
+    }
     addPage(new NamePage);
-    addPage(new SettingPage);
-//    addPage(new CodeStylePage);
-//    addPage(new OutputFilesPage);
-//    addPage(new ConclusionPage);
+    addPage(new SettingPage(settings));
 
     setWindowTitle(tr("New Project"));
-    //settings.f= QSettings(field("projectName").toString()+".hhp",QSettings::IniFormat)
-//! [2]
 }
-//! [1] //! [2]
 
-//! [3]
-QString NewWizard::getWizardName(){
-    return name;
-}
 void NewWizard::accept()
 {
     name = field("projectName").toString();
+
+    settings->setValue(PROJECT_BIN_TOC,field("projectBinaryTOC"));
+    settings->setValue(PROJECT_COMP,((field("projectComplierVersion").toInt()==0)?"1.0":"1.1 or later"));
+    settings->setValue(PROJECT_TARGET,field("projectTargetName"));
+    settings->setValue(PROJECT_CONT_FILE,field("projectContentsFile"));//
+    settings->setValue(PROJECT_FONT,field("projectFont"));
+    settings->setValue(PROJECT_DEFAULT_FILE,field("projectDefaultFile"));
+    settings->setValue(PROJECT_DISPLAY_PROGRESS,"Yes");
+    settings->setValue(PROJECT_ENHANCED_DE,field("projectDecompile"));
+    settings->setValue(PROJECT_LOG_FILE,"log.txt");
+    settings->setValue(PROJECT_FLAT,field("projectIncludeFolder"));
+    settings->setValue(PROJECT_FULL_SEARCH,field("projectFullTextSearch"));
+    settings->setValue(PROJECT_INDEX,field("projectIndexFile"));
+    settings->setValue(PROJECT_LANG,field("projectLanuage"));
+    settings->setValue(PROJECT_BIN_INDEX,field("projectBinaryIndex"));
+    settings->setValue(PROJECT_TITLE_CHM,field("projectTitle"));
+
     QDialog::accept();
 }
-//! [6]
 
-//! [7]
-SettingPage::SettingPage(QWidget *parent)
-    : QWizardPage(parent)
-{
-    setTitle("CHM Setting");
-    setSubTitle("Define CHM Build Settings.");
-
-    QFileInfo finf(".");
-    tabWidget = new QTabWidget;
-    tabWidget->addTab(new GeneralTab,QIcon(""),"General");
-    tabWidget->addTab(new UpdatePage,QIcon(""),"Compiler");
-    tabWidget->addTab(new QueryPage,QIcon(""),"Windows Types");
-    tabWidget->addTab(new ConfigurationPage,QIcon(""),"General");
-    tabWidget->addTab(new FilesTab(finf),QIcon(""),"General");
-    tabWidget->addTab(new ComplierTab(finf),QIcon(""),"General");
-    tabWidget->addTab(new WindowTab(finf),QIcon(""),"General");
-
-
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->addWidget(tabWidget);
-//    mainLayout->addStretch(1);
-    setLayout(mainLayout);
-}
-//! [7]
-
-//! [8] //! [9]
 NamePage::NamePage(QWidget *parent)
     : QWizardPage(parent)
 {
@@ -73,148 +57,153 @@ NamePage::NamePage(QWidget *parent)
 
     setLayout(layout1);
 }
-//! [13]
 
-//! [14]
-CodeStylePage::CodeStylePage(QWidget *parent)
+ void SettingPage::getFont()
+ {
+     bool ok;
+     QFont font = QFontDialog::getFont(&ok, QFont(fontEditor->text()), this);
+     if (ok) {
+         fontEditor->setText(font.toString());
+         fontEditor->setFont(font);
+     }
+ }
+
+SettingPage::SettingPage(QSettings* setting,QWidget *parent)
     : QWizardPage(parent)
 {
-    setTitle(tr("Code Style Options"));
-    setSubTitle(tr("Choose the formatting of the generated code."));
-    setPixmap(QWizard::LogoPixmap, QPixmap(":/images/logo2.png"));
+    setTitle("CHM Setting");
+    setSubTitle("Define CHM Build Settings.");
 
-    commentCheckBox = new QCheckBox(tr("&Start generated files with a "
-//! [14]
-                                       "comment"));
-    commentCheckBox->setChecked(true);
+    tabWidget = new QTabWidget;
 
-    protectCheckBox = new QCheckBox(tr("&Protect header file against multiple "
-                                       "inclusions"));
-    protectCheckBox->setChecked(true);
+    /*************************/
+    QWidget* tabGeneral = new QWidget;
 
-    macroNameLabel = new QLabel(tr("&Macro name:"));
-    macroNameLineEdit = new QLineEdit;
-    macroNameLabel->setBuddy(macroNameLineEdit);
+    QLabel *fileNameLabel = new QLabel(tr("Title:"));
+    fileNameEdit = new QLineEdit(setting->value(PROJECT_TITLE_CHM,tr("CHM File Title")).toString());
+    registerField("projectTitle", fileNameEdit);
 
-    includeBaseCheckBox = new QCheckBox(tr("&Include base class definition"));
-    baseIncludeLabel = new QLabel(tr("Base class include:"));
-    baseIncludeLineEdit = new QLineEdit;
-    baseIncludeLabel->setBuddy(baseIncludeLineEdit);
+    QLabel *targetLabel = new QLabel(tr("Compiled File:"));
+    targetNameEdit = new QLineEdit;
+    registerField("projectTargetName", targetNameEdit);
 
-    connect(protectCheckBox, SIGNAL(toggled(bool)),
-            macroNameLabel, SLOT(setEnabled(bool)));
-    connect(protectCheckBox, SIGNAL(toggled(bool)),
-            macroNameLineEdit, SLOT(setEnabled(bool)));
-    connect(includeBaseCheckBox, SIGNAL(toggled(bool)),
-            baseIncludeLabel, SLOT(setEnabled(bool)));
-    connect(includeBaseCheckBox, SIGNAL(toggled(bool)),
-            baseIncludeLineEdit, SLOT(setEnabled(bool)));
+    QLabel *contentsLabel = new QLabel(tr("Contents File:"));
+    contentsNameEdit = new QLineEdit(setting->value(PROJECT_CONT_FILE,tr("index.hhc")).toString());//
+    registerField("projectContentsFile", contentsNameEdit);
 
-    registerField("comment", commentCheckBox);
-    registerField("protect", protectCheckBox);
-    registerField("macroName", macroNameLineEdit);
-    registerField("includeBase", includeBaseCheckBox);
-    registerField("baseInclude", baseIncludeLineEdit);
+    QLabel *indexLabel = new QLabel(tr("Indexes File:"));
+    indexNameEdit = new QLineEdit(setting->value(PROJECT_INDEX,tr("index.hhk")).toString());
+    registerField("projectIndexFile", contentsNameEdit);
 
-    QGridLayout *layout = new QGridLayout;
-    layout->setColumnMinimumWidth(0, 20);
-    layout->addWidget(commentCheckBox, 0, 0, 1, 3);
-    layout->addWidget(protectCheckBox, 1, 0, 1, 3);
-    layout->addWidget(macroNameLabel, 2, 1);
-    layout->addWidget(macroNameLineEdit, 2, 2);
-    layout->addWidget(includeBaseCheckBox, 3, 0, 1, 3);
-    layout->addWidget(baseIncludeLabel, 4, 1);
-    layout->addWidget(baseIncludeLineEdit, 4, 2);
-//! [15]
-    setLayout(layout);
-}
-//! [15]
+    QLabel *defaultLabel = new QLabel(tr("Default File:"));
+    defaultValueLabel = new QLineEdit(setting->value(PROJECT_DEFAULT_FILE,tr("index.html")).toString());
+    registerField("projectDefaultFile", defaultValueLabel);
 
-//! [16]
-void CodeStylePage::initializePage()
-{
-    QString className = field("className").toString();
-    macroNameLineEdit->setText(className.toUpper() + "_H");
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->addWidget(fileNameLabel);
+    mainLayout->addWidget(fileNameEdit);
+    mainLayout->addWidget(targetLabel);
+    mainLayout->addWidget(targetNameEdit);
+    mainLayout->addWidget(contentsLabel);
+    mainLayout->addWidget(contentsNameEdit);
+    mainLayout->addWidget(indexLabel);
+    mainLayout->addWidget(indexNameEdit);
+    mainLayout->addWidget(defaultLabel);
+    mainLayout->addWidget(defaultValueLabel);
+    mainLayout->addStretch(1);
+    tabGeneral->setLayout(mainLayout);
 
-    QString baseClass = field("baseClass").toString();
+    tabWidget->addTab(tabGeneral,QIcon(""),"General");
+    /*************************/
+    QWidget* complierGeneral = new QWidget;
 
-    includeBaseCheckBox->setChecked(!baseClass.isEmpty());
-    includeBaseCheckBox->setEnabled(!baseClass.isEmpty());
-    baseIncludeLabel->setEnabled(!baseClass.isEmpty());
-    baseIncludeLineEdit->setEnabled(!baseClass.isEmpty());
+    QHBoxLayout *compilerLayout = new QHBoxLayout;
+    compilerLayout->addWidget(new QLabel(tr("Compatibility:")));
 
-    if (baseClass.isEmpty()) {
-        baseIncludeLineEdit->clear();
-    } else if (QRegExp("Q[A-Z].*").exactMatch(baseClass)) {
-        baseIncludeLineEdit->setText("<" + baseClass + ">");
-    } else {
-        baseIncludeLineEdit->setText("\"" + baseClass.toLower() + ".h\"");
+    QComboBox* compatibiBox = new QComboBox;
+    compatibiBox->addItem("1.0");
+    compatibiBox->addItem(tr("1.1 or Later"));//setting->value(PROJECT_DEFAULT_FILE,tr("index.html")).toString()
+    compilerLayout->addWidget(compatibiBox);
+    if(setting->value(PROJECT_COMP,tr("1.0")).toString().compare("1.0")==0){
+        compatibiBox->setCurrentIndex(0);
+    }else{
+        compatibiBox->setCurrentIndex(1);
     }
+    compilerLayout->addStretch(0);
+    registerField("projectComplierVersion", compatibiBox);
+
+    QVBoxLayout *mainComplierLayout = new QVBoxLayout;
+
+    QCheckBox* dontIncludeFolder = new QCheckBox(tr("Don't Include Folder in Compiled File."));
+    QCheckBox* enhancedDecomp = new QCheckBox(tr("Support Enhanced Decompliation."));
+    QCheckBox* fullSearchSpt = new QCheckBox(tr("Full Text Search Support."));
+    QCheckBox* binaryIndex = new QCheckBox(tr("Create Binary Index."));
+    QCheckBox* binaryToc = new QCheckBox(tr("Create Binary TOC(Large TOC File.)"));
+
+    dontIncludeFolder->setChecked(setting->value(PROJECT_FLAT,false).toBool());
+    enhancedDecomp->setChecked(setting->value(PROJECT_ENHANCED_DE,false).toBool());
+    fullSearchSpt->setChecked(setting->value(PROJECT_FULL_SEARCH,false).toBool());
+    binaryIndex->setChecked(setting->value(PROJECT_BIN_INDEX,false).toBool());
+    binaryToc->setChecked(setting->value(PROJECT_BIN_TOC,false).toBool());
+
+    registerField("projectIncludeFolder", dontIncludeFolder);
+    registerField("projectDecompile", enhancedDecomp);
+    registerField("projectFullTextSearch", fullSearchSpt);
+    registerField("projectBinaryIndex", binaryIndex);
+    registerField("projectBinaryTOC", binaryToc);
+
+    mainComplierLayout->addLayout(compilerLayout);
+    mainComplierLayout->addWidget(dontIncludeFolder);
+    mainComplierLayout->addWidget(enhancedDecomp);
+    mainComplierLayout->addWidget(fullSearchSpt);
+    mainComplierLayout->addWidget(binaryIndex);
+    mainComplierLayout->addWidget(binaryToc);
+    mainComplierLayout->addStretch(1);
+
+    complierGeneral->setLayout(mainComplierLayout);
+
+    tabWidget->addTab(complierGeneral,QIcon(""),"Compiler");
+    /***********************************************/
+    QWidget* internationalGeneral = new QWidget;
+
+    QVBoxLayout *internationalLayout = new QVBoxLayout;
+
+    QLabel *languageLabel = new QLabel(tr("Language:"));
+    QComboBox* languageBox = new QComboBox;
+    QLocaleMap localeMap;
+    QList<QString> tempContry = localeMap.getLocale().keys();
+    foreach(QString contry,tempContry){
+        languageBox->addItem(contry);
+    }
+    languageBox->setCurrentIndex(27);
+    registerField("projectLanuage", languageBox);
+
+    QLabel *fontLabel = new QLabel(tr("Font:"));    
+    fontEditor = new QLineEdit(setting->value(PROJECT_FONT,QFont().toString()).toString());
+    registerField("projectFont", fontEditor);
+
+    QPushButton* fontButton = new QPushButton;
+    connect(fontButton,SIGNAL(clicked()),this,SLOT(getFont()));
+
+    internationalLayout->addWidget(languageLabel);
+    internationalLayout->addWidget(languageBox);
+
+    QHBoxLayout *internationalFontLayout = new QHBoxLayout;
+    internationalLayout->addWidget(fontLabel);
+    internationalFontLayout->addWidget(fontEditor);
+    internationalFontLayout->addWidget(fontButton);//International
+    internationalLayout->addLayout(internationalFontLayout);
+    internationalLayout->addStretch(1);
+
+    internationalGeneral->setLayout(internationalLayout);
+    tabWidget->addTab(internationalGeneral,QIcon(""),"International");
+    //////////////////////////////////////////////////
+    QVBoxLayout *mainLayout1 = new QVBoxLayout;
+    mainLayout1->addWidget(tabWidget);
+    this->setLayout(mainLayout1);
 }
-//! [16]
 
-OutputFilesPage::OutputFilesPage(QWidget *parent)
-    : QWizardPage(parent)
+void SettingPage::initializePage()
 {
-    setTitle(tr("Output Files"));
-    setSubTitle(tr("Specify where you want the wizard to put the generated "
-                   "skeleton code."));
-    setPixmap(QWizard::LogoPixmap, QPixmap(":/images/logo3.png"));
-
-    outputDirLabel = new QLabel(tr("&Output directory:"));
-    outputDirLineEdit = new QLineEdit;
-    outputDirLabel->setBuddy(outputDirLineEdit);
-
-    headerLabel = new QLabel(tr("&Header file name:"));
-    headerLineEdit = new QLineEdit;
-    headerLabel->setBuddy(headerLineEdit);
-
-    implementationLabel = new QLabel(tr("&Implementation file name:"));
-    implementationLineEdit = new QLineEdit;
-    implementationLabel->setBuddy(implementationLineEdit);
-
-    registerField("outputDir*", outputDirLineEdit);
-    registerField("header*", headerLineEdit);
-    registerField("implementation*", implementationLineEdit);
-
-    QGridLayout *layout = new QGridLayout;
-    layout->addWidget(outputDirLabel, 0, 0);
-    layout->addWidget(outputDirLineEdit, 0, 1);
-    layout->addWidget(headerLabel, 1, 0);
-    layout->addWidget(headerLineEdit, 1, 1);
-    layout->addWidget(implementationLabel, 2, 0);
-    layout->addWidget(implementationLineEdit, 2, 1);
-    setLayout(layout);
-}
-
-//! [17]
-void OutputFilesPage::initializePage()
-{
-    QString className = field("className").toString();
-    headerLineEdit->setText(className.toLower() + ".h");
-    implementationLineEdit->setText(className.toLower() + ".cpp");
-    outputDirLineEdit->setText(QDir::convertSeparators(QDir::tempPath()));
-}
-//! [17]
-
-ConclusionPage::ConclusionPage(QWidget *parent)
-    : QWizardPage(parent)
-{
-    setTitle(tr("Conclusion"));
-    setPixmap(QWizard::WatermarkPixmap, QPixmap(":/images/watermark2.png"));
-
-    label = new QLabel;
-    label->setWordWrap(true);
-
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->addWidget(label);
-    setLayout(layout);
-}
-
-void ConclusionPage::initializePage()
-{
-    QString finishText = wizard()->buttonText(QWizard::FinishButton);
-    finishText.remove('&');
-    label->setText(tr("Click %1 to generate the class skeleton.")
-                   .arg(finishText));
+    targetNameEdit->setText(field("projectName").toString()+".chm");
 }

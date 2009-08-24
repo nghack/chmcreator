@@ -24,18 +24,27 @@ CHMProject::~CHMProject()
 void CHMProject::sync (){
     QSettings::sync();
 
-    QFile file(filePath);
-    file.open(QFile::ReadWrite);
-
-    QTextStream stream(&file);
-    QString content = stream.readAll();
-    content.replace("%20"," ");
-    file.close();
-
-    QFile file2(filePath);
-    if (!file2.open(QFile::WriteOnly))
+    QFile projectFile(filePath);
+    if (!projectFile.open(QFile::WriteOnly))
         return;
-    QTextStream ts(&file2);
-    ts.setCodec(QTextCodec::codecForName("UTF-8"));
-    ts <<content;
+    QTextStream outputProject(&projectFile);
+    outputProject.setCodec(QTextCodec::codecForName("UTF-8"));
+
+    QStringList keyList = childGroups();
+    foreach(QString key,keyList){
+        outputProject <<"[";
+        outputProject <<key;
+        outputProject <<"]\r\n";
+        beginGroup(key);
+        QStringList childKeyList = childKeys();
+        foreach(QString childKey,childKeyList){
+            outputProject <<childKey;
+            outputProject <<"=";
+            outputProject <<value(childKey).toString();
+            outputProject <<"\r\n";
+        }
+        endGroup();
+    }
+    outputProject.flush();
+    projectFile.close();
 }

@@ -36,7 +36,6 @@ public:
     void loadProject(const QString& proFile);
     ~MainWindow();
     void saveHHC();
-    void saveHHC();
 private:
     Ui::MainWindow *ui;
     QString myapp;

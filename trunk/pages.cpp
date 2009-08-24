@@ -109,17 +109,17 @@ QueryPage::QueryPage(QWidget *parent)
     mainLayout->addStretch(1);
     setLayout(mainLayout);
 }
-//#define COMPILED_FILE QString("OPTIONS/Compiled file")
-//#define CONTENTS_FILE QString("OPTIONS/Contents file")
-//#define INDEX_FILE QString("OPTIONS/Index file")
-//#define LOG_FILE QString("OPTIONS/Error log file")
-//
-//#define INFOTYPES QString("INFOTYPES")
+#define COMPILED_FILE QString("OPTIONS/Compiled file")
+#define CONTENTS_FILE QString("OPTIONS/Contents file")
+#define INDEX_FILE QString("OPTIONS/Index file")
+#define LOG_FILE QString("OPTIONS/Error log file")
+
+#define INFOTYPES QString("INFOTYPES")
 GeneralTab::GeneralTab(QSettings* setting,QWidget *parent)
     : QWidget(parent)
 {
     QLabel *fileNameLabel = new QLabel(tr("Title:"));
-    QLineEdit *fileNameEdit = new QLineEdit(setting==0?"":setting->value(TITLE).toString());
+    QLineEdit *fileNameEdit = new QLineEdit(setting==0?"":setting->value("title").toString());
 
     QLabel *targetLabel = new QLabel(tr("Compiled File:"));
     QLineEdit *targetNameEdit = new QLineEdit(setting==0?"":setting->value(COMPILED_FILE).toString());
@@ -185,7 +185,6 @@ GeneralTab::GeneralTab(QSettings* setting,QWidget *parent)
     mainLayout->addStretch(1);
     setLayout(mainLayout);
 }
-//! [6]
 
 //! [7]
 FilesTab::FilesTab(const QFileInfo &fileInfo, QWidget *parent)

@@ -116,9 +116,9 @@ QString MainWindow::extractChmFile(QString fileName){
     for(int i=0;i<keyList.count();i++){
         setting.setValue(keyList.at(i),settingTemplate.value(keyList.at(i)));
     }
-    setting.setValue(COMPILED_FILE,newDirName123+".chm");//path+"/"+
-    setting.setValue(CONTENTS_FILE,chm.getHHCFileName());
-    setting.setValue(INDEX_FILE,chm.getHHKFileName());
+    setting.setValue(PROJECT_TARGET,newDirName123+".chm");//path+"/"+
+    setting.setValue(PROJECT_CONT_FILE,chm.getHHCFileName());
+    setting.setValue(PROJECT_INDEX,chm.getHHKFileName());
 
     setting.beginGroup(INFOTYPES);
     setting.endGroup();
@@ -208,6 +208,7 @@ void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
         centerView->setWindowState(Qt::WindowMaximized);
     }
 
+    centerView->show();
     centerView->addTab(url.toString());
 }
 void MainWindow::on_action_NewAccepted_triggered()
@@ -216,27 +217,19 @@ void MainWindow::on_action_NewAccepted_triggered()
     QString path = myapp+"/workspace/"+wizard.getWizardName();
     dir.mkpath(path);
 
-    CHMProject settingTemplate("config/template.hhp");
+    const QSettings* newProjectSettings = wizard.getSettings();
     CHMProject setting(path+"/"+wizard.getWizardName()+".hhp");
 
     //Project File Sync
-    QStringList keyList = settingTemplate.allKeys();
+    QStringList keyList = newProjectSettings->allKeys();
     for(int i=0;i<keyList.count();i++){
-        setting.setValue(keyList.at(i),settingTemplate.value(keyList.at(i)));
+        setting.setValue(keyList.at(i),newProjectSettings->value(keyList.at(i)));
     }
-    setting.setValue(COMPILED_FILE,wizard.getWizardName()+".chm");//path+"/"+
-    setting.setValue(CONTENTS_FILE,"index.hhc");
-    setting.setValue(INDEX_FILE,"index.hhk");
-
-    setting.beginGroup(INFOTYPES);
-    setting.endGroup();
 
     setting.sync();
-    //HHC File Sync
-    QFile::copy(myapp +"/config/template.hhc",path+"/index.hhc");
-
-    //HHK File Sync
-    QFile::copy(myapp +"/config/template.hhk",path+"/index.hhk");
+    //HHC HHK File Sync
+    QFile::copy(myapp +"/config/index.hhc",path+"/"+newProjectSettings->value(PROJECT_CONT_FILE).toString());
+    QFile::copy(myapp +"/config/index.hhk",path+"/"+newProjectSettings->value(PROJECT_INDEX).toString());
 
     //Template File
     QFile::copy(myapp +"/config/index.html",path+"/index.html");
@@ -246,13 +239,12 @@ void MainWindow::on_action_NewAccepted_triggered()
 }
 void MainWindow::createNewWizard(){
     wizard.setWindowModality(Qt::ApplicationModal);
-    QIcon icon;
-    icon.addPixmap(QPixmap(QString::fromUtf8(":/images/logo.png")), QIcon::Normal, QIcon::Off);
-    wizard.setWindowIcon(icon);
+    wizard.setWindowIcon(QIcon(":/images/logo.png"));
     connect(&wizard, SIGNAL(accepted()), this, SLOT(on_action_NewAccepted_triggered()));
 }
 void MainWindow::on_action_New_triggered()
 {
+    wizard.restart();
     wizard.show();
 }
 
@@ -273,8 +265,8 @@ void MainWindow::on_action_Build_triggered()
 
 void MainWindow::compile()
 {
-    QProcess pro;
-    pro.startDetached(QString("hhc ")+currentProject->getProjectFileName());
+//    QProcess pro;
+//    pro.startDetached(QString("hhc ")+currentProject->getProjectFileName());
 }
 void MainWindow::loadProject(const QString& proFile){
     if(currentProject!=0){
@@ -297,7 +289,7 @@ void MainWindow::on_action_Compile_triggered()
     ((QTextEdit*)dockConsole->widget())->clear();
     QString projectName = currentProject->getProjectName().left(currentProject->getProjectName().indexOf('.'));
     qDebug()<<myapp + QString("/hhc ")+"workspace/"+projectName+"/"+projectName+".hhp";
-    pro->start(myapp + QString("/hhc ")+"workspace/"+projectName+"/"+projectName+".hhp");
+    pro->start(myapp + QString("/hhc \"")+"workspace/"+projectName+"/"+projectName+".hhp\"");
 }
 
 void MainWindow::console()
@@ -315,7 +307,7 @@ void MainWindow::on_action_Run_triggered()
         return;
     }
 
-    pro->start(QString("hh ")+currentProject->getProjectPath()+"/"+projectName+".chm");
+    pro->start(QString("hh \"")+currentProject->getProjectPath()+"/"+projectName+".chm\"");
 }
 
 void MainWindow::on_action_Property_triggered()
