@@ -84,11 +84,9 @@ void QProjectPropertiesDialog::changePage(QTreeWidgetItem *current, QTreeWidgetI
 }
 void QProjectPropertiesDialog::accept ()
 {
-
-    close();
+    QDialog::accept();
 }
 void QProjectPropertiesDialog::reject ()
 {
-    emit this->close();
-    close();
+    QDialog::reject();
 }

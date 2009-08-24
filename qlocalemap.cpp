@@ -2,7 +2,6 @@
 
 QLocaleMap::QLocaleMap()
 {
-    localeMap[""]="";
     localeMap["Albanian"]="0x41c";
     localeMap["Afrikaans"]="0x436";
     localeMap["Albanian"]="0x41c";

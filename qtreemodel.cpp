@@ -9,7 +9,6 @@ QTreeModel::QTreeModel(QString title,QObject *parent)
     QList<QVariant> rootData;
     rootData << title<< "File";
     rootItem = new QTreeItem(rootData);
-    //setupModelData(data.split(QString("\n")), rootItem);
 
     parents << rootItem;
     indentations << 0;

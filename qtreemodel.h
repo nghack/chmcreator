@@ -8,7 +8,6 @@
 
 class QTreeItem;
 
-//! [0]
 class QTreeModel : public QAbstractItemModel
 {
     Q_OBJECT
@@ -36,6 +35,5 @@ private:
     QList<QTreeItem*> parents;
     QList<int> indentations;
 };
-//! [0]
 
 #endif

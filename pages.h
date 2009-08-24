@@ -4,6 +4,7 @@
 #include <QtGui>
 #include "chmproject.h"
 #include "qlocalemap.h"
+#include "global.h"
 
 class GeneralTab : public QWidget
 {
