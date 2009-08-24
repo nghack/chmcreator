@@ -40,7 +40,8 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     connect(pro,SIGNAL(readyReadStandardError()),this,SLOT(console()));
     connect(pro,SIGNAL(readyReadStandardOutput()),this,SLOT(console()));
 
-    setCentralWidget(centerView);
+    setCentralWidget(&mdiArea);
+
     setWindowState(Qt::WindowMaximized);
 
     connect(((QTreeView*)dockProject->widget()), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_action_TreeView_Clicked_triggered(const QModelIndex &)));
@@ -201,6 +202,11 @@ void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
     qDebug()<<currentProject->getProjectPath()+"/"+parentItem->objectUrl().toString();
 
     QUrl url(currentProject->getProjectPath()+"/"+parentItem->objectUrl().toString());
+
+    if(mdiArea.subWindowList().count()==0){
+        mdiArea.addSubWindow(centerView);
+        centerView->setWindowState(Qt::WindowMaximized);
+    }
 
     centerView->addTab(url.toString());
 }

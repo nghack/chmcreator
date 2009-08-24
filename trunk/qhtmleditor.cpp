@@ -24,7 +24,7 @@ QHTMLEditor::QHTMLEditor(const QString& fileName):filename(fileName)
     ischanged = false;
 
     connect(editor,SIGNAL(textChanged()),this,SLOT(changed()));
-    connect(this,SIGNAL(currentChanged(int)),this,SLOT(reload(int)));
+//    connect(this,SIGNAL(currentChanged(int)),this,SLOT(reload(int)));
 //    connect(browser,SIGNAL(linkClicked(QUrl)),this,SLOT(linkClicked(QUrl)));
 //    connect(browser,SIGNAL(linkClicked(QUrl)),this,SLOT(linkClick(QUrl)));
 }
