@@ -14,7 +14,7 @@ NewWizard::NewWizard(QWidget *parent)
 //    addPage(new OutputFilesPage);
 //    addPage(new ConclusionPage);
 
-    setWindowTitle(tr("New Wizard"));
+    setWindowTitle(tr("New Project"));
     //settings.f= QSettings(field("projectName").toString()+".hhp",QSettings::IniFormat)
 //! [2]
 }

@@ -2,6 +2,7 @@
 #define QTABEDITOR_H
 
 #include <QtGui>
+#include <QMdiArea>
 #include <QWebView>
 #include <QTabWidget>
 #include "qhtmleditor.h"

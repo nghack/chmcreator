@@ -35,7 +35,7 @@ public:
     MainWindow(QString app,QWidget *parent = 0);
     void loadProject(const QString& proFile);
     ~MainWindow();
-
+    void saveHHC();
     void saveHHC();
 private:
     Ui::MainWindow *ui;
