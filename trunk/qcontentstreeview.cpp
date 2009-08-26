@@ -20,12 +20,9 @@ void QContentsTreeView::openFile(){
 void QContentsTreeView::newFile(){
     dialog.exec();
 }
-void QContentsTreeView::addExistFile(){
-    QString fileName = QFileDialog::getOpenFileName(0,"Open");
-    if(fileName.isEmpty())
-        return;    
+void QContentsTreeView::addExistFile(const QString fileName){
     QTreeItem* item = (QTreeItem*)currentIndex().internalPointer();
-    QFileInfo fileInfo(fileName);    
+    QFileInfo fileInfo(fileName);
     QString appPath = settings.value(APP_PATH).toString();
     appPath.append("/workspace/");
     QString project = settings.value(PROJECT_NAME).toString();
@@ -40,7 +37,14 @@ void QContentsTreeView::addExistFile(){
     columnData<<fileInfo.fileName();
     QTreeItem* newItem = new QTreeItem(columnData,item);
     item->appendChild(newItem);
-
+}
+void QContentsTreeView::addExistFiles(){
+    QStringList fileNames = QFileDialog::getOpenFileNames(0,"Open");
+    if(fileNames.isEmpty())
+        return;    
+    foreach(QString file,fileNames){
+        addExistFile(file);
+    }
     mainWindow->saveHHC();
 
     update(rootIndex());
@@ -73,7 +77,7 @@ void QContentsTreeView::createActions()
     addExistingAct = new QAction(tr("&Add"), this);
     addExistingAct->setShortcut(tr("Ctrl+A"));
     addExistingAct->setStatusTip(tr("Open an existing file"));
-    connect(addExistingAct, SIGNAL(triggered()), this, SLOT(addExistFile()));
+    connect(addExistingAct, SIGNAL(triggered()), this, SLOT(addExistFiles()));
 
     copyAct = new QAction(tr("&Copy"), this);
     copyAct->setShortcut(tr("Ctrl+C"));

@@ -28,7 +28,7 @@ void CHMProject::sync (){
     if (!projectFile.open(QFile::WriteOnly))
         return;
     QTextStream outputProject(&projectFile);
-    outputProject.setCodec(QTextCodec::codecForName("UTF-8"));
+    //outputProject.setCodec(QTextCodec::codecForName("UTF-8"));
 
     QStringList keyList = childGroups();
     foreach(QString key,keyList){
