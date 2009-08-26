@@ -13,7 +13,7 @@ public:
     QModifyFileDialog(QWidget *parent = 0);
     ~QModifyFileDialog();
     void setModel(QString filePath);
-    QString getSelectFile(QString defaultValue);
+    QString getSelectFile(QString defaultValue=QString::null);
 protected:
     void changeEvent(QEvent *e);
 

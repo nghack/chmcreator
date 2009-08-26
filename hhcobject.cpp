@@ -10,6 +10,8 @@ HHCObject::HHCObject(QString title,QString fileName)
     QTreeModelHandler handler(treeModel);
     QHHCParser parser;
     parser.parse(fileName,&handler);
+
+    connect(treeModel,SIGNAL(dataChanged(QModelIndex,QModelIndex)),this,SLOT(dataChanged(QModelIndex,QModelIndex)));
 }
 HHCObject::~HHCObject()
 {
@@ -18,6 +20,7 @@ HHCObject::~HHCObject()
 void HHCObject::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
     qDebug()<<"HHC Data Changed";
+    save();
 }
 void HHCObject::writeTreeItem(QTextStream& outStream,QTreeItem* item)
 {

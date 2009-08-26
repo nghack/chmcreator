@@ -39,6 +39,7 @@ private:
     QLineEdit *defaultValueLabel;
     QLineEdit* fontEditor;
 
+    QSettings* setting;
 public slots:
     void getFont();
 };

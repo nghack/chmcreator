@@ -189,17 +189,16 @@ void MainWindow::on_action_Open_triggered()
 }
 void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
 {
+    QTreeItem *parentItem;
+    parentItem = static_cast<QTreeItem*>(index.internalPointer());
+
     if(index.column()!=0){
         QModifyFileDialog dialog;
         dialog.setModel(currentProject->getProjectPath());
         dialog.exec();
-        QMessageBox::about(0,dialog.getSelectFile(QString("not")),dialog.getSelectFile(QString("not")));
+        parentItem->setData(index.column(),dialog.getSelectFile(parentItem->data(index.column()).toString()));
         return;
     }
-    QTreeItem *parentItem;
-    parentItem = static_cast<QTreeItem*>(index.internalPointer());
-
-    qDebug()<<currentProject->getProjectPath()+"/"+parentItem->objectUrl().toString();
 
     QUrl url(currentProject->getProjectPath()+"/"+parentItem->objectUrl().toString());
 

@@ -17,7 +17,11 @@ QTreeItem::QTreeItem(const QList<QVariant> &data, QTreeItem *parent)
     type = 0;
 }
 //! [0]
-
+void QTreeItem::setData(int column,QVariant data)
+{
+    itemData.removeAt(column);
+    itemData<<data;
+}
 //! [1]
 QTreeItem::~QTreeItem()
 {
