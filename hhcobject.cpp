@@ -48,14 +48,14 @@ void HHCObject::saveAs(const QString fileName){
      if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
          return;
     QTextStream outStream(&file);
-    outStream.setCodec("gb2312");
+    outStream.setCodec("utf-8");
 
     outStream<<"<html><head></head><body>\n";
     outStream<<"<OBJECT type=\"text/site properties\"><param name=\"Window Styles\" value=\"0x227\"></OBJECT>\n";
     outStream<<"<UL>\n";
     QTreeItem* root = treeModel->getRootItem();
 //    writeTreeItem(outStream,list);
-    QList<QTreeItem*> list = root->childItemList();
+    QList<QTreeItem*> list = root->child(0)->childItemList();
     foreach(QTreeItem* item,list){
         writeTreeItem(outStream,item);
     }

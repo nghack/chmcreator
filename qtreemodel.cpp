@@ -13,7 +13,7 @@ QTreeModel::QTreeModel(QString title,QObject *parent)
     parents << rootItem;
     indentations << 0;
 
-    //addModelData(-4,title,"");
+    addModelData(4,title+".hhp",title+" Project");
 }
 
 QTreeModel::~QTreeModel()
@@ -145,6 +145,7 @@ int QTreeModel::rowCount(const QModelIndex &parent) const
 
 void QTreeModel::addModelData(int position,const QString& data,const QString& url)
 {
+    position+=4;
     QList<QVariant> columnData;
     columnData<<data<<url;
 
@@ -156,7 +157,7 @@ void QTreeModel::addModelData(int position,const QString& data,const QString& ur
 //    } else if(position < indentations.last()){
 
     }else{
-        while (position < indentations.last() && parents.count() > 0) {
+        while (position < indentations.last() && parents.count() > 1) {
             parents.pop_back();
             indentations.pop_back();
         }

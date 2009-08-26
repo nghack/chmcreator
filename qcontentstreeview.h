@@ -15,6 +15,7 @@ public:
     ~QContentsTreeView();
     void createActions();
     void mouseReleaseEvent(QMouseEvent *event);
+    void addExistFile(const QString fileName);
 private:
      MainWindow* mainWindow;
      QMenu* menu;
@@ -32,7 +33,7 @@ private:
 private slots:
      void openFile();
      void newFile();
-     void addExistFile();
+     void addExistFiles();
      void copyFile();
      void pasteFile();
      void deleteFile();
