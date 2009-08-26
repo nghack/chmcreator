@@ -74,6 +74,7 @@ SettingPage::SettingPage(QSettings* setting,QWidget *parent)
     setTitle("CHM Setting");
     setSubTitle("Define CHM Build Settings.");
 
+    this->setting = setting;
     tabWidget = new QTabWidget;
 
     /*************************/
@@ -179,7 +180,7 @@ SettingPage::SettingPage(QSettings* setting,QWidget *parent)
     registerField("projectLanuage", languageBox);
 
     QLabel *fontLabel = new QLabel(tr("Font:"));    
-    fontEditor = new QLineEdit(setting->value(PROJECT_FONT,QFont().toString()).toString());
+    fontEditor = new QLineEdit(setting->value(PROJECT_FONT,"123456").toString());
     registerField("projectFont", fontEditor);
 
     QPushButton* fontButton = new QPushButton;
@@ -200,10 +201,11 @@ SettingPage::SettingPage(QSettings* setting,QWidget *parent)
     //////////////////////////////////////////////////
     QVBoxLayout *mainLayout1 = new QVBoxLayout;
     mainLayout1->addWidget(tabWidget);
-    this->setLayout(mainLayout1);
+    setLayout(mainLayout1);
 }
 
 void SettingPage::initializePage()
 {
     targetNameEdit->setText(field("projectName").toString()+".chm");
+    fontEditor->setText(setting->value(PROJECT_FONT,"123456").toString());
 }
