@@ -14,9 +14,10 @@ MainWindow::MainWindow(QString app,QWidget *parent)
 {
     ui->setupUi(this);
     pro = new QProcess;
-
+    createMenus();
     createToolBar();
     createNewWizard();
+    setAcceptDrops(true);
 
     dockIndex = (new QDockWidget(tr("Index"), this));
     dockIndex->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
@@ -30,12 +31,13 @@ MainWindow::MainWindow(QString app,QWidget *parent)
 
     dockProject = (new QDockWidget(tr("Project"), this));
     dockProject->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
+    dockProject->setAcceptDrops(true);
     addDockWidget(Qt::LeftDockWidgetArea, dockProject);
 
     QContentsTreeView* viewTree = new QContentsTreeView(this);
     dockProject->setWidget(viewTree);
 
-    this->connect(viewTree,SIGNAL(clicked(QModelIndex)),this,SLOT(on_action_NewItem_triggered(QModelIndex)));
+    //this->connect(viewTree,SIGNAL(clicked(QModelIndex)),this,SLOT(on_action_NewItem_triggered(QModelIndex)));
 
     connect(pro,SIGNAL(readyReadStandardError()),this,SLOT(console()));
     connect(pro,SIGNAL(readyReadStandardOutput()),this,SLOT(console()));
@@ -44,7 +46,7 @@ MainWindow::MainWindow(QString app,QWidget *parent)
 
     setWindowState(Qt::WindowMaximized);
 
-    connect(((QTreeView*)dockProject->widget()), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_action_TreeView_Clicked_triggered(const QModelIndex &)));
+    connect((viewTree), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_action_TreeView_Clicked_triggered(const QModelIndex &)));
 }
 
 MainWindow::~MainWindow()
@@ -162,8 +164,9 @@ void MainWindow::createToolBar()
 
 void MainWindow::on_action_About_triggered()
 {
-    QMessageBox::about(this, tr("About BookInsight"),
-                       ("The <b>BookInsight</b> is a book reader, which support txt, chm, html and pdf."));
+    QMessageBox::about(this, tr("About chmcreator"),
+                       ("The <b>chmcreator</b> is developed by <a href=\"www.ibooks.org.cn\">ibooks</a>.The <b>chmcreator</b> is a excellent chm file editor, which support txt, chm, html format."
+                        "欢迎访问<a href =\"www.ibooks.org.cn\">图书之家</a>！"));
 }
 
 void MainWindow::on_action_Open_triggered()
@@ -286,7 +289,7 @@ void MainWindow::on_action_Compile_triggered()
     QDir dir;
     dir.setCurrent(myapp);
     ((QTextEdit*)dockConsole->widget())->clear();
-    QString projectName = currentProject->getProjectName().left(currentProject->getProjectName().indexOf('.'));
+    QString projectName = currentProject->valueGBK(PROJECT_EXT_NAME).left(currentProject->getProjectName().indexOf('.'));
     qDebug()<<myapp + QString("/hhc ")+"workspace/"+projectName+"/"+projectName+".hhp";
     pro->start(myapp + QString("/hhc \"")+"workspace/"+projectName+"/"+projectName+".hhp\"");
 }
@@ -299,14 +302,13 @@ void MainWindow::console()
 void MainWindow::on_action_Run_triggered()
 {
     ((QTextEdit*)dockConsole->widget())->clear();
-    QString projectName = currentProject->getProjectName().left(currentProject->getProjectName().indexOf('.'));
-    QFile file(currentProject->getProjectPath()+"/"+projectName+".chm");
-    qDebug()<<currentProject->getProjectPath()+"/"+projectName+".chm";
+    QString projectTargetName = currentProject->valueGBK(PROJECT_TARGET);
+    QFile file(currentProject->getProjectPath()+"/"+ projectTargetName);
     if(!file.exists()){
         return;
     }
 
-    pro->start(QString("hh \"")+currentProject->getProjectPath()+"/"+projectName+".chm\"");
+    pro->start(QString("hh \"")+currentProject->getProjectPath()+"/"+ projectTargetName);
 }
 
 void MainWindow::on_action_Property_triggered()
@@ -336,4 +338,30 @@ void MainWindow::saveHHC()
     if(currentProject==0)
         return;
     currentProject->getHHCObject()->save();
+}
+void MainWindow::createMenus()
+{
+    connect(ui->menu_File, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
+    connect(ui->menu_Edit, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
+    connect(ui->menuT_ool, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
+    connect(ui->menu_Project, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
+    connect(ui->menu_View, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
+    connect(ui->menu_Test, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
+}
+void MainWindow::updateMenus()
+{
+    ui->actionCopy->setEnabled(false);
+    ui->actionCo_mpile->setEnabled(currentProject!=0);
+    ui->action_Compile->setEnabled(currentProject!=0);
+    ui->action_Run->setEnabled(currentProject!=0);
+
+    if(currentProject!=0){
+        QFile file(currentProject->getProjectPath()+"/"+ currentProject->valueGBK(PROJECT_TARGET));
+        ui->action_Run->setEnabled(file.exists());
+    }
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+    close();
 }

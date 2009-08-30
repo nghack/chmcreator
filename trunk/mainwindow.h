@@ -37,6 +37,7 @@ public:
     ~MainWindow();
     void saveHHC();
 private:
+    void createMenus();
     Ui::MainWindow *ui;
     QString myapp;
     void createToolBar();
@@ -64,7 +65,53 @@ private:
     QProcess* pro;
     QMdiArea mdiArea;
     QProjectPropertiesDialog* property;
+
+    QAction *action_New;
+    QAction *action_Open;
+    QAction *actionClose_Project;
+    QAction *actionClose_All;
+    QAction *action_Save_Project;
+    QAction *actionCo_mpile;
+    QAction *actionDecompile;
+    QAction *actionChm_Information;
+    QAction *actionPr_eference;
+    QAction *actionExit;
+    QAction *actionToolBar;
+    QAction *actionStatusBar;
+    QAction *actionCompiled_Help_File;
+    QAction *actionHTML_Help_Message;
+    QAction *action_About;
+    QAction *action_Option;
+    QAction *action_Compile;
+    QAction *action_Build;
+    QAction *action_Undo;
+    QAction *action_Redo;
+    QAction *actionPr_eference_2;
+    QAction *action_Run;
+    QAction *action_Property;
+    QAction *action_Import;
+    QAction *action_Cut;
+    QAction *actionCopy;
+    QAction *actionPaste;
+    QAction *actionDelete;
+    QAction *actionSelect_All;
+    QAction *action_Replace;
+    QAction *actionClean;
+    QAction *action_Save;
+    QAction *actionSave_All;
+    QWidget *centralWidget;
+    QMenuBar *menuBar;
+    QMenu *menu_File;
+    QMenu *menu_View;
+    QMenu *menu_Test;
+    QMenu *menuT_ool;
+    QMenu *menu_Help;
+    QMenu *menu_Edit;
+    QMenu *menu_Project;
+
+    QStatusBar *statusBar;
 private slots:
+    void on_actionExit_triggered();
     void on_action_Save_triggered();
     void on_action_NewItem_triggered();
     void on_action_Property_triggered();
@@ -79,6 +126,7 @@ private slots:
     void on_action_About_triggered();
     void on_action_NewAccepted_triggered();
     void console();
+    void updateMenus();
 public slots:
     void on_action_TreeView_Clicked_triggered(const QModelIndex &index);
 };

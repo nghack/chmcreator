@@ -8,6 +8,26 @@ QContentsTreeView::QContentsTreeView(MainWindow* mainWindow)
 {
     this->mainWindow = mainWindow;
     createActions();
+    setAcceptDrops(false);
+    setContextMenuPolicy(Qt::CustomContextMenu );
+//    connect(header(),SIGNAL(clicked(QModelIndex)),this,SLOT(headerClicked(QModelIndex)));
+}
+void QContentsTreeView::headerClicked(const QModelIndex& index)
+{
+    QModelIndex current = currentIndex();
+    if(index.column()==0){
+        if(current.isValid()){
+            QTreeItem* item = (QTreeItem*)current.internalPointer();
+            QList<QTreeItem*> rows = item->childItemList();
+            qStableSort(rows);
+        }
+    }else if(index.column()==1){
+        if(current.isValid()){
+            QTreeItem* item = (QTreeItem*)current.internalPointer();
+            QList<QTreeItem*> rows = item->childItemList();
+            qStableSort(rows);
+        }
+    }
 }
 QContentsTreeView::~QContentsTreeView()
 {
@@ -60,7 +80,20 @@ void QContentsTreeView::deleteFile()
     mainWindow->saveHHC();
     update(rootIndex());
 }
-void QContentsTreeView::renameFile(){}
+void QContentsTreeView::renameFile()
+{
+    if(!currentIndex().isValid())
+        return;
+    QTreeItem* renameItem = (QTreeItem*)currentIndex().internalPointer();
+    bool ok;
+    QString text = QInputDialog::getText(this, tr("Modify Item Name"),
+                                         tr("Item name:"), QLineEdit::Normal,
+                                         renameItem->data(0).toString(), &ok);
+    if (ok && !text.isEmpty())
+    {
+        renameItem->setData(0,text);
+    }
+}
 void QContentsTreeView::property(){}
 void QContentsTreeView::createActions()
 {
@@ -90,14 +123,24 @@ void QContentsTreeView::createActions()
     connect(pasteAct, SIGNAL(triggered()), this, SLOT(pasteFile()));
 
     deleteAct = new QAction(tr("&Delete"), this);
-    deleteAct->setShortcut(tr("Ctrl+P"));
+    deleteAct->setShortcut(tr("Delete"));
     deleteAct->setStatusTip(tr("Print the document"));
     connect(deleteAct, SIGNAL(triggered()), this, SLOT(deleteFile()));
 
     renameAct = new QAction(tr("&Rename"), this);
-    renameAct->setShortcut(tr("Ctrl+P"));
+    renameAct->setShortcut(tr("F2"));
     renameAct->setStatusTip(tr("Print the document"));
     connect(renameAct, SIGNAL(triggered()), this, SLOT(renameFile()));
+
+    moveUpAct = new QAction(tr("&Up"), this);
+    moveUpAct->setShortcut(tr("Alt+Up"));
+    moveUpAct->setStatusTip(tr("Print the document"));
+    connect(moveUpAct, SIGNAL(triggered()), this, SLOT(moveUp()));
+
+    moveDownAct = new QAction(tr("&Down"), this);
+    moveDownAct->setShortcut(tr("Alt+Down"));
+    moveDownAct->setStatusTip(tr("Print the document"));
+    connect(moveDownAct, SIGNAL(triggered()), this, SLOT(moveDown()));
 
     propertyAct = new QAction(tr("&Properties"), this);
     propertyAct->setShortcut(tr("Alt+Enter"));
@@ -116,21 +159,96 @@ void QContentsTreeView::createActions()
     menu->addAction(deleteAct);
     menu->addAction(renameAct);
     menu->addSeparator();
+    menu->addAction(moveUpAct);
+    menu->addAction(moveDownAct);
+    menu->addSeparator();
     menu->addAction(propertyAct);
 
 }
+ void QContentsTreeView::moveUp()
+ {
+    if(!currentIndex().isValid())
+        return;
+
+    QModelIndex parentIndex = model()->parent(currentIndex());
+    QTreeItem* parentItem = ((QTreeItem*)parentIndex.internalPointer());
+    parentItem->moveUp(parentItem->indexOf((QTreeItem*)currentIndex().internalPointer()));
+ }
+ void QContentsTreeView::moveDown()
+ {
+    if(!currentIndex().isValid())
+        return;
+    QModelIndex parentIndex = model()->parent(currentIndex());
+    QTreeItem* parentItem = ((QTreeItem*)parentIndex.internalPointer());
+    parentItem->moveDown(parentItem->indexOf((QTreeItem*)currentIndex().internalPointer()));
+
+ }
 void QContentsTreeView::mouseReleaseEvent(QMouseEvent *event)
 {
+    QPoint point = event->globalPos();
+    QWidget::mousePressEvent(event);
     if (event->button() == Qt::RightButton)
     {
-        //QModelIndex index = currentIndex();
-        //QTreeItem *item = static_cast<QTreeItem*>(index.internalPointer());
-        menu->exec(event->globalPos());
-        //        if(item->nodeType()==1){//folder
-        //
-        //        }else{
-        //
-        //        }
+        menu->exec(point);
     }
-
 }
+void QContentsTreeView::keyPressEvent(QKeyEvent *e)
+{
+    if (e->modifiers()==e->key() == Qt::Key_F2)
+    {
+        renameAct->activate(QAction::Trigger);
+    }
+}
+//void QContentsTreeView::dragEnterEvent(QDragEnterEvent *event)
+// {
+//
+// }
+//
+// void QContentsTreeView::dragMoveEvent(QDragMoveEvent *event)
+// {
+//     event->acceptProposedAction();
+// }
+//
+// void QContentsTreeView::dropEvent(QDropEvent *event)
+// {
+//     const QMimeData *mimeData = event->mimeData();
+//
+//     if (mimeData->hasImage()) {
+//         //setPixmap(qvariant_cast<QPixmap>(mimeData->imageData()));
+//     } else if (mimeData->hasHtml()) {
+//         //setText(mimeData->html());
+//         //setTextFormat(Qt::RichText);
+//     } else if (mimeData->hasText()) {
+//         //setText(mimeData->text());
+//         //setTextFormat(Qt::PlainText);
+//     } else if (mimeData->hasUrls()) {
+//         QList<QUrl> urlList = mimeData->urls();
+//         QString text;
+//         QTreeItem* item = (QTreeItem*)(currentIndex().internalPointer());
+//         for (int i = 0; i < urlList.size() && i < 32; ++i) {
+//             QString url = urlList.at(i).path();
+//             QList<QVariant> list;
+//             list<<"name";
+//             list<<url;
+//             QTreeItem* newItem = new QTreeItem(list,item);
+//             item->appendChild(newItem);
+//
+//         }
+////         setText(text);
+//     } else {
+//         //setText(tr("Cannot display data"));
+//     }
+//
+//     setBackgroundRole(QPalette::Dark);
+//     event->acceptProposedAction();
+// }
+
+// void QContentsTreeView::dragLeaveEvent(QDragLeaveEvent *event)
+// {
+//     clear();
+// }
+
+ void QContentsTreeView::clear()
+ {
+     emit changed();
+ }

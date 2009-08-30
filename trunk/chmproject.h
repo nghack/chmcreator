@@ -16,6 +16,7 @@ public:
     const QString& getProjectPath(){return projectPath;}
     const QString& getProjectName(){return projectName;}
     virtual void sync ();
+    const QString valueGBK (const QString &key, const QVariant &defaultValue = QVariant());
 private:
     QString filePath;
     QString projectPath;

@@ -22,6 +22,8 @@ void NewWizard::accept()
 {
     name = field("projectName").toString();
 
+    settings->setValue(PROJECT_EXT_NAME,field("projectName"));
+
     settings->setValue(PROJECT_BIN_TOC,field("projectBinaryTOC"));
     settings->setValue(PROJECT_COMP,((field("projectComplierVersion").toInt()==0)?"1.0":"1.1 or later"));
     settings->setValue(PROJECT_TARGET,field("projectTargetName"));
@@ -34,7 +36,10 @@ void NewWizard::accept()
     settings->setValue(PROJECT_FLAT,field("projectIncludeFolder"));
     settings->setValue(PROJECT_FULL_SEARCH,field("projectFullTextSearch"));
     settings->setValue(PROJECT_INDEX,field("projectIndexFile"));
-    settings->setValue(PROJECT_LANG,field("projectLanuage"));
+
+    QLocaleMap localMap;
+    //QString key = languageBox->itemText(field("projectLanuage").toInt());
+    settings->setValue(PROJECT_LANG,localMap.getLocale().value("Chinese_PRC"));
     settings->setValue(PROJECT_BIN_INDEX,field("projectBinaryIndex"));
     settings->setValue(PROJECT_TITLE_CHM,field("projectTitle"));
 
@@ -94,7 +99,7 @@ SettingPage::SettingPage(QSettings* setting,QWidget *parent)
 
     QLabel *indexLabel = new QLabel(tr("Indexes File:"));
     indexNameEdit = new QLineEdit(setting->value(PROJECT_INDEX,tr("index.hhk")).toString());
-    registerField("projectIndexFile", contentsNameEdit);
+    registerField("projectIndexFile", indexNameEdit);
 
     QLabel *defaultLabel = new QLabel(tr("Default File:"));
     defaultValueLabel = new QLineEdit(setting->value(PROJECT_DEFAULT_FILE,tr("index.html")).toString());

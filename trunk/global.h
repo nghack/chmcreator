@@ -8,6 +8,8 @@
 #define PROJECT_NAME "projectName"
 #define PROJECT_TITLE "projectTitle"
 
+#define PROJECT_EXT_NAME "EXTENSENS/projectName"
+
 #define PROJECT_BIN_TOC "OPTIONS/Binary TOC"
 #define PROJECT_BIN_INDEX "OPTIONS/Binary Index"
 #define PROJECT_COMP "OPTIONS/Compatibility"
