@@ -13,7 +13,7 @@ public:
     void save();
     void saveAs(const QString& fileName);
     const QPlainTextEdit* getEditor(){return editor;}
-    const QWebView* getBrowser(){return browser;}
+    /*const QWebView* getBrowser(){return browser;}*/
     bool isChanged(){return ischanged;}
 signals:
     void textChanged(bool);
@@ -26,7 +26,7 @@ private slots:
 private:
     bool ischanged;
     QString filename;
-    QWebView* browser;
+    /*QWebView* browser;*/
     QPlainTextEdit* editor;
 };
 

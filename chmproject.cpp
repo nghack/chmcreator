@@ -1,4 +1,5 @@
 #include "chmproject.h"
+#include "global.h"
 
 CHMProject::CHMProject(QString projectFile):QSettings(projectFile,QSettings::IniFormat),hhcFile(0),hhkFile(0)
 {
@@ -9,9 +10,15 @@ CHMProject::CHMProject(QString projectFile):QSettings(projectFile,QSettings::Ini
     QString temp = projectFile;
     projectName = temp.right(temp.length()-temp.lastIndexOf('/')-1);
 
-    hhcFile = new HHCObject(projectName,projectPath+QString("/")+value("OPTIONS/Contents file",QString("index.hhc")).toString());
-    hhkFile = new HHKObject(projectPath+value("OPTIONS/Index file",QString("index.hhk")).toString());
+    hhcFile = new HHCObject(projectName,projectPath+QString("/")+valueGBK(PROJECT_CONT_FILE,"index.hhc"));
+    hhkFile = new HHKObject(projectPath+valueGBK(PROJECT_INDEX,QString("index.hhk")));
 }
+const QString CHMProject::valueGBK (const QString &key, const QVariant &defaultValue){
+    QByteArray myArray = value(key,defaultValue).toByteArray();
+    QTextCodec *codec=QTextCodec::codecForName("gb2312");
+    return codec->toUnicode(myArray);
+}
+
 CHMProject::~CHMProject()
 {
     if(hhcFile!=0){

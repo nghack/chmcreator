@@ -26,7 +26,11 @@ public:
     int nodeType(){return type;}//1=folder,0=file
     void setNodeType(int nodeType){type = nodeType;}
     QList<QTreeItem*> childItemList(){return childItems;}
+    QList<QVariant>& childDataList(){return itemData;}
     bool removeRow(int row);
+    void moveUp(int index);
+    void moveDown(int index);
+    int indexOf(QTreeItem *child);
 signals:
         void dataChanged();
 private:

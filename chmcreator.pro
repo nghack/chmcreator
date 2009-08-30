@@ -54,3 +54,4 @@ FORMS += mainwindow.ui \
     qmodifyfiledialog.ui \
     newfiledialog.ui
 RESOURCES += qt.qrc
+TRANSLATIONS=Language.ts

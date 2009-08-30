@@ -51,7 +51,6 @@ void HHCObject::saveAs(const QString fileName){
      if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
          return;
     QTextStream outStream(&file);
-    outStream.setCodec("utf-8");
 
     outStream<<"<html><head></head><body>\n";
     outStream<<"<OBJECT type=\"text/site properties\"><param name=\"Window Styles\" value=\"0x227\"></OBJECT>\n";

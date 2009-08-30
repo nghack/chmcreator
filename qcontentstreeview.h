@@ -16,6 +16,7 @@ public:
     void createActions();
     void mouseReleaseEvent(QMouseEvent *event);
     void addExistFile(const QString fileName);
+    void keyPressEvent(QKeyEvent *e);
 private:
      MainWindow* mainWindow;
      QMenu* menu;
@@ -27,6 +28,10 @@ private:
      QAction *pasteAct;
      QAction *deleteAct;
      QAction *renameAct;
+
+     QAction *moveUpAct;
+     QAction *moveDownAct;
+
      QAction *propertyAct;
 
      NewFileDialog dialog;
@@ -38,7 +43,23 @@ private slots:
      void pasteFile();
      void deleteFile();
      void renameFile();
+
+     void moveUp();
+     void moveDown();
+
      void property();
+public slots:
+     void clear();
+     void headerClicked(const QModelIndex& index);
+ signals:
+     void changed(const QMimeData *mimeData = 0);
+
+// protected:
+//     void dragEnterEvent(QDragEnterEvent *event);
+//     void dragMoveEvent(QDragMoveEvent *event);
+//     void dragLeaveEvent(QDragLeaveEvent *event);
+//     void dropEvent(QDropEvent *event);
+
 };
 
 #endif // QCONTENTSTREEVIEW_H

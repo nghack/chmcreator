@@ -18,6 +18,7 @@ public:
 private:
     QString name;
     QSettings* settings;
+    QComboBox* languageBox;
 };
 
 class SettingPage : public QWizardPage

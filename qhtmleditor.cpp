@@ -1,16 +1,16 @@
 #include "qhtmleditor.h"
 
 QHTMLEditor::~QHTMLEditor(){
-    delete browser;
+    /*delete browser;*/
     delete editor;
 }
 QHTMLEditor::QHTMLEditor(const QString& fileName):filename(fileName)
 {
     setTabPosition(QTabWidget::South);
 
-    browser = new QWebView;
+    /*browser = new QWebView;
     addTab(browser,QIcon(":/images/editor.png"),"Preview");
-    browser->load(QUrl(fileName));
+    browser->load(QUrl(fileName));*/
 
     editor = new QPlainTextEdit;
     addTab(editor,QIcon(":/images/source.png"),"Source");
@@ -46,14 +46,14 @@ void QHTMLEditor::changed()
 }
 void QHTMLEditor::reload(int index)
 {
-    if(index==0){
+    /*if(index==0){
         if(ischanged){
             QUrl url(filename);
             browser->setHtml(editor->toPlainText(),url.path());
         }else{
             browser->reload();
         }
-    }
+    }*/
 }
 void QHTMLEditor::saveAs(const QString& fileName)
 {

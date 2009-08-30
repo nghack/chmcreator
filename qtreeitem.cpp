@@ -20,7 +20,7 @@ QTreeItem::QTreeItem(const QList<QVariant> &data, QTreeItem *parent)
 void QTreeItem::setData(int column,QVariant data)
 {
     itemData.removeAt(column);
-    itemData<<data;
+    itemData.insert(column,data);
 }
 //! [1]
 QTreeItem::~QTreeItem()
@@ -40,6 +40,11 @@ void QTreeItem::appendChild(QTreeItem *item)
 QTreeItem *QTreeItem::child(int row)
 {
     return childItems.value(row);
+}
+//! [3]
+int QTreeItem::indexOf(QTreeItem *child)
+{
+    return childItems.indexOf(child);
 }
 //! [3]
 
@@ -88,4 +93,16 @@ bool QTreeItem::removeRow(int row)
 {
     childItems.removeAt(row);
     return true;
+}
+void QTreeItem::moveUp(int index)
+{
+    if(index>0&&index<itemData.size()){
+        itemData.move(index,index-1);
+    }
+}
+void QTreeItem::moveDown(int index)
+{
+    if(index>0&&index<(itemData.size()-1)){
+        itemData.move(index,index+1);
+    }
 }

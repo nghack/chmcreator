@@ -7,10 +7,7 @@ QSettings settings("conf.ini",QSettings::IniFormat);
 
 int main(int argc, char *argv[])
 {
-    QTextCodec *codec = QTextCodec::codecForName("GB2312");
-    QTextCodec::setCodecForLocale(codec);
-    QTextCodec::setCodecForCStrings(codec);
-    QTextCodec::setCodecForTr(codec);
+    QTextCodec::codecForName("utf-8");
 
     QApplication a(argc, argv);
     settings.setValue(APP_PATH,QCoreApplication::applicationDirPath ());
