@@ -32,8 +32,10 @@ void CHMProject::sync (){
     QSettings::sync();
 
     QFile projectFile(filePath);
-    if (!projectFile.open(QFile::WriteOnly))
+    if (!projectFile.open(QFile::WriteOnly)){
+        QMessageBox::about(0,filePath,"Open Project File Failure!");
         return;
+    }
     QTextStream outputProject(&projectFile);
     //outputProject.setCodec(QTextCodec::codecForName("UTF-8"));
 

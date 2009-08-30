@@ -188,7 +188,7 @@ void MainWindow::on_action_Open_triggered()
             }
         }
         //setCentralWidget(centerView);
-        loadProject(fileName);
+        loadProject(fileName.toUtf8());
     }
 }
 void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
@@ -280,6 +280,7 @@ void MainWindow::loadProject(const QString& proFile){
     settings.setValue(PROJECT_PATH,currentProject->getProjectPath());
     settings.setValue(PROJECT_NAME,currentProject->getProjectName());
 
+    currentProject->setValue(PROJECT_EXT_NAME,currentProject->getProjectName());
     QTreeView* treeView = (QTreeView*)dockProject->widget();
 
     treeView->setModel(currentProject->getHHCObject()->getTreeModel());
@@ -290,6 +291,7 @@ void MainWindow::on_action_Compile_triggered()
     QDir dir;
     dir.setCurrent(myapp);
     ((QTextEdit*)dockConsole->widget())->clear();
+    currentProject->sync();
     QString projectName = currentProject->valueGBK(PROJECT_EXT_NAME).left(currentProject->getProjectName().indexOf('.'));
     qDebug()<<myapp + QString("/hhc ")+"workspace/"+projectName+"/"+projectName+".hhp";
     pro->start(myapp + QString("/hhc \"")+"workspace/"+projectName+"/"+projectName+".hhp\"");
