@@ -372,6 +372,6 @@ void MainWindow::on_actionReplace_In_Files_triggered()
     if(repalceFilesDialog==0){
         repalceFilesDialog = new QReplaceFilesDialog(myapp,this);
     }
-    repalceFilesDialog->setInitualValue(currentProject->getProjectPath(),"","","*");
+    repalceFilesDialog->setInitualValue(currentProject==0?myapp:currentProject->getProjectPath(),"","","*");
     repalceFilesDialog->exec();
 }
