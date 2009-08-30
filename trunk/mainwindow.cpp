@@ -14,6 +14,7 @@ MainWindow::MainWindow(QString app,QWidget *parent)
 {
     ui->setupUi(this);
     pro = new QProcess;
+    repalceFilesDialog=0;
     createMenus();
     createToolBar();
     createNewWizard();
@@ -364,4 +365,13 @@ void MainWindow::updateMenus()
 void MainWindow::on_actionExit_triggered()
 {
     close();
+}
+
+void MainWindow::on_actionReplace_In_Files_triggered()
+{
+    if(repalceFilesDialog==0){
+        repalceFilesDialog = new QReplaceFilesDialog(myapp,this);
+    }
+    repalceFilesDialog->setInitualValue(currentProject->getProjectPath(),"","","*");
+    repalceFilesDialog->exec();
 }

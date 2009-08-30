@@ -20,6 +20,7 @@
 #include "configdialog.h"
 #include "qcontentstreeview.h"
 #include "qmodifyfiledialog.h"
+#include "qreplacefilesdialog.h"
 
 namespace Ui
 {
@@ -110,7 +111,10 @@ private:
     QMenu *menu_Project;
 
     QStatusBar *statusBar;
+
+    QReplaceFilesDialog* repalceFilesDialog;
 private slots:
+    void on_actionReplace_In_Files_triggered();
     void on_actionExit_triggered();
     void on_action_Save_triggered();
     void on_action_NewItem_triggered();

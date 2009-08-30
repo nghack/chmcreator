@@ -26,7 +26,8 @@ SOURCES += main.cpp \
     pages.cpp \
     qcontentstreeview.cpp \
     newfiledialog.cpp \
-    qlocalemap.cpp
+    qlocalemap.cpp \
+    qreplacefilesdialog.cpp
 INCLUDEPATH += include \
     ../QtChm
 HEADERS += mainwindow.h \
@@ -47,11 +48,12 @@ HEADERS += mainwindow.h \
     qcontentstreeview.h \
     newfiledialog.h \
     global.h \
-    qlocalemap.h
+    qlocalemap.h \
+    qreplacefilesdialog.h
 LIBS += -L../bin \
     -lQtChm
 FORMS += mainwindow.ui \
     qmodifyfiledialog.ui \
     newfiledialog.ui
 RESOURCES += qt.qrc
-TRANSLATIONS=Language.ts
+TRANSLATIONS = Language.ts
