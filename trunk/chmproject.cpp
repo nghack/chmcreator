@@ -7,17 +7,17 @@ CHMProject::CHMProject(QString projectFile):QSettings(projectFile,QSettings::Ini
 
     QFileInfo fileInfo(projectFile);
     projectPath = fileInfo.absolutePath();
-    QString temp = projectFile;
-    projectName = temp.right(temp.length()-temp.lastIndexOf('/')-1);
 
-    hhcFile = new HHCObject(projectName,projectPath+QString("/")+valueGBK(PROJECT_CONT_FILE,"index.hhc"));
-    hhkFile = new HHKObject(projectPath+valueGBK(PROJECT_INDEX,QString("index.hhk")));
+    projectName = value(PROJECT_EXT_NAME,fileInfo.completeBaseName()).toString();
+
+    hhcFile = new HHCObject(projectName,projectPath+QString("/")+value(PROJECT_CONT_FILE,"index.hhc").toString());
+    hhkFile = new HHKObject(projectPath+QString("/")+value(PROJECT_INDEX,QString("index.hhk")).toString());
 }
-const QString CHMProject::valueGBK (const QString &key, const QVariant &defaultValue){
-    QByteArray myArray = value(key,defaultValue).toByteArray();
-    QTextCodec *codec=QTextCodec::codecForName("gb2312");
-    return codec->toUnicode(myArray);
-}
+//const QString CHMProject::valueGBK (const QString &key, const QVariant &defaultValue){
+//    QByteArray myArray = value(key,defaultValue).toByteArray();
+//    QTextCodec *codec=QTextCodec::codecForName("gb2312");
+//    return codec->toUnicode(myArray);
+//}
 
 CHMProject::~CHMProject()
 {
@@ -28,16 +28,18 @@ CHMProject::~CHMProject()
         delete hhkFile;
     }
 }
-void CHMProject::sync (){
-    QSettings::sync();
-
-    QFile projectFile(filePath);
+void CHMProject::toProjectFile(){
+    QString hhpFilePath = projectPath;
+    hhpFilePath.append("/");
+    hhpFilePath.append(projectName);
+    hhpFilePath.append(".hhp");
+    QFile projectFile(hhpFilePath);
     if (!projectFile.open(QFile::WriteOnly)){
         QMessageBox::about(0,filePath,"Open Project File Failure!");
         return;
     }
     QTextStream outputProject(&projectFile);
-    //outputProject.setCodec(QTextCodec::codecForName("UTF-8"));
+    outputProject.setCodec(QTextCodec::codecForName("gb2312"));
 
     QStringList keyList = childGroups();
     foreach(QString key,keyList){

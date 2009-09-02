@@ -43,14 +43,11 @@ void QContentsTreeView::newFile(){
 void QContentsTreeView::addExistFile(const QString fileName){
     QTreeItem* item = (QTreeItem*)currentIndex().internalPointer();
     QFileInfo fileInfo(fileName);
-    QString appPath = settings.value(APP_PATH).toString();
-    appPath.append("/workspace/");
-    QString project = settings.value(PROJECT_NAME).toString();
-    appPath.append(project.left(project.indexOf('.')));
-    appPath.append("/");
-    appPath.append(fileInfo.fileName());
+    QString project = settings.value(PROJECT_PATH).toString();
+    project.append("/");
+    project.append(fileInfo.fileName());
 
-    QFile::copy(fileName,appPath);
+    QFile::copy(fileName,project);
 
     QList<QVariant> columnData;
     columnData<<fileInfo.fileName();
@@ -70,7 +67,32 @@ void QContentsTreeView::addExistFiles(){
     update(rootIndex());
 }
 void QContentsTreeView::copyFile(){}
-void QContentsTreeView::pasteFile(){}
+void QContentsTreeView::pasteFile()
+{
+    QClipboard *clipboard = QApplication::clipboard();
+    if(clipboard->text()==QString::null)
+        return;
+    QStringList list(clipboard->text().split("\n"));
+    QTreeItem* parent = (QTreeItem*)currentIndex().internalPointer();
+    if(parent!=0){
+        QList<QTreeItem*> childern = parent->childItemList();
+        int min = list.size()<childern.size()?list.size():childern.size();
+        for(int i=0;i<min;i++)
+        {
+            QString da = list.at(i);
+            childern.at(i)->setData(currentIndex().column(),da.trimmed());
+        }
+    }else{
+        QTreeItem* parentList = (QTreeItem*)model()->index(0,0).internalPointer();
+        QList<QTreeItem*> childern = parentList->childItemList();
+        int min = list.size()<childern.size()?list.size():childern.size();
+        for(int i=0;i<min;i++)
+        {
+            QString da = list.at(i);
+            childern.at(i)->setData(currentIndex().column(),da.trimmed());
+        }
+    }
+}
 void QContentsTreeView::deleteFile()
 {
     QModelIndex parent = currentIndex().parent();
