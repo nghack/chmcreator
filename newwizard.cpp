@@ -24,25 +24,30 @@ void NewWizard::accept()
 
     settings->setValue(PROJECT_EXT_NAME,field("projectName"));
 
-    settings->setValue(PROJECT_BIN_TOC,field("projectBinaryTOC"));
+    settings->setValue(PROJECT_BIN_TOC,field("projectBinaryTOC").toString());
     settings->setValue(PROJECT_COMP,((field("projectComplierVersion").toInt()==0)?"1.0":"1.1 or later"));
-    settings->setValue(PROJECT_TARGET,field("projectTargetName"));
-    settings->setValue(PROJECT_CONT_FILE,field("projectContentsFile"));//
-    settings->setValue(PROJECT_FONT,field("projectFont"));
-    settings->setValue(PROJECT_DEFAULT_FILE,field("projectDefaultFile"));
+    settings->setValue(PROJECT_TARGET,field("projectTargetName").toString());
+    settings->setValue(PROJECT_CONT_FILE,field("projectContentsFile").toString());//
+    settings->setValue(PROJECT_FONT,field("projectFont").toString());
+    settings->setValue(PROJECT_DEFAULT_FILE,field("projectDefaultFile").toString());
     settings->setValue(PROJECT_DISPLAY_PROGRESS,"Yes");
-    settings->setValue(PROJECT_ENHANCED_DE,field("projectDecompile"));
+    settings->setValue(PROJECT_ENHANCED_DE,field("projectDecompile").toString());
     settings->setValue(PROJECT_LOG_FILE,"log.txt");
-    settings->setValue(PROJECT_FLAT,field("projectIncludeFolder"));
-    settings->setValue(PROJECT_FULL_SEARCH,field("projectFullTextSearch"));
-    settings->setValue(PROJECT_INDEX,field("projectIndexFile"));
+    settings->setValue(PROJECT_FLAT,field("projectIncludeFolder").toBool());
+    settings->setValue(PROJECT_FULL_SEARCH,field("projectFullTextSearch").toBool());
+    settings->setValue(PROJECT_INDEX,field("projectIndexFile").toString());
 
     QLocaleMap localMap;
     //QString key = languageBox->itemText(field("projectLanuage").toInt());
     settings->setValue(PROJECT_LANG,localMap.getLocale().value("Chinese_PRC"));
-    settings->setValue(PROJECT_BIN_INDEX,field("projectBinaryIndex"));
-    settings->setValue(PROJECT_TITLE_CHM,field("projectTitle"));
+    settings->setValue(PROJECT_BIN_INDEX,field("projectBinaryIndex").toBool());
+    settings->setValue(PROJECT_TITLE_CHM,field("projectTitle").toString());
 
+    QStringList keylist = settings->allKeys();
+    foreach(QString key,keylist)
+    {
+        qDebug()<<key<<":"<<settings->value(key);
+    }
     QDialog::accept();
 }
 

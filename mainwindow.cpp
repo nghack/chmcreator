@@ -177,7 +177,7 @@ void MainWindow::on_action_Open_triggered()
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open"),
                                                     tr("chm file or project"),
-                                                    tr("HHP Project or chm File (*.hhp *.chm)"),
+                                                    tr("HHP Project or chm File (*.chm *.chmproject)"),
                                                     &selectedFilter,
                                                     options);
     if (!fileName.isEmpty()){
@@ -187,8 +187,8 @@ void MainWindow::on_action_Open_triggered()
                 return;
             }
         }
-        //setCentralWidget(centerView);
-        loadProject(fileName.toUtf8());
+
+        loadProject(fileName);
     }
 }
 void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
@@ -221,18 +221,20 @@ void MainWindow::on_action_NewAccepted_triggered()
     dir.mkpath(path);
 
     const QSettings* newProjectSettings = wizard.getSettings();
-    CHMProject setting(path+"/"+wizard.getWizardName()+".hhp");
+    CHMProject setting(path+"/"+wizard.getWizardName()+".chmproject");
 
     //Project File Sync
     QStringList keyList = newProjectSettings->allKeys();
-    for(int i=0;i<keyList.count();i++){
-        setting.setValue(keyList.at(i),newProjectSettings->value(keyList.at(i)));
+    foreach(QString key,keyList)
+    {
+        setting.setValue(key,newProjectSettings->value(key));
     }
 
     setting.sync();
     //HHC HHK File Sync
-    QFile::copy(myapp +"/config/index.hhc",path+"/"+newProjectSettings->value(PROJECT_CONT_FILE).toString());
-    QFile::copy(myapp +"/config/index.hhk",path+"/"+newProjectSettings->value(PROJECT_INDEX).toString());
+
+    QFile::copy(myapp +"/config/index.hhc",path+"/"+ setting.value(PROJECT_CONT_FILE).toString());
+    QFile::copy(myapp +"/config/index.hhk",path+"/"+setting.value(PROJECT_INDEX).toString());
 
     //Template File
     QFile::copy(myapp +"/config/index.html",path+"/index.html");
@@ -278,9 +280,7 @@ void MainWindow::loadProject(const QString& proFile){
     currentProject = new CHMProject(proFile);
 
     settings.setValue(PROJECT_PATH,currentProject->getProjectPath());
-    settings.setValue(PROJECT_NAME,currentProject->getProjectName());
 
-    currentProject->setValue(PROJECT_EXT_NAME,currentProject->getProjectName());
     QTreeView* treeView = (QTreeView*)dockProject->widget();
 
     treeView->setModel(currentProject->getHHCObject()->getTreeModel());
@@ -291,10 +291,21 @@ void MainWindow::on_action_Compile_triggered()
     QDir dir;
     dir.setCurrent(myapp);
     ((QTextEdit*)dockConsole->widget())->clear();
-    currentProject->sync();
-    QString projectName = currentProject->valueGBK(PROJECT_EXT_NAME).left(currentProject->getProjectName().indexOf('.'));
-    qDebug()<<myapp + QString("/hhc ")+"workspace/"+projectName+"/"+projectName+".hhp";
-    pro->start(myapp + QString("/hhc \"")+"workspace/"+projectName+"/"+projectName+".hhp\"");
+    currentProject->toProjectFile();
+    QString projectName = currentProject->value(PROJECT_EXT_NAME).toString();
+
+    QString command(myapp);
+    command.append("/hhc.exe ");
+
+    QString chmProjectFile = currentProject->getProjectPath();
+    chmProjectFile.append("/");
+    chmProjectFile.append(projectName);
+    chmProjectFile.append(".hhp");
+
+    QFileInfo fileInfo(chmProjectFile);
+    command.append(fileInfo.canonicalFilePath().replace("/","\\"));
+    qDebug()<<command;
+    pro->start(command);
 }
 
 void MainWindow::console()
@@ -305,7 +316,7 @@ void MainWindow::console()
 void MainWindow::on_action_Run_triggered()
 {
     ((QTextEdit*)dockConsole->widget())->clear();
-    QString projectTargetName = currentProject->valueGBK(PROJECT_TARGET);
+    QString projectTargetName = currentProject->value(PROJECT_TARGET).toString();
     QFile file(currentProject->getProjectPath()+"/"+ projectTargetName);
     if(!file.exists()){
         return;
@@ -359,7 +370,7 @@ void MainWindow::updateMenus()
     ui->action_Run->setEnabled(currentProject!=0);
 
     if(currentProject!=0){
-        QFile file(currentProject->getProjectPath()+"/"+ currentProject->valueGBK(PROJECT_TARGET));
+        QFile file(currentProject->getProjectPath()+"/"+ currentProject->value(PROJECT_TARGET).toString());
         ui->action_Run->setEnabled(file.exists());
     }
 }

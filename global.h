@@ -27,4 +27,6 @@
 #define PROJECT_TITLE_CHM "OPTIONS/Title"
 
 #define INFOTYPES QString("INFOTYPES")
+
+QString toUTF8(QByteArray array);
 #endif // GLOBAL_H
