@@ -7,7 +7,7 @@ NewWizard::NewWizard(QWidget *parent)
 {
     settings = new QSettings("config/tempProject.ini",QSettings::IniFormat);
     settings->clear();
-    QSettings templateSetting("config/template.hhp",QSettings::IniFormat);
+    QSettings templateSetting("config/template.chmproject",QSettings::IniFormat);
     QStringList keyList = templateSetting.allKeys();
     foreach(QString key,keyList){
         settings->setValue(key,templateSetting.value(key));

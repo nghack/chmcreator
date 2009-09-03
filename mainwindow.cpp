@@ -62,20 +62,20 @@ MainWindow::~MainWindow()
 QString MainWindow::extractChmFile(QString fileName){
 
     QChm chm(fileName);
-    QString newDirName123;
+    QString chmProjectName;
     if(chm.open()){
         QString exePath = QCoreApplication::applicationDirPath ();
         QFileInfo fileInfo(fileName);
         QDir qdir;
 
         qdir.setCurrent(exePath+"/workspace");
-        newDirName123 = fileInfo.fileName().left(fileInfo.fileName().length()-4);
-        if(!qdir.exists(newDirName123)){
-            qdir.mkdir(newDirName123);
+        chmProjectName = fileInfo.completeBaseName();
+        if(!qdir.exists(chmProjectName)){
+            qdir.mkdir(chmProjectName);
         }
 
         exePath.append("/workspace/");
-        exePath.append(newDirName123);
+        exePath.append(chmProjectName);
         tmpFilePath = exePath;
         QVector<QChm*> vector;
         vector.append(&chm);
@@ -111,24 +111,48 @@ QString MainWindow::extractChmFile(QString fileName){
     }
     chm.close();
     //
-    CHMProject settingTemplate(myapp+"/config/template.hhp");
-    CHMProject setting(myapp+"/workspace/"+newDirName123+"/"+newDirName123+".hhp");
+    CHMProject settingTemplate(myapp+"/config/template.chmproject");
+    CHMProject setting(myapp+"/workspace/"+chmProjectName+"/"+chmProjectName+".chmproject");
 
     //Project File Sync
     QStringList keyList = settingTemplate.allKeys();
     for(int i=0;i<keyList.count();i++){
         setting.setValue(keyList.at(i),settingTemplate.value(keyList.at(i)));
     }
-    setting.setValue(PROJECT_TARGET,newDirName123+".chm");//path+"/"+
+    setting.setValue(PROJECT_TARGET,chmProjectName+".chm");//path+"/"+
     setting.setValue(PROJECT_CONT_FILE,chm.getHHCFileName());
     setting.setValue(PROJECT_INDEX,chm.getHHKFileName());
 
+    settings.setValue(PROJECT_EXT_NAME,chmProjectName);
+
+    QLocaleMap localMap;
+    settings.setValue(PROJECT_LANG,localMap.getLocale().value("Chinese_PRC"));
+   /*settings->setValue(PROJECT_EXT_NAME,field("projectName"));
+
+    settings->setValue(PROJECT_BIN_TOC,field("projectBinaryTOC").toString());
+    settings->setValue(PROJECT_COMP,((field("projectComplierVersion").toInt()==0)?"1.0":"1.1 or later"));
+    settings->setValue(PROJECT_TARGET,field("projectTargetName").toString());
+    settings->setValue(PROJECT_CONT_FILE,field("projectContentsFile").toString());//
+    settings->setValue(PROJECT_FONT,field("projectFont").toString());
+    settings->setValue(PROJECT_DEFAULT_FILE,field("projectDefaultFile").toString());
+    settings->setValue(PROJECT_DISPLAY_PROGRESS,"Yes");
+    settings->setValue(PROJECT_ENHANCED_DE,field("projectDecompile").toString());
+    settings->setValue(PROJECT_LOG_FILE,"log.txt");
+    settings->setValue(PROJECT_FLAT,field("projectIncludeFolder").toBool());
+    settings->setValue(PROJECT_FULL_SEARCH,field("projectFullTextSearch").toBool());
+    settings->setValue(PROJECT_INDEX,field("projectIndexFile").toString());
+
+    QLocaleMap localMap;
+    //QString key = languageBox->itemText(field("projectLanuage").toInt());
+    settings->setValue(PROJECT_LANG,localMap.getLocale().value("Chinese_PRC"));
+    settings->setValue(PROJECT_BIN_INDEX,field("projectBinaryIndex").toBool());
+    settings->setValue(PROJECT_TITLE_CHM,field("projectTitle").toString());
+    */
     setting.beginGroup(INFOTYPES);
     setting.endGroup();
 
     setting.sync();
-
-    return myapp+"/workspace/"+newDirName123+"/"+newDirName123+".hhp";
+    return myapp+"/workspace/"+chmProjectName+"/"+chmProjectName+".chmproject";
 }
 void MainWindow::createToolBar()
 {
