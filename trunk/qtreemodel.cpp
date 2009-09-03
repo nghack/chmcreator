@@ -13,7 +13,7 @@ QTreeModel::QTreeModel(QString title,QObject *parent)
     parents << rootItem;
     indentations << 0;
 
-    addModelData(4,title+".hhp",title);
+    addModelData(4,title+".chmproject",title);
 }
 
 QTreeModel::~QTreeModel()
@@ -165,7 +165,7 @@ void QTreeModel::addModelData(int position,const QString& data,const QString& ur
     // Append a new item to the current parent's list of children.
     QTreeItem* item = new QTreeItem(columnData, parents.last());
 
-    connect(item,SIGNAL(dataChanged()),this,SIGNAL(dataChanged(QModelIndex,QModelIndex)));
+    //connect(item,SIGNAL(dataChanged()),this,SIGNAL(dataChanged(QModelIndex,QModelIndex)));
     parents.last()->appendChild(item);
 }
 bool QTreeModel::removeRows(int row, int count, const QModelIndex &parent)

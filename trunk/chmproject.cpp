@@ -8,16 +8,12 @@ CHMProject::CHMProject(QString projectFile):QSettings(projectFile,QSettings::Ini
     QFileInfo fileInfo(projectFile);
     projectPath = fileInfo.absolutePath();
 
+    setValue(PROJECT_EXT_NAME,fileInfo.completeBaseName());
     projectName = value(PROJECT_EXT_NAME,fileInfo.completeBaseName()).toString();
 
     hhcFile = new HHCObject(projectName,projectPath+QString("/")+value(PROJECT_CONT_FILE,"index.hhc").toString());
     hhkFile = new HHKObject(projectPath+QString("/")+value(PROJECT_INDEX,QString("index.hhk")).toString());
 }
-//const QString CHMProject::valueGBK (const QString &key, const QVariant &defaultValue){
-//    QByteArray myArray = value(key,defaultValue).toByteArray();
-//    QTextCodec *codec=QTextCodec::codecForName("gb2312");
-//    return codec->toUnicode(myArray);
-//}
 
 CHMProject::~CHMProject()
 {
