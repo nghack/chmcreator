@@ -27,7 +27,8 @@ SOURCES += main.cpp \
     qcontentstreeview.cpp \
     newfiledialog.cpp \
     qlocalemap.cpp \
-    qreplacefilesdialog.cpp
+    qreplacefilesdialog.cpp \
+    qhighlighter.cpp
 INCLUDEPATH += include \
     ../QtChm
 HEADERS += mainwindow.h \
@@ -49,7 +50,8 @@ HEADERS += mainwindow.h \
     newfiledialog.h \
     global.h \
     qlocalemap.h \
-    qreplacefilesdialog.h
+    qreplacefilesdialog.h \
+    qhighlighter.h
 LIBS += -L../bin \
     -lQtChm
 FORMS += mainwindow.ui \

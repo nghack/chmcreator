@@ -37,6 +37,7 @@ public:
     void loadProject(const QString& proFile);
     ~MainWindow();
     void saveHHC();
+    static void copy(QString from,QString to);
 private:
     void createMenus();
     Ui::MainWindow *ui;
