@@ -3,7 +3,7 @@
 
 #include <QtGui>
 #include <QWebView>
-
+#include "qhighlighter.h"
 class QHTMLEditor : public QTabWidget
 {
     Q_OBJECT
@@ -25,6 +25,7 @@ private slots:
 //    void linkClick(QUrl);
 
 private:
+    Highlighter* highlighter;
     int currentIndex;
     bool ischanged;
     QString filename;

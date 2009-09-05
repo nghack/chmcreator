@@ -48,17 +48,13 @@ private slots:
      void property();
 public slots:
      void clear();
+     void showMenu(const QPoint& point);
 //     void headerClicked(const QModelIndex& index);
  signals:
      void changed(const QMimeData *mimeData = 0);
 
 protected:
-     virtual void mouseReleaseEvent ( QMouseEvent * event );
-//     void dragEnterEvent(QDragEnterEvent *event);
-//     void dragMoveEvent(QDragMoveEvent *event);
-//     void dragLeaveEvent(QDragLeaveEvent *event);
-//     void dropEvent(QDropEvent *event);
-
+//     virtual void mouseReleaseEvent ( QMouseEvent * event );
 };
 
 #endif // QCONTENTSTREEVIEW_H

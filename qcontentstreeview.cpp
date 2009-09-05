@@ -9,7 +9,9 @@ QContentsTreeView::QContentsTreeView(MainWindow* mainWindow)
     this->mainWindow = mainWindow;
     createActions();
     //setAcceptDrops(false);
-    //setContextMenuPolicy(Qt::CustomContextMenu );
+    setContextMenuPolicy(Qt::CustomContextMenu);
+
+    connect(this,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(showMenu(QPoint)));
 //    connect(header(),SIGNAL(clicked(QModelIndex)),this,SLOT(headerClicked(QModelIndex)));
 }
 //void QContentsTreeView::headerClicked(const QModelIndex& index)
@@ -29,6 +31,14 @@ QContentsTreeView::QContentsTreeView(MainWindow* mainWindow)
 //        }
 //    }
 //}
+void QContentsTreeView::showMenu(const QPoint& point)
+{
+    QModelIndex index = indexAt(point);
+    if(!index.isValid())
+        return;
+    setCurrentIndex(index);
+    menu->exec(viewport()->mapToGlobal(point));
+}
 QContentsTreeView::~QContentsTreeView()
 {
     delete menu;
@@ -47,7 +57,7 @@ void QContentsTreeView::addExistFile(const QString fileName){
     project.append("/");
     project.append(fileInfo.fileName());
 
-    QFile::copy(fileName,project);
+    MainWindow::copy(fileName,project);
 
     QList<QVariant> columnData;
     columnData<<fileInfo.fileName();
@@ -95,9 +105,22 @@ void QContentsTreeView::pasteFile()
 }
 void QContentsTreeView::deleteFile()
 {
+    QMessageBox msgBox(QMessageBox::Question, tr("Confirm"),
+                       "Are you sure to remove this item?",QMessageBox::Yes | QMessageBox::No);
+    if (msgBox.exec() == QMessageBox::No)
+        return;
+
     QModelIndex parent = currentIndex().parent();
-//    if(!parent.isValid())
-//        return;
+    if(!parent.isValid())
+        return;
+    QTreeItem* item = (QTreeItem*)currentIndex().internalPointer();
+
+    QString deleteFileName ="";
+    deleteFileName.append(settings.value(PROJECT_PATH).toString());
+    deleteFileName.append("/");
+    deleteFileName.append(item->data(1).toString());
+    QFile::remove(deleteFileName);
+
     model()->removeRow(currentIndex().row(),parent);
     mainWindow->saveHHC();
     update(rootIndex());
@@ -205,72 +228,6 @@ void QContentsTreeView::createActions()
     parentItem->moveDown(parentItem->indexOf((QTreeItem*)currentIndex().internalPointer()));
 
  }
-void QContentsTreeView::mouseReleaseEvent(QMouseEvent *event)
-{    
-    QPoint point = event->globalPos();
-    QWidget::mousePressEvent(event);
-    if (event->button() == Qt::RightButton)
-    {
-        setCurrentIndex(indexAt(event->pos()));
-        menu->exec(point);
-    }
-}
-//void QContentsTreeView::keyPressEvent(QKeyEvent *e)
-//{
-//    QTreeView::keyPressEvent(e);
-//    if (e->modifiers()==e->key() == Qt::Key_F2)
-//    {
-//        renameAct->activate(QAction::Trigger);
-//    }
-//}
-//void QContentsTreeView::dragEnterEvent(QDragEnterEvent *event)
-// {
-//
-// }
-//
-// void QContentsTreeView::dragMoveEvent(QDragMoveEvent *event)
-// {
-//     event->acceptProposedAction();
-// }
-//
-// void QContentsTreeView::dropEvent(QDropEvent *event)
-// {
-//     const QMimeData *mimeData = event->mimeData();
-//
-//     if (mimeData->hasImage()) {
-//         //setPixmap(qvariant_cast<QPixmap>(mimeData->imageData()));
-//     } else if (mimeData->hasHtml()) {
-//         //setText(mimeData->html());
-//         //setTextFormat(Qt::RichText);
-//     } else if (mimeData->hasText()) {
-//         //setText(mimeData->text());
-//         //setTextFormat(Qt::PlainText);
-//     } else if (mimeData->hasUrls()) {
-//         QList<QUrl> urlList = mimeData->urls();
-//         QString text;
-//         QTreeItem* item = (QTreeItem*)(currentIndex().internalPointer());
-//         for (int i = 0; i < urlList.size() && i < 32; ++i) {
-//             QString url = urlList.at(i).path();
-//             QList<QVariant> list;
-//             list<<"name";
-//             list<<url;
-//             QTreeItem* newItem = new QTreeItem(list,item);
-//             item->appendChild(newItem);
-//
-//         }
-////         setText(text);
-//     } else {
-//         //setText(tr("Cannot display data"));
-//     }
-//
-//     setBackgroundRole(QPalette::Dark);
-//     event->acceptProposedAction();
-// }
-
-// void QContentsTreeView::dragLeaveEvent(QDragLeaveEvent *event)
-// {
-//     clear();
-// }
 
  void QContentsTreeView::clear()
  {

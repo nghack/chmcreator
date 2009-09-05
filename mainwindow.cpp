@@ -257,14 +257,30 @@ void MainWindow::on_action_NewAccepted_triggered()
     setting.sync();
     //HHC HHK File Sync
 
-    QFile::copy(myapp +"/config/index.hhc",path+"/"+ setting.value(PROJECT_CONT_FILE).toString());
-    QFile::copy(myapp +"/config/index.hhk",path+"/"+setting.value(PROJECT_INDEX).toString());
+    copy(myapp +"/config/index.hhc",path+"/"+ setting.value(PROJECT_CONT_FILE).toString());
+    copy(myapp +"/config/index.hhk",path+"/"+setting.value(PROJECT_INDEX).toString());
 
     //Template File
-    QFile::copy(myapp +"/config/index.html",path+"/index.html");
-    QFile::copy(myapp +"/config/intro.html",path+"/intro.html");
+    copy(myapp +"/config/index.html",path+"/index.html");
+    copy(myapp +"/config/intro.html",path+"/intro.html");
 
     loadProject(setting.getProjectFileName());
+}
+void MainWindow::copy(QString from,QString to)
+{
+    QFileInfo fileInfo(to);
+    if(!fileInfo.exists()){
+        QFile::copy(from,to);
+        return;
+    }
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(0,"File already exists","File already exists, if replace?",QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes)
+    {
+        QFile::remove(to);
+        QFile::copy(from,to);
+    }
 }
 void MainWindow::createNewWizard(){
     wizard.setWindowModality(Qt::ApplicationModal);

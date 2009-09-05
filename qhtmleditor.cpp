@@ -20,20 +20,25 @@ QHTMLEditor::QHTMLEditor(const QString& fileName):filename(fileName)
     editor = new QPlainTextEdit;
 
     editor->setPlainText(stream.readAll());
+    //editor->setStyleSheet("font-size : 16px");
     data.close();
 
+    highlighter = new Highlighter(editor->document());
+
     browser = new QTextEdit;
+    //browser->setStyleSheet("font-size : 16px");
 
     browser->setHtml(editor->toPlainText());
 
     addTab(browser,QIcon(":/images/editor.png"),"HTMLEditor");
     addTab(editor,QIcon(":/images/source.png"),"Source");
 
-    ischanged = false;
+    ischanged = true;
 
     connect(editor,SIGNAL(textChanged()),this,SLOT(changed()));
     connect(browser,SIGNAL(textChanged()),this,SLOT(changed()));
     connect(this,SIGNAL(currentChanged(int)),this,SLOT(tabChanged(int)));
+    ischanged = false;
 }
 void QHTMLEditor::save()
 {
