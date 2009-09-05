@@ -6,36 +6,53 @@ QHTMLEditor::~QHTMLEditor(){
 }
 QHTMLEditor::QHTMLEditor(const QString& fileName):filename(fileName)
 {
+    currentIndex = indexOf(currentWidget());
+    QFile data(filename);
+
+    if (!data.open(QFile::ReadWrite)) {
+        QMessageBox::about(0,tr("Error"),("Can't open file:"+fileName));
+        return;
+    }
+    QTextStream stream(&data);
+
     setTabPosition(QTabWidget::South);
 
-    /*browser = new QWebView;
-    addTab(browser,QIcon(":/images/editor.png"),"Preview");
-    browser->load(QUrl(fileName));*/
-
     editor = new QPlainTextEdit;
+
+    editor->setPlainText(stream.readAll());
+    data.close();
+
+    browser = new QTextEdit;
+
+    browser->setHtml(editor->toPlainText());
+
+    addTab(browser,QIcon(":/images/editor.png"),"HTMLEditor");
     addTab(editor,QIcon(":/images/source.png"),"Source");
 
-    QFile data(filename);
-    if (data.open(QFile::ReadWrite)) {
-        QTextStream out(&data);
-        editor->setPlainText(out.readAll());
-    }
-    data.close();
     ischanged = false;
 
     connect(editor,SIGNAL(textChanged()),this,SLOT(changed()));
-//    connect(this,SIGNAL(currentChanged(int)),this,SLOT(reload(int)));
-//    connect(browser,SIGNAL(linkClicked(QUrl)),this,SLOT(linkClicked(QUrl)));
-//    connect(browser,SIGNAL(linkClicked(QUrl)),this,SLOT(linkClick(QUrl)));
+    connect(browser,SIGNAL(textChanged()),this,SLOT(changed()));
+    connect(this,SIGNAL(currentChanged(int)),this,SLOT(tabChanged(int)));
 }
-//void QHTMLEditor::linkClick(QUrl url)
-//{
-//    browser->load(QUrl(filename));
-//    emit linkClicked(url);
-//}
 void QHTMLEditor::save()
 {
     saveAs(filename);
+}
+void QHTMLEditor::tabChanged(int index)
+{
+    if(ischanged)
+    {
+        if(currentIndex==0)
+        {
+            browser->setText(editor->toPlainText());
+        }
+        else
+        {
+            editor->setPlainText(browser->toHtml());
+        }
+    }
+    currentIndex = index;
 }
 void QHTMLEditor::changed()
 {
@@ -57,10 +74,11 @@ void QHTMLEditor::reload(int index)
 }
 void QHTMLEditor::saveAs(const QString& fileName)
 {
+    editor->setPlainText(browser->toHtml());
     QFile data(fileName);
     if (data.open(QFile::WriteOnly)) {
         QTextStream out(&data);
-        out<<editor->toPlainText();
+        out<<browser->toHtml();
     }
     data.close();
     ischanged = false;

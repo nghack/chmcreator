@@ -114,6 +114,7 @@ private:
 
     QReplaceFilesDialog* repalceFilesDialog;
 private slots:
+    void on_actionClose_Project_triggered();
     void on_actionReplace_In_Files_triggered();
     void on_actionExit_triggered();
     void on_action_Save_triggered();
