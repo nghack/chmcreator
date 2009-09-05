@@ -19,14 +19,17 @@ signals:
     void textChanged(bool);
     void linkClicked(QUrl);
 private slots:
+    void tabChanged(int index);
     void changed();
     void reload(int);
 //    void linkClick(QUrl);
 
 private:
+    int currentIndex;
     bool ischanged;
     QString filename;
-    /*QWebView* browser;*/
+    QTextDocument* document;
+    QTextEdit* browser;
     QPlainTextEdit* editor;
 };
 

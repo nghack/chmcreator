@@ -8,27 +8,27 @@ QContentsTreeView::QContentsTreeView(MainWindow* mainWindow)
 {
     this->mainWindow = mainWindow;
     createActions();
-    setAcceptDrops(false);
-    setContextMenuPolicy(Qt::CustomContextMenu );
+    //setAcceptDrops(false);
+    //setContextMenuPolicy(Qt::CustomContextMenu );
 //    connect(header(),SIGNAL(clicked(QModelIndex)),this,SLOT(headerClicked(QModelIndex)));
 }
-void QContentsTreeView::headerClicked(const QModelIndex& index)
-{
-    QModelIndex current = currentIndex();
-    if(index.column()==0){
-        if(current.isValid()){
-            QTreeItem* item = (QTreeItem*)current.internalPointer();
-            QList<QTreeItem*> rows = item->childItemList();
-            qStableSort(rows);
-        }
-    }else if(index.column()==1){
-        if(current.isValid()){
-            QTreeItem* item = (QTreeItem*)current.internalPointer();
-            QList<QTreeItem*> rows = item->childItemList();
-            qStableSort(rows);
-        }
-    }
-}
+//void QContentsTreeView::headerClicked(const QModelIndex& index)
+//{
+//    QModelIndex current = currentIndex();
+//    if(index.column()==0){
+//        if(current.isValid()){
+//            QTreeItem* item = (QTreeItem*)current.internalPointer();
+//            QList<QTreeItem*> rows = item->childItemList();
+//            qStableSort(rows);
+//        }
+//    }else if(index.column()==1){
+//        if(current.isValid()){
+//            QTreeItem* item = (QTreeItem*)current.internalPointer();
+//            QList<QTreeItem*> rows = item->childItemList();
+//            qStableSort(rows);
+//        }
+//    }
+//}
 QContentsTreeView::~QContentsTreeView()
 {
     delete menu;
@@ -206,21 +206,23 @@ void QContentsTreeView::createActions()
 
  }
 void QContentsTreeView::mouseReleaseEvent(QMouseEvent *event)
-{
+{    
     QPoint point = event->globalPos();
     QWidget::mousePressEvent(event);
     if (event->button() == Qt::RightButton)
     {
+        setCurrentIndex(indexAt(event->pos()));
         menu->exec(point);
     }
 }
-void QContentsTreeView::keyPressEvent(QKeyEvent *e)
-{
-    if (e->modifiers()==e->key() == Qt::Key_F2)
-    {
-        renameAct->activate(QAction::Trigger);
-    }
-}
+//void QContentsTreeView::keyPressEvent(QKeyEvent *e)
+//{
+//    QTreeView::keyPressEvent(e);
+//    if (e->modifiers()==e->key() == Qt::Key_F2)
+//    {
+//        renameAct->activate(QAction::Trigger);
+//    }
+//}
 //void QContentsTreeView::dragEnterEvent(QDragEnterEvent *event)
 // {
 //

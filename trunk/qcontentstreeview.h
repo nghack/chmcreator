@@ -14,9 +14,7 @@ public:
     QContentsTreeView(MainWindow* mainWindow);
     ~QContentsTreeView();
     void createActions();
-    void mouseReleaseEvent(QMouseEvent *event);
     void addExistFile(const QString fileName);
-    void keyPressEvent(QKeyEvent *e);
 private:
      MainWindow* mainWindow;
      QMenu* menu;
@@ -50,11 +48,12 @@ private slots:
      void property();
 public slots:
      void clear();
-     void headerClicked(const QModelIndex& index);
+//     void headerClicked(const QModelIndex& index);
  signals:
      void changed(const QMimeData *mimeData = 0);
 
-// protected:
+protected:
+     virtual void mouseReleaseEvent ( QMouseEvent * event );
 //     void dragEnterEvent(QDragEnterEvent *event);
 //     void dragMoveEvent(QDragMoveEvent *event);
 //     void dragLeaveEvent(QDragLeaveEvent *event);

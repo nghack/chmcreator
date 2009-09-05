@@ -321,13 +321,14 @@ void MainWindow::on_action_Compile_triggered()
     QString command(myapp);
     command.append("/hhc.exe ");
 
-    QString chmProjectFile = currentProject->getProjectPath();
+    QString chmProjectFile = " \"";
+    chmProjectFile.append(currentProject->getProjectPath());
     chmProjectFile.append("/");
     chmProjectFile.append(projectName);
-    chmProjectFile.append(".hhp");
+    chmProjectFile.append(".hhp\"");
 
-    QFileInfo fileInfo(chmProjectFile);
-    command.append(fileInfo.canonicalFilePath().replace("/","\\"));
+    qDebug()<<chmProjectFile;;
+    command.append(chmProjectFile.replace("/","\\"));
     qDebug()<<command;
     pro->start(command);
 }
@@ -392,6 +393,7 @@ void MainWindow::updateMenus()
     ui->actionCo_mpile->setEnabled(currentProject!=0);
     ui->action_Compile->setEnabled(currentProject!=0);
     ui->action_Run->setEnabled(currentProject!=0);
+    ui->actionClose_Project->setEnabled(currentProject!=0);
 
     if(currentProject!=0){
         QFile file(currentProject->getProjectPath()+"/"+ currentProject->value(PROJECT_TARGET).toString());
@@ -411,4 +413,17 @@ void MainWindow::on_actionReplace_In_Files_triggered()
     }
     repalceFilesDialog->setInitualValue(currentProject==0?myapp:currentProject->getProjectPath(),"","","*");
     repalceFilesDialog->exec();
+}
+
+void MainWindow::on_actionClose_Project_triggered()
+{
+    if(currentProject!=0){
+        delete currentProject;
+        currentProject = 0;
+    }
+    settings.setValue(PROJECT_PATH,"");
+    QTreeView* treeView = (QTreeView*)dockProject->widget();
+    treeView->setModel(0);
+
+    if(centerView!=0)centerView->close();
 }
