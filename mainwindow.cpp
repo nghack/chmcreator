@@ -19,10 +19,11 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     createToolBar();
     createNewWizard();
     setAcceptDrops(true);
+    setDockOptions(QMainWindow::ForceTabbedDocks);
 
     dockIndex = (new QDockWidget(tr("Index"), this));
     dockIndex->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
-    addDockWidget(Qt::RightDockWidgetArea, dockIndex);
+    addDockWidget(Qt::LeftDockWidgetArea, dockIndex);
     dockIndex->setWidget(new QListWidget);
 
     dockConsole = (new QDockWidget(tr("Console"), this));
@@ -34,6 +35,8 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     dockProject->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
     dockProject->setAcceptDrops(true);
     addDockWidget(Qt::LeftDockWidgetArea, dockProject);
+
+    tabifyDockWidget(dockIndex,dockProject);
 
     QContentsTreeView* viewTree = new QContentsTreeView(this);
     dockProject->setWidget(viewTree);
