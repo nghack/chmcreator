@@ -21,8 +21,6 @@ signals:
 private slots:
     void tabChanged(int index);
     void changed();
-    void reload(int);
-//    void linkClick(QUrl);
 
 private:
     Highlighter* highlighter;
@@ -30,7 +28,7 @@ private:
     bool ischanged;
     QString filename;
     QTextDocument* document;
-    QTextEdit* browser;
+    QTextBrowser* browser;
     QPlainTextEdit* editor;
 };
 

@@ -9,6 +9,7 @@ QModifyFileDialog::QModifyFileDialog(QWidget *parent) :
 
     setWindowTitle(tr("Select File"));
     connect(m_ui->buttonBox, SIGNAL(accepted()), this, SLOT(close()));
+    connect(m_ui->buttonBox, SIGNAL(rejected()), this, SLOT(close()));
 }
 
 QModifyFileDialog::~QModifyFileDialog()
