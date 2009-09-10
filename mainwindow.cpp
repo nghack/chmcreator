@@ -414,6 +414,7 @@ void MainWindow::updateMenus()
     ui->action_Run->setEnabled(currentProject!=0);
     ui->actionClose_Project->setEnabled(currentProject!=0);
 
+    ui->action_Property->setEnabled(currentProject!=0);
     if(currentProject!=0){
         QFile file(currentProject->getProjectPath()+"/"+ currentProject->value(PROJECT_TARGET).toString());
         ui->action_Run->setEnabled(file.exists());
