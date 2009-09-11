@@ -14,7 +14,7 @@ MainWindow::MainWindow(QString app,QWidget *parent)
 {
     ui->setupUi(this);
     pro = new QProcess;
-    repalceFilesDialog=0;
+    //repalceFilesDialog=0;
     createMenus();
     createToolBar();
     createNewWizard();
@@ -194,7 +194,7 @@ void MainWindow::on_action_About_triggered()
 {
     QMessageBox::about(this, tr("About chmcreator"),
                        ("The <b>chmcreator</b> is developed by <a href=\"www.ibooks.org.cn\">ibooks</a>.The <b>chmcreator</b> is a excellent chm file editor, which support txt, chm, html format."
-                        "欢迎访问<a href =\"www.ibooks.org.cn\">图书之家</a>！"));
+                        "welcome access <a href =\"www.ibooks.org.cn\">www.ibooks.org.cn</a>！"));
 }
 
 void MainWindow::on_action_Open_triggered()
@@ -428,11 +428,11 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionReplace_In_Files_triggered()
 {
-    if(repalceFilesDialog==0){
+    /*if(repalceFilesDialog==0){
         repalceFilesDialog = new QReplaceFilesDialog(myapp,this);
     }
     repalceFilesDialog->setInitualValue(currentProject==0?myapp:currentProject->getProjectPath(),"","","*");
-    repalceFilesDialog->exec();
+    repalceFilesDialog->exec();*/
 }
 
 void MainWindow::on_actionClose_Project_triggered()
