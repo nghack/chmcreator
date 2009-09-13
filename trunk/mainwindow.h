@@ -57,7 +57,7 @@ private:
 
     QDockWidget* dockProject;
     QDockWidget* dockIndex;
-    QDockWidget* dockConsole;
+    //QDockWidget* dockConsole;
 
     QTabEditor* centerView;
     NewWizard wizard;
@@ -131,7 +131,7 @@ private slots:
     void on_action_Open_triggered();
     void on_action_About_triggered();
     void on_action_NewAccepted_triggered();
-    void console();
+    void console(int value);
     void updateMenus();
 public slots:
     void on_action_TreeView_Clicked_triggered(const QModelIndex &index);

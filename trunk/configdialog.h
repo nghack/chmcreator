@@ -4,7 +4,7 @@
 #include <QtGui>
 
 QT_BEGIN_NAMESPACE
-        class QListWidget;
+class QListWidget;
 class QListWidgetItem;
 class QStackedWidget;
 QT_END_NAMESPACE
