@@ -14,52 +14,64 @@ public:
     GeneralTab(QSettings* setting=0,QWidget *parent = 0);
 };
 
-class ConfigurationPage : public QWidget
+class ButtonsPage : public QWidget
 {
 public:
-    ConfigurationPage(QWidget *parent = 0);
+    ButtonsPage(QSettings* setting,QWidget *parent = 0);
 };
 
-class QueryPage : public QWidget
+class WindowPage : public QWidget
 {
 public:
-    QueryPage(QWidget *parent = 0);
+    WindowPage(QSettings* setting,QWidget *parent = 0);
 };
 
-class UpdatePage : public QWidget
+class ComplierPage : public QWidget
 {
 public:
-    UpdatePage(QWidget *parent = 0);
+    ComplierPage(QSettings* setting,QWidget *parent = 0);
 };
 //! [0]
 
 
 //! [1]
-class FilesTab : public QWidget
+class PositionPage : public QWidget
 {
     Q_OBJECT
 
 public:
-    FilesTab(const QFileInfo &fileInfo, QWidget *parent = 0);
+    PositionPage(QSettings* setting, QWidget *parent = 0);
 };
 //! [1]
 
 
 //! [2]
-class ComplierTab : public QWidget
+class NavPage : public QWidget
 {
     Q_OBJECT
 
 public:
-    ComplierTab(const QFileInfo &fileInfo, QWidget *parent = 0);
+    NavPage(QSettings* setting,QWidget *parent = 0);
 };
 
-class WindowTab : public QWidget
+class StylesPage : public QWidget
 {
     Q_OBJECT
 
 public:
-    WindowTab(const QFileInfo &fileInfo, QWidget *parent = 0);
+    StylesPage(QSettings* setting,QWidget *parent = 0);
+};
+
+class MergePage : public QWidget
+{
+    Q_OBJECT
+
+    QListWidget* listWidget;
+public:
+    MergePage(QSettings* setting, QWidget *parent = 0);
+private slots:
+    void add();
+    void remove();
 };
 
 class QPropertyDialog : public QDialog

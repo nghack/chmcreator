@@ -6,6 +6,7 @@ QHTMLEditor::~QHTMLEditor(){
 }
 QHTMLEditor::QHTMLEditor(const QString& fileName):filename(fileName)
 {
+    ischanged = false;
     currentIndex = indexOf(currentWidget());
     QFile data(filename);
 
@@ -32,11 +33,10 @@ QHTMLEditor::QHTMLEditor(const QString& fileName):filename(fileName)
     addTab(browser,QIcon(":/images/editor.png"),"HTMLEditor");
     addTab(editor,QIcon(":/images/source.png"),"Source");
 
-    ischanged = false;
-
     connect(editor,SIGNAL(textChanged()),this,SLOT(changed()));
-    //connect(browser,SIGNAL(textChanged()),this,SLOT(changed()));
     connect(this,SIGNAL(currentChanged(int)),this,SLOT(tabChanged(int)));
+    ischanged = false;
+    value = 0;
 }
 void QHTMLEditor::save()
 {
@@ -44,11 +44,7 @@ void QHTMLEditor::save()
 }
 void QHTMLEditor::tabChanged(int index)
 {
-    if(ischanged&&index==0)
-    {
-        browser->setText(editor->toPlainText());
-    }
-    currentIndex = index;
+    if(index==0&&ischanged)browser->setText(editor->toPlainText());
 }
 void QHTMLEditor::changed()
 {

@@ -11,12 +11,14 @@ QProjectPropertiesDialog::QProjectPropertiesDialog(QSettings* setting)
     QFileInfo fileInfo(".");
     pagesWidget = new QStackedWidget;
     pagesWidget->addWidget(new GeneralTab(setting));
-    pagesWidget->addWidget(new UpdatePage);
-    pagesWidget->addWidget(new QueryPage);
-    pagesWidget->addWidget(new ConfigurationPage);
-    pagesWidget->addWidget(new FilesTab(fileInfo));
-    pagesWidget->addWidget(new ComplierTab(fileInfo));
-    pagesWidget->addWidget(new WindowTab(fileInfo));
+    pagesWidget->addWidget(new ComplierPage(setting));
+    pagesWidget->addWidget(new WindowPage(setting));
+
+    pagesWidget->addWidget(new ButtonsPage(setting));//Buttons
+    pagesWidget->addWidget(new PositionPage(setting));//Position
+    pagesWidget->addWidget(new NavPage(setting));//Nav
+    pagesWidget->addWidget(new StylesPage(setting));//Styles
+    pagesWidget->addWidget(new MergePage(setting));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox;
     buttonBox->addButton(QDialogButtonBox::Ok);
@@ -65,11 +67,12 @@ void QProjectPropertiesDialog::createIcons()
     QTreeWidgetItem *configButton = createItem(contentsWidget,tr("Windows Types"));
     map.insert(configButton,pagesWidget->widget(2));
 
-    map.insert(createItem(configButton,tr("General")),pagesWidget->widget(3));
-    map.insert(createItem(configButton,tr("General")),pagesWidget->widget(4));
-    map.insert(createItem(configButton,tr("General")),pagesWidget->widget(5));
+    map.insert(createItem(configButton,tr("Buttons")),pagesWidget->widget(3));
+    map.insert(createItem(configButton,tr("Position")),pagesWidget->widget(4));
+    map.insert(createItem(configButton,tr("Navgation Panel")),pagesWidget->widget(5));
+    map.insert(createItem(configButton,tr("Styles")),pagesWidget->widget(6));
 
-    map.insert(createItem(contentsWidget,tr("Merge Files")),pagesWidget->widget(6));
+    map.insert(createItem(contentsWidget,tr("Merge Files")),pagesWidget->widget(7));
 
     connect(contentsWidget,
             SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)),

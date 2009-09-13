@@ -30,6 +30,7 @@ private:
     QTextDocument* document;
     QTextBrowser* browser;
     QPlainTextEdit* editor;
+    int value;
 };
 
 #endif // QHTMLEDITOR_H

@@ -13,6 +13,7 @@ MainWindow::MainWindow(QString app,QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MainWindow),myapp(app),centerView(new QTabEditor),currentProject(0),property(0)
 {
     ui->setupUi(this);
+    setWindowTitle(tr("chmcreator"));
     pro = new QProcess;
     //repalceFilesDialog=0;
     createMenus();
@@ -26,10 +27,10 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     addDockWidget(Qt::LeftDockWidgetArea, dockIndex);
     dockIndex->setWidget(new QListWidget);
 
-    dockConsole = (new QDockWidget(tr("Console"), this));
-    dockConsole->setAllowedAreas(Qt::BottomDockWidgetArea);
-    addDockWidget(Qt::BottomDockWidgetArea, dockConsole);
-    dockConsole->setWidget(new QTextEdit);
+//    dockConsole = (new QDockWidget(tr("Console"), this));
+//    dockConsole->setAllowedAreas(Qt::BottomDockWidgetArea);
+//    addDockWidget(Qt::BottomDockWidgetArea, dockConsole);
+//    dockConsole->setWidget(new QTextEdit);
 
     dockProject = (new QDockWidget(tr("Project"), this));
     dockProject->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
@@ -43,14 +44,12 @@ MainWindow::MainWindow(QString app,QWidget *parent)
 
     //this->connect(viewTree,SIGNAL(clicked(QModelIndex)),this,SLOT(on_action_NewItem_triggered(QModelIndex)));
 
-    connect(pro,SIGNAL(readyReadStandardError()),this,SLOT(console()));
-    connect(pro,SIGNAL(readyReadStandardOutput()),this,SLOT(console()));
-
     setCentralWidget(&mdiArea);
 
     setWindowState(Qt::WindowMaximized);
 
     connect((viewTree), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_action_TreeView_Clicked_triggered(const QModelIndex &)));
+    connect(pro,SIGNAL(finished(int)),this,SLOT(console(int)));
 }
 
 MainWindow::~MainWindow()
@@ -327,13 +326,16 @@ void MainWindow::loadProject(const QString& proFile){
     QTreeView* treeView = (QTreeView*)dockProject->widget();
 
     treeView->setModel(currentProject->getHHCObject()->getTreeModel());
+
+    QString title = currentProject->getProjectName();
+    setWindowTitle(title.append(tr(" - chmcreator")));
 }
 
 void MainWindow::on_action_Compile_triggered()
 {
     QDir dir;
     dir.setCurrent(myapp);
-    ((QTextEdit*)dockConsole->widget())->clear();
+    //((QTextEdit*)dockConsole->widget())->clear();
     currentProject->toProjectFile();
     QString projectName = currentProject->value(PROJECT_EXT_NAME).toString();
 
@@ -352,21 +354,23 @@ void MainWindow::on_action_Compile_triggered()
     pro->start(command);
 }
 
-void MainWindow::console()
+void MainWindow::console(int value)
 {
-    ((QTextEdit*)dockConsole->widget())->append(pro->readAll());
+    QMessageBox::about(0,"Compile Finished!","Compile Finished!");
+    //((QTextEdit*)dockConsole->widget())->append(pro->readAll());
 }
 
 void MainWindow::on_action_Run_triggered()
 {
-    ((QTextEdit*)dockConsole->widget())->clear();
+    //((QTextEdit*)dockConsole->widget())->clear();
     QString projectTargetName = currentProject->value(PROJECT_TARGET).toString();
     QFile file(currentProject->getProjectPath()+"/"+ projectTargetName);
     if(!file.exists()){
         return;
     }
 
-    pro->start(QString("hh \"")+currentProject->getProjectPath()+"/"+ projectTargetName);
+    QProcess* process = new QProcess;
+    process->start(QString("hh \"")+currentProject->getProjectPath()+"/"+ projectTargetName);
 }
 
 void MainWindow::on_action_Property_triggered()
@@ -446,4 +450,5 @@ void MainWindow::on_actionClose_Project_triggered()
     treeView->setModel(0);
 
     if(centerView!=0)centerView->close();
+    setWindowTitle(tr("chmcreator"));
 }
