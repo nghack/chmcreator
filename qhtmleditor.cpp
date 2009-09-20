@@ -1,12 +1,14 @@
 #include "qhtmleditor.h"
 
 QHTMLEditor::~QHTMLEditor(){
-    /*delete browser;*/
-    delete editor;
 }
-QHTMLEditor::QHTMLEditor(const QString& fileName):filename(fileName)
+QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(parent),filename(fileName)
 {
-    ischanged = false;
+    filename = fileName;
+    ischanged = true;
+    QFileInfo temp(fileName);
+    setWindowTitle(temp.fileName());
+    setWindowIcon(QIcon(":/images/new.png"));
     currentIndex = indexOf(currentWidget());
     QFile data(filename);
 
@@ -18,7 +20,7 @@ QHTMLEditor::QHTMLEditor(const QString& fileName):filename(fileName)
 
     setTabPosition(QTabWidget::South);
 
-    editor = new QPlainTextEdit;
+    editor = new QPlainTextEdit(this);
 
     editor->setPlainText(stream.readAll());
     editor->setStyleSheet("font-size : 16px");
@@ -35,8 +37,19 @@ QHTMLEditor::QHTMLEditor(const QString& fileName):filename(fileName)
 
     connect(editor,SIGNAL(textChanged()),this,SLOT(changed()));
     connect(this,SIGNAL(currentChanged(int)),this,SLOT(tabChanged(int)));
+
     ischanged = false;
     value = 0;
+    iseditable = false;
+
+    isundoable = false;
+    isredoable = false;
+    iscopyable = false;
+    iscutable = false;
+    connect(editor,SIGNAL(undoAvailable(bool)),this,SLOT(changeRedo(bool)));
+    connect(editor,SIGNAL(redoAvailable(bool)),this,SLOT(changeRedo(bool)));
+    connect(editor,SIGNAL(copyAvailable(bool)),this,SLOT(changeCopy(bool)));
+    connect(editor,SIGNAL(copyAvailable(bool)),this,SLOT(changeCut(bool)));
 }
 void QHTMLEditor::save()
 {
@@ -45,13 +58,31 @@ void QHTMLEditor::save()
 void QHTMLEditor::tabChanged(int index)
 {
     if(index==0&&ischanged)browser->setText(editor->toPlainText());
+    if(index==1)iseditable = true;
+
+}
+bool QHTMLEditor::isEditable(){
+    return iseditable;
+}
+void QHTMLEditor::saveAndClose()
+{
+    if(!ischanged)
+        return;
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(0,tr("Confirm"),tr("File has changed, save file?"),QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::No)
+       return;
+    save();
 }
 void QHTMLEditor::changed()
 {
-    if(!ischanged){
-        ischanged = true;
-        emit textChanged(true);
+    value++;
+    QString temp = windowTitle();
+    if(ischanged&&value>1&&!temp.endsWith('*')){
+        temp+="*";
+        setWindowTitle(temp);
     }
+    ischanged = true;
 }
 void QHTMLEditor::saveAs(const QString& fileName)
 {
@@ -62,5 +93,6 @@ void QHTMLEditor::saveAs(const QString& fileName)
     }
     data.close();
     ischanged = false;
-    emit textChanged(false);
+    QFileInfo temp(fileName);
+    setWindowTitle(temp.fileName());
 }

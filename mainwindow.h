@@ -14,13 +14,14 @@
 #include "qTreeItem.h"
 #include "QTreeModel.h"
 #include "chmproject.h"
-#include "qtabeditor.h"
+//#include "qtabeditor.h"
 #include "qchm.h"
 #include "colorlisteditor.h"
 #include "configdialog.h"
 #include "qcontentstreeview.h"
 #include "qmodifyfiledialog.h"
-//#include "qreplacefilesdialog.h"
+#include "qreplacefilesdialog.h"
+#include "qhtmleditor.h"
 
 namespace Ui
 {
@@ -39,6 +40,8 @@ public:
     void saveHHC();
     static void copy(QString from,QString to);
 private:
+    void setCurrentFile(const QString &fileName);
+    void updateRecentFileActions();
     void createMenus();
     Ui::MainWindow *ui;
     QString myapp;
@@ -59,7 +62,7 @@ private:
     QDockWidget* dockIndex;
     //QDockWidget* dockConsole;
 
-    QTabEditor* centerView;
+    //QTabEditor* centerView;
     NewWizard wizard;
 
     CHMProject* currentProject;
@@ -102,6 +105,7 @@ private:
     QAction *action_Save;
     QAction *actionSave_All;
     QWidget *centralWidget;
+    QAction *recentFileActs[5];
     QMenuBar *menuBar;
     QMenu *menu_File;
     QMenu *menu_View;
@@ -113,8 +117,15 @@ private:
 
     QStatusBar *statusBar;
 
-    //QReplaceFilesDialog* repalceFilesDialog;
+    QReplaceFilesDialog* repalceFilesDialog;
 private slots:
+    void on_actionSelect_All_triggered();
+    void on_actionDelete_triggered();
+    void on_action_Redo_triggered();
+    void on_action_Undo_triggered();
+    void on_actionPaste_triggered();
+    void on_actionCopy_triggered();
+    void on_action_Cut_triggered();
     void on_actionClose_Project_triggered();
     void on_actionReplace_In_Files_triggered();
     void on_actionExit_triggered();

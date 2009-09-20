@@ -18,7 +18,6 @@ void QTabEditor::closeCurrentTab()
     removeTab(index);
     if(tabList.count()==0){
         QMdiArea* area = (QMdiArea*)parent();
-        this->hide();
     }
 }
 QTabEditor::~QTabEditor()
