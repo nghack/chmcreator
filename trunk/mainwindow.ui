@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="qt.qrc">
-    <normaloff>:/images/logo.png</normaloff>:/images/logo.png</iconset>
+    <normaloff>:/images/main.ico</normaloff>:/images/main.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
@@ -34,13 +34,8 @@
     <addaction name="action_New"/>
     <addaction name="action_Open"/>
     <addaction name="actionClose_Project"/>
-    <addaction name="actionClose_All"/>
-    <addaction name="action_Save_Project"/>
     <addaction name="separator"/>
     <addaction name="action_Save"/>
-    <addaction name="actionSave_All"/>
-    <addaction name="separator"/>
-    <addaction name="action_Import"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -50,24 +45,14 @@
     </property>
     <addaction name="actionToolBar"/>
     <addaction name="actionStatusBar"/>
-    <addaction name="separator"/>
-    <addaction name="actionCompiled_Help_File"/>
-    <addaction name="actionHTML_Help_Message"/>
    </widget>
    <widget class="QMenu" name="menu_Test">
     <property name="title">
      <string>&amp;Build</string>
     </property>
     <addaction name="action_Compile"/>
-    <addaction name="actionClean"/>
     <addaction name="separator"/>
     <addaction name="action_Run"/>
-   </widget>
-   <widget class="QMenu" name="menuT_ool">
-    <property name="title">
-     <string>&amp;Window</string>
-    </property>
-    <addaction name="action_Option"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
     <property name="title">
@@ -86,7 +71,6 @@
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
     <addaction name="separator"/>
-    <addaction name="actionDelete"/>
     <addaction name="actionSelect_All"/>
     <addaction name="separator"/>
     <addaction name="actionPr_eference_2"/>
@@ -104,7 +88,6 @@
    <addaction name="menu_View"/>
    <addaction name="menu_Project"/>
    <addaction name="menu_Test"/>
-   <addaction name="menuT_ool"/>
    <addaction name="menu_Help"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>

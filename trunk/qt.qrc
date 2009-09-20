@@ -12,5 +12,6 @@
         <file>images/close.png</file>
         <file>images/source.png</file>
         <file>images/editor.png</file>
+        <file>images/main.ico</file>
     </qresource>
 </RCC>

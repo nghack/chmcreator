@@ -10,12 +10,12 @@ static QString tmpFilePath;
  }
 
 MainWindow::MainWindow(QString app,QWidget *parent)
-        : QMainWindow(parent), ui(new Ui::MainWindow),myapp(app),centerView(new QTabEditor),currentProject(0),property(0)
+        : QMainWindow(parent), ui(new Ui::MainWindow),myapp(app),/*centerView(new QTabEditor),*/currentProject(0),property(0)
 {
     ui->setupUi(this);
     setWindowTitle(tr("chmcreator"));
     pro = new QProcess;
-    //repalceFilesDialog=0;
+    repalceFilesDialog=0;
     createMenus();
     createToolBar();
     createNewWizard();
@@ -26,11 +26,6 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     dockIndex->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
     addDockWidget(Qt::LeftDockWidgetArea, dockIndex);
     dockIndex->setWidget(new QListWidget);
-
-//    dockConsole = (new QDockWidget(tr("Console"), this));
-//    dockConsole->setAllowedAreas(Qt::BottomDockWidgetArea);
-//    addDockWidget(Qt::BottomDockWidgetArea, dockConsole);
-//    dockConsole->setWidget(new QTextEdit);
 
     dockProject = (new QDockWidget(tr("Project"), this));
     dockProject->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
@@ -43,6 +38,13 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     dockProject->setWidget(viewTree);
 
     //this->connect(viewTree,SIGNAL(clicked(QModelIndex)),this,SLOT(on_action_NewItem_triggered(QModelIndex)));
+    mdiArea.setViewMode(QMdiArea::TabbedView);
+
+    /*QToolButton* closeButton = new QToolButton();
+    closeButton->setIcon(QIcon(":/images/close.png"));
+    closeButton->adjustSize();
+    connect(closeButton, SIGNAL(clicked()), &mdiArea, SLOT(closeActiveSubWindow ()));
+    mdiArea.setCornerWidget(closeButton);*/
 
     setCentralWidget(&mdiArea);
 
@@ -55,7 +57,7 @@ MainWindow::MainWindow(QString app,QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete centerView;
+    //delete centerView;
     delete property;
     if(currentProject!=0){
         delete currentProject;
@@ -232,13 +234,12 @@ void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
 
     QUrl url(currentProject->getProjectPath()+"/"+parentItem->objectUrl().toString());
 
-    if(mdiArea.subWindowList().count()==0){
-        mdiArea.addSubWindow(centerView);
-        centerView->setWindowState(Qt::WindowMaximized);
-    }
+    QHTMLEditor* htmlEditor = new QHTMLEditor(url.toString());
+    mdiArea.addSubWindow(htmlEditor);
+    htmlEditor->show();
 
-    centerView->show();
-    centerView->addTab(url.toString());
+    connect(htmlEditor->textEditor(),SIGNAL(undoAvailable(bool)),ui->action_Undo,SLOT(setEnabled(bool)));
+    connect(htmlEditor->textEditor(),SIGNAL(redoAvailable(bool)),ui->action_Redo,SLOT(setEnabled(bool)));
 }
 void MainWindow::on_action_NewAccepted_triggered()
 {
@@ -316,6 +317,7 @@ void MainWindow::compile()
 //    pro.startDetached(QString("hhc ")+currentProject->getProjectFileName());
 }
 void MainWindow::loadProject(const QString& proFile){
+    setCurrentFile(proFile);
     if(currentProject!=0){
         delete currentProject;
     }
@@ -387,8 +389,9 @@ void MainWindow::on_action_Property_triggered()
 
 void MainWindow::on_action_Save_triggered()
 {
-    centerView->save();\
     if(currentProject!=0)currentProject->getHHCObject()->save();
+    QMdiSubWindow* editor = mdiArea.currentSubWindow();
+    if(editor!=0)((QHTMLEditor*)editor->widget())->save();
 }
 
 void MainWindow::on_action_NewItem_triggered()
@@ -405,10 +408,18 @@ void MainWindow::createMenus()
 {
     connect(ui->menu_File, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
     connect(ui->menu_Edit, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
-    connect(ui->menuT_ool, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
+    //connect(ui->menuT_ool, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
     connect(ui->menu_Project, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
     connect(ui->menu_View, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
     connect(ui->menu_Test, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
+
+    /*for (int i = 0; i < 5; ++i) {
+         recentFileActs[i] = new QAction(this);
+         recentFileActs[i]->setVisible(false);
+         connect(recentFileActs[i], SIGNAL(triggered()),
+                 this, SLOT(openRecentFile()));
+         ui->menu_File->addAction(recentFileActs[i]);
+     }*/
 }
 void MainWindow::updateMenus()
 {
@@ -423,6 +434,29 @@ void MainWindow::updateMenus()
         QFile file(currentProject->getProjectPath()+"/"+ currentProject->value(PROJECT_TARGET).toString());
         ui->action_Run->setEnabled(file.exists());
     }
+
+    QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
+    if(0!=subWindow){
+        QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
+        if(editor!=0){
+            ui->action_Save->setEnabled(editor->isChanged());
+            ui->action_Undo->setEnabled(editor->isUndoable());
+            ui->action_Redo->setEnabled(editor->isRedoable());
+            ui->actionCopy->setEnabled(editor->isCopyable());
+            ui->action_Cut->setEnabled(editor->isCopyable());
+            ui->actionPaste->setEnabled(QApplication::clipboard()->text()!=QString::null);
+            ui->actionSelect_All->setEnabled(editor->isEditable());
+        }
+        return;
+    }
+
+    ui->action_Save->setEnabled(false);
+    ui->action_Undo->setEnabled(false);
+    ui->action_Redo->setEnabled(false);
+    ui->actionCopy->setEnabled(false);
+    ui->action_Cut->setEnabled(false);
+    ui->actionPaste->setEnabled(false);
+    ui->actionSelect_All->setEnabled(false);
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -432,11 +466,11 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionReplace_In_Files_triggered()
 {
-    /*if(repalceFilesDialog==0){
+    if(repalceFilesDialog==0){
         repalceFilesDialog = new QReplaceFilesDialog(myapp,this);
     }
     repalceFilesDialog->setInitualValue(currentProject==0?myapp:currentProject->getProjectPath(),"","","*");
-    repalceFilesDialog->exec();*/
+    repalceFilesDialog->exec();
 }
 
 void MainWindow::on_actionClose_Project_triggered()
@@ -449,6 +483,90 @@ void MainWindow::on_actionClose_Project_triggered()
     QTreeView* treeView = (QTreeView*)dockProject->widget();
     treeView->setModel(0);
 
-    if(centerView!=0)centerView->close();
+    //if(centerView!=0)centerView->close();
     setWindowTitle(tr("chmcreator"));
+}
+ void MainWindow::setCurrentFile(const QString &fileName)
+ {
+     QString curFile = fileName;
+     QSettings settings("ibooks", "RecentFiles");
+     QStringList files = settings.value("recentFileList").toStringList();
+     files.removeAll(fileName);
+     files.prepend(fileName);
+     while (files.size() > 5)
+         files.removeLast();
+
+     settings.setValue("recentFileList", files);
+
+     foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+         MainWindow *mainWin = qobject_cast<MainWindow *>(widget);
+         if (mainWin)
+             mainWin->updateRecentFileActions();
+     }
+ }
+void MainWindow::updateRecentFileActions()
+{
+     /*QSettings settings("ibooks", "RecentFiles");
+     QStringList files = settings.value("recentFileList").toStringList();
+
+     int numRecentFiles = qMin(files.size(), (int)5);
+
+     for (int i = 0; i < numRecentFiles; ++i) {
+         QString text = files[i];
+         recentFileActs[i]->setText(text);
+         recentFileActs[i]->setData(files[i]);
+         recentFileActs[i]->setVisible(true);
+     }
+     for (int j = numRecentFiles; j < 5; ++j)
+         recentFileActs[j]->setVisible(false);
+
+     //separatorAct->setVisible(numRecentFiles > 0);*/
+}
+
+void MainWindow::on_action_Cut_triggered()
+{
+    QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
+    QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
+    editor->textEditor()->cut();
+}
+
+void MainWindow::on_actionCopy_triggered()
+{
+    QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
+    QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
+    editor->textEditor()->cut();
+}
+
+void MainWindow::on_actionPaste_triggered()
+{
+    QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
+    QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
+    editor->textEditor()->paste();
+}
+
+void MainWindow::on_action_Undo_triggered()
+{
+    QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
+    QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
+    editor->textEditor()->undo();
+}
+
+void MainWindow::on_action_Redo_triggered()
+{
+    QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
+    QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
+    editor->textEditor()->redo();
+}
+
+void MainWindow::on_actionDelete_triggered()
+{
+    QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
+    QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
+}
+
+void MainWindow::on_actionSelect_All_triggered()
+{
+    QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
+    QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
+    editor->textEditor()->selectAll();
 }
