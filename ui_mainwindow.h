@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Sun Sep 20 18:00:04 2009
+** Created: Mon Sep 21 22:47:56 2009
 **      by: Qt User Interface Compiler version 4.4.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -154,7 +154,7 @@ public:
     MainWindow->setCentralWidget(centralWidget);
     menuBar = new QMenuBar(MainWindow);
     menuBar->setObjectName(QString::fromUtf8("menuBar"));
-    menuBar->setGeometry(QRect(0, 0, 600, 20));
+    menuBar->setGeometry(QRect(0, 0, 600, 18));
     menu_File = new QMenu(menuBar);
     menu_File->setObjectName(QString::fromUtf8("menu_File"));
     menu_View = new QMenu(menuBar);
@@ -200,7 +200,6 @@ public:
     menu_Edit->addSeparator();
     menu_Edit->addAction(actionSelect_All);
     menu_Edit->addSeparator();
-    menu_Edit->addAction(actionPr_eference_2);
     menu_Edit->addAction(action_Replace);
     menu_Edit->addAction(actionReplace_In_Files);
     menu_Project->addAction(action_Property);
@@ -258,7 +257,8 @@ public:
     actionDelete->setShortcut(QApplication::translate("MainWindow", "Ctrl+D", 0, QApplication::UnicodeUTF8));
     actionSelect_All->setText(QApplication::translate("MainWindow", "Select All", 0, QApplication::UnicodeUTF8));
     actionSelect_All->setShortcut(QApplication::translate("MainWindow", "Ctrl+A", 0, QApplication::UnicodeUTF8));
-    action_Replace->setText(QApplication::translate("MainWindow", "&Replace", 0, QApplication::UnicodeUTF8));
+    action_Replace->setText(QApplication::translate("MainWindow", "&Find/Replace", 0, QApplication::UnicodeUTF8));
+    action_Replace->setShortcut(QApplication::translate("MainWindow", "Ctrl+F", 0, QApplication::UnicodeUTF8));
     actionClean->setText(QApplication::translate("MainWindow", "Clean Project", 0, QApplication::UnicodeUTF8));
     action_Save->setText(QApplication::translate("MainWindow", "&Save", 0, QApplication::UnicodeUTF8));
     action_Save->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0, QApplication::UnicodeUTF8));

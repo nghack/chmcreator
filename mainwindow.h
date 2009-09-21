@@ -22,6 +22,7 @@
 #include "qmodifyfiledialog.h"
 #include "qreplacefilesdialog.h"
 #include "qhtmleditor.h"
+#include "qfinddialog.h"
 
 namespace Ui
 {
@@ -119,7 +120,9 @@ private:
     QStatusBar *statusBar;
 
     QReplaceFilesDialog* repalceFilesDialog;
+    FindDialog* findDialog;
 private slots:
+    void on_action_Replace_triggered();
     void on_actionSelect_All_triggered();
     void on_actionDelete_triggered();
     void on_action_Redo_triggered();

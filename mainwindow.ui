@@ -24,7 +24,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>20</height>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -73,7 +73,6 @@
     <addaction name="separator"/>
     <addaction name="actionSelect_All"/>
     <addaction name="separator"/>
-    <addaction name="actionPr_eference_2"/>
     <addaction name="action_Replace"/>
     <addaction name="actionReplace_In_Files"/>
    </widget>
@@ -298,7 +297,10 @@
   </action>
   <action name="action_Replace">
    <property name="text">
-    <string>&amp;Replace</string>
+    <string>&amp;Find/Replace</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
    </property>
   </action>
   <action name="actionClean">
