@@ -30,7 +30,8 @@ SOURCES += main.cpp \
     qreplacefilesdialog.cpp \
     qhighlighter.cpp \
     qfinddialog.cpp \
-    qswitchworkspacedialog.cpp
+    qswitchworkspacedialog.cpp \
+    qhtmlsourceeditor.cpp
 INCLUDEPATH += include \
     ../QtChm
 HEADERS += mainwindow.h \
@@ -55,7 +56,8 @@ HEADERS += mainwindow.h \
     qreplacefilesdialog.h \
     qhighlighter.h \
     qfinddialog.h \
-    qswitchworkspacedialog.h
+    qswitchworkspacedialog.h \
+    qhtmlsourceeditor.h
 LIBS += -L../bin \
     -lQtChm
 FORMS += mainwindow.ui \

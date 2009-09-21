@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     settings.setValue(APP_PATH,QCoreApplication::applicationDirPath ());
-    if(settings.value(PROJECT_WORKSPACE).isNull()){
+    if(!settings.contains(WORKSPACE_PATH)){
         QSwitchWorkspaceDialog* dialog = new QSwitchWorkspaceDialog(&settings);
         dialog->exec();
         if(!dialog->isAccepted())

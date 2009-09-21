@@ -20,19 +20,19 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
 
     setTabPosition(QTabWidget::South);
 
-    editor = new QPlainTextEdit(this);
+    editor = new QHTMLSourceEditorCodeEditor(this);
 
     editor->setPlainText(stream.readAll());
-    editor->setStyleSheet("font-size : 16px");
+    //editor->setStyleSheet("font-size : 10px");
     data.close();
 
     highlighter = new Highlighter(editor->document());
 
     browser = new QTextBrowser;
-    browser->setStyleSheet("font-size : 16px");
+    //browser->setStyleSheet("font-size : 10px");
     browser->setHtml(editor->toPlainText());
 
-    addTab(browser,QIcon(":/images/editor.png"),"HTMLEditor");
+    addTab(browser,QIcon(":/images/editor.png"),"Preview");
     addTab(editor,QIcon(":/images/source.png"),"Source");
 
     connect(editor,SIGNAL(textChanged()),this,SLOT(changed()));
