@@ -43,16 +43,12 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     //this->connect(viewTree,SIGNAL(clicked(QModelIndex)),this,SLOT(on_action_NewItem_triggered(QModelIndex)));
     mdiArea.setViewMode(QMdiArea::TabbedView);
 
-    /*QToolButton* closeButton = new QToolButton();
-    closeButton->setIcon(QIcon(":/images/close.png"));
-    closeButton->adjustSize();
-    connect(closeButton, SIGNAL(clicked()), &mdiArea, SLOT(closeActiveSubWindow ()));
-    mdiArea.setCornerWidget(closeButton);*/
-
     setCentralWidget(&mdiArea);
 
     setWindowState(Qt::WindowMaximized);
 
+    rect = geometry();
+    setBaseSize(rect.width(),rect.height());
     connect((viewTree), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_action_TreeView_Clicked_triggered(const QModelIndex &)));
     connect(pro,SIGNAL(finished(int)),this,SLOT(console(int)));
 }
