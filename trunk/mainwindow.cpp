@@ -14,6 +14,9 @@ MainWindow::MainWindow(QString app,QWidget *parent)
 {
     ui->setupUi(this);
     setWindowTitle(tr("chmcreator"));
+
+    findDialog = new FindDialog(this);
+
     pro = new QProcess;
     repalceFilesDialog=0;
     createMenus();
@@ -569,4 +572,9 @@ void MainWindow::on_actionSelect_All_triggered()
     QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
     QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
     editor->textEditor()->selectAll();
+}
+
+void MainWindow::on_action_Replace_triggered()
+{
+    findDialog->exec();
 }
