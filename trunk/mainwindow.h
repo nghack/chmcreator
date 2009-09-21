@@ -65,6 +65,7 @@ private:
     //QTabEditor* centerView;
     NewWizard wizard;
 
+    QVector<CHMProject*> projects;
     CHMProject* currentProject;
 
     QProcess* pro;
