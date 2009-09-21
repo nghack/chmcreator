@@ -4,6 +4,7 @@
 #include <QtGui>
 #include <QWebView>
 #include "qhighlighter.h"
+#include "qhtmlsourceeditor.h"
 class QHTMLEditor : public QTabWidget
 {
     Q_OBJECT
@@ -41,7 +42,7 @@ private:
     QString filename;
     QTextDocument* document;
     QTextBrowser* browser;
-    QPlainTextEdit* editor;
+    QHTMLSourceEditorCodeEditor* editor;
     int value;
     bool iseditable;
     bool isundoable;
