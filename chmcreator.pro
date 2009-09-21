@@ -29,7 +29,8 @@ SOURCES += main.cpp \
     qlocalemap.cpp \
     qreplacefilesdialog.cpp \
     qhighlighter.cpp \
-    qfinddialog.cpp
+    qfinddialog.cpp \
+    qswitchworkspacedialog.cpp
 INCLUDEPATH += include \
     ../QtChm
 HEADERS += mainwindow.h \
@@ -53,12 +54,14 @@ HEADERS += mainwindow.h \
     qlocalemap.h \
     qreplacefilesdialog.h \
     qhighlighter.h \
-    qfinddialog.h
+    qfinddialog.h \
+    qswitchworkspacedialog.h
 LIBS += -L../bin \
     -lQtChm
 FORMS += mainwindow.ui \
     qmodifyfiledialog.ui \
-    newfiledialog.ui
+    newfiledialog.ui \
+    qswitchworkspacedialog.ui
 RESOURCES += qt.qrc
 win32:RC_FILE += winresource.rc
 TRANSLATIONS = Language.ts
