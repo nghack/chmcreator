@@ -12,24 +12,28 @@ class GeneralTab : public QWidget
 
 public:
     GeneralTab(QSettings* setting=0,QWidget *parent = 0);
+    void save();
 };
 
 class ButtonsPage : public QWidget
 {
 public:
     ButtonsPage(QSettings* setting,QWidget *parent = 0);
+    void save();
 };
 
 class WindowPage : public QWidget
 {
 public:
     WindowPage(QSettings* setting,QWidget *parent = 0);
+    void save();
 };
 
 class ComplierPage : public QWidget
 {
 public:
     ComplierPage(QSettings* setting,QWidget *parent = 0);
+    void save();
 };
 //! [0]
 
@@ -41,6 +45,7 @@ class PositionPage : public QWidget
 
 public:
     PositionPage(QSettings* setting, QWidget *parent = 0);
+    void save();
 };
 //! [1]
 
@@ -52,6 +57,7 @@ class NavPage : public QWidget
 
 public:
     NavPage(QSettings* setting,QWidget *parent = 0);
+    void save();
 };
 
 class StylesPage : public QWidget
@@ -60,6 +66,7 @@ class StylesPage : public QWidget
 
 public:
     StylesPage(QSettings* setting,QWidget *parent = 0);
+    void save();
 };
 
 class MergePage : public QWidget
@@ -69,20 +76,21 @@ class MergePage : public QWidget
     QListWidget* listWidget;
 public:
     MergePage(QSettings* setting, QWidget *parent = 0);
+    void save();
 private slots:
     void add();
     void remove();
 };
 
-class QPropertyDialog : public QDialog
+/*class QPropertyDialog : public QDialog
 {
     Q_OBJECT
 
 public:
     QPropertyDialog(const QString &fileName, QWidget *parent = 0);
-
+    void save();
 private:
     QTabWidget *tabWidget;
     QDialogButtonBox *buttonBox;
-};
+};*/
 #endif

@@ -26,7 +26,13 @@ ButtonsPage::ButtonsPage(QSettings* setting,QWidget *parent)
 
     setLayout(mainLayout);
 }
+void ButtonsPage::save(){
 
+}
+
+void ComplierPage::save(){
+
+}
 ComplierPage::ComplierPage(QSettings* setting,QWidget *parent)
     : QWidget(parent)
 {
@@ -74,6 +80,10 @@ WindowPage::WindowPage(QSettings* setting,QWidget *parent)
 {
 
 }
+void WindowPage::save(){
+
+}
+
 
 GeneralTab::GeneralTab(QSettings* setting,QWidget *parent)
     : QWidget(parent)
@@ -152,7 +162,9 @@ GeneralTab::GeneralTab(QSettings* setting,QWidget *parent)
     setLayout(mainLayout);
 }
 
-//! [7]
+void PositionPage::save(){
+
+}
 PositionPage::PositionPage(QSettings* setting, QWidget *parent)
     : QWidget(parent)
 {
@@ -177,7 +189,9 @@ PositionPage::PositionPage(QSettings* setting, QWidget *parent)
     setLayout(mainLayout);
 }
 //! [7]
+void NavPage::save(){
 
+}
 //! [8]
 NavPage::NavPage(QSettings* setting,QWidget *parent)
     : QWidget(parent)
@@ -208,6 +222,10 @@ NavPage::NavPage(QSettings* setting,QWidget *parent)
     mainLayout->addStretch(1);
 
     setLayout(mainLayout);
+}
+
+void StylesPage::save(){
+
 }
 StylesPage::StylesPage(QSettings* setting,QWidget *parent)
         : QWidget(parent)
@@ -263,6 +281,11 @@ StylesPage::StylesPage(QSettings* setting,QWidget *parent)
 
     setLayout(mainLayout);
 }
+
+void MergePage::save(){
+
+}
+
 MergePage::MergePage(QSettings* setting, QWidget *parent)
         : QWidget(parent)
 {
