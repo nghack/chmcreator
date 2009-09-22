@@ -28,6 +28,7 @@ private:
     QTreeWidget *contentsWidget;
     QStackedWidget *pagesWidget;
     QMap<QTreeWidgetItem*,QWidget*> map;
+    QSettings* setting;
 };
 
 #endif

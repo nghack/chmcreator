@@ -5,10 +5,10 @@
 
 QProjectPropertiesDialog::QProjectPropertiesDialog(QSettings* setting)
 {
+    this->setting = setting;
     contentsWidget = new QTreeWidget;
     contentsWidget->header()->hide();
 
-    QFileInfo fileInfo(".");
     pagesWidget = new QStackedWidget;
     pagesWidget->addWidget(new GeneralTab(setting));
     pagesWidget->addWidget(new ComplierPage(setting));
