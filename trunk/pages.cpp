@@ -2,6 +2,8 @@
 
 #include "pages.h"
 
+extern QSettings settings;
+
 ButtonsPage::ButtonsPage(QSettings* setting,QWidget *parent)
     : QWidget(parent)
 {
@@ -88,32 +90,35 @@ void WindowPage::save(){
 GeneralTab::GeneralTab(QSettings* setting,QWidget *parent)
     : QWidget(parent)
 {
+    settings = setting;
     QLabel *fileNameLabel = new QLabel(tr("Title:"));
-    QLineEdit *fileNameEdit = new QLineEdit(setting==0?"":setting->value(PROJECT_TITLE_CHM).toString());
+    fileNameEdit = new QLineEdit(setting==0?"":setting->value(PROJECT_TITLE_CHM).toString());
 
     QLabel *targetLabel = new QLabel(tr("Compiled File:"));
-    QLineEdit *targetNameEdit = new QLineEdit(setting==0?"":setting->value(PROJECT_TARGET).toString());
+    targetNameEdit = new QLineEdit(setting==0?"":setting->value(PROJECT_TARGET).toString());
 
     QLabel *contentsLabel = new QLabel(tr("Contents File:"));
-    QLineEdit *contentsNameEdit = new QLineEdit(setting==0?"":setting->value(PROJECT_CONT_FILE).toString());
+    contentsNameEdit = new QLineEdit(setting==0?"":setting->value(PROJECT_CONT_FILE).toString());
 
     QLabel *indexLabel = new QLabel(tr("Indexes File:"));
-    QLineEdit *indexNameEdit = new QLineEdit(setting==0?"":setting->value(PROJECT_INDEX).toString());
+    indexNameEdit = new QLineEdit(setting==0?"":setting->value(PROJECT_INDEX).toString());
 
     QLabel *logLabel = new QLabel(tr("Log File:"));
-    QLineEdit *logNameEdit = new QLineEdit(setting==0?"":setting->value(PROJECT_LOG_FILE).toString());
+    logNameEdit = new QLineEdit(setting==0?"":setting->value(PROJECT_LOG_FILE).toString());
 
     QLabel *pathLabel = new QLabel(tr("Default File:"));
-    QComboBox *pathValueLabel = new QComboBox();
+    pathValueLabel = new QComboBox();
+    pathValueLabel->setEditable(true);
 
     QDir directory = QDir(setting->value(PROJECT_PATH).toString());
     directory.setCurrent(setting->value(PROJECT_PATH).toString());
-    pathValueLabel->addItems(directory.entryList(QStringList("*"),
-                                QDir::Files | QDir::NoSymLinks | QDir::AllDirs));
+    QStringList fileList = directory.entryList(QDir::Files);
+    if(!fileList.contains(setting->value(PROJECT_DEFAULT_FILE).toString())){
+        fileList.insert(0,setting->value(PROJECT_DEFAULT_FILE).toString());
+    }
 
-
-    QLabel *sizeLabel = new QLabel(tr("Default Window:"));
-    QComboBox *sizeValueLabel = new QComboBox;
+    pathValueLabel->addItems(fileList);
+    pathValueLabel->setCurrentIndex(fileList.indexOf(setting->value(PROJECT_DEFAULT_FILE).toString()));
 
     QGroupBox* groupBox = new QGroupBox;
     groupBox->setTitle(tr("International Setting"));
@@ -121,16 +126,21 @@ GeneralTab::GeneralTab(QSettings* setting,QWidget *parent)
     QGridLayout *groupLayout = new QGridLayout;
 
     QLabel *languageLabel = new QLabel(tr("Language:"));
-    QComboBox* languageBox = new QComboBox;
+    languageBox = new QComboBox;
     QLocaleMap localeMap;
     QList<QString> tempContry = localeMap.getLocale().keys();
     foreach(QString contry,tempContry){
-        languageBox->addItem(contry);
+        languageBox->addItem(contry);//PROJECT_LANG
     }
 
+    languageBox->setCurrentIndex(localeMap.getLocale().values().indexOf(setting->value(PROJECT_LANG).toString()));
+
     QLabel *fontLabel = new QLabel(tr("Font:"));
-    QLineEdit* fontBox = new QLineEdit;
-    QPushButton* fontButton = new QPushButton;
+    fontBox = new QLineEdit;
+    fontBox->setText(setting->value(PROJECT_FONT).toString());
+    QPushButton* fontButton = new QPushButton(tr("Browser..."));
+
+    connect(fontButton,SIGNAL(clicked()),this,SLOT(setFont()));
 
     groupLayout->addWidget(languageLabel, 0, 0);
     groupLayout->addWidget(languageBox, 1, 0,1, 2);
@@ -155,13 +165,34 @@ GeneralTab::GeneralTab(QSettings* setting,QWidget *parent)
     mainLayout->addWidget(logNameEdit);
     mainLayout->addWidget(pathLabel);
     mainLayout->addWidget(pathValueLabel);
-    mainLayout->addWidget(sizeLabel);
-    mainLayout->addWidget(sizeValueLabel);
     mainLayout->addWidget(groupBox);
     mainLayout->addStretch(1);
     setLayout(mainLayout);
 }
 
+void GeneralTab::setDefaultFile(){
+}
+void GeneralTab::setFont(){
+    bool ok;
+    QFont font = QFontDialog::getFont(&ok, QFont(fontBox->text()), this);
+    if (ok) {
+        fontBox->setText(font.key());
+    }
+}
+void GeneralTab::save(){
+    settings->setValue(PROJECT_TITLE_CHM,fileNameEdit->text());
+    settings->setValue(PROJECT_TARGET,targetNameEdit->text());
+    settings->setValue(PROJECT_CONT_FILE,contentsNameEdit->text());//
+    settings->setValue(PROJECT_INDEX,indexNameEdit->text());
+    settings->setValue(PROJECT_LOG_FILE,logNameEdit->text());
+    settings->setValue(PROJECT_DEFAULT_FILE,pathValueLabel->currentText());
+
+    QLocaleMap localMap;
+    //QString key = languageBox->itemText(field("projectLanuage").toInt());
+    settings->setValue(PROJECT_LANG,localMap.getLocale().value(languageBox->currentText()));
+    settings->setValue(PROJECT_FONT,fontBox->text());
+
+}
 void PositionPage::save(){
 
 }

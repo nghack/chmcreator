@@ -4,6 +4,7 @@
 #include <QComboBox>
 #include "colorlisteditor.h"
 
+
 QT_BEGIN_NAMESPACE
 class QColor;
 class QWidget;
