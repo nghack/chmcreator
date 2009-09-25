@@ -323,6 +323,7 @@ void MainWindow::loadProject(const QString& proFile){
     currentProject = new CHMProject(proFile);
 
     settings.setValue(PROJECT_PATH,currentProject->getProjectPath());
+    currentProject->setValue(PROJECT_PATH,currentProject->getProjectPath());
 
     QTreeView* treeView = (QTreeView*)dockProject->widget();
 

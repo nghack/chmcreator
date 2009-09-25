@@ -1,7 +1,6 @@
 #include <QtGui>
 
 #include "configdialog.h"
-#include "pages.h"
 
 QProjectPropertiesDialog::QProjectPropertiesDialog(QSettings* setting)
 {
@@ -10,15 +9,26 @@ QProjectPropertiesDialog::QProjectPropertiesDialog(QSettings* setting)
     contentsWidget->header()->hide();
 
     pagesWidget = new QStackedWidget;
-    pagesWidget->addWidget(new GeneralTab(setting));
-    pagesWidget->addWidget(new ComplierPage(setting));
-    pagesWidget->addWidget(new WindowPage(setting));
 
-    pagesWidget->addWidget(new ButtonsPage(setting));//Buttons
-    pagesWidget->addWidget(new PositionPage(setting));//Position
-    pagesWidget->addWidget(new NavPage(setting));//Nav
-    pagesWidget->addWidget(new StylesPage(setting));//Styles
-    pagesWidget->addWidget(new MergePage(setting));
+    generalTab = new GeneralTab(setting);
+    complierPage = new ComplierPage(setting);
+    windowPage = new WindowPage(setting);
+
+    buttonsPage = new ButtonsPage(setting);//Buttons
+    positionPage = new PositionPage(setting);//Position
+    navPage = new NavPage(setting);//Nav
+    stylesPage = new StylesPage(setting);//Styles
+    mergePage = new MergePage(setting);
+
+    pagesWidget->addWidget(generalTab);
+    pagesWidget->addWidget(complierPage);
+    pagesWidget->addWidget(windowPage);
+
+    pagesWidget->addWidget(buttonsPage);//Buttons
+    pagesWidget->addWidget(positionPage);//Position
+    pagesWidget->addWidget(navPage);//Nav
+    pagesWidget->addWidget(stylesPage);//Styles
+    pagesWidget->addWidget(mergePage);
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox;
     buttonBox->addButton(QDialogButtonBox::Ok);
@@ -27,6 +37,7 @@ QProjectPropertiesDialog::QProjectPropertiesDialog(QSettings* setting)
     createIcons();
 
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(close()));
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(save()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(close()));
 
     QHBoxLayout *horizontalLayout = new QHBoxLayout;
@@ -85,11 +96,15 @@ void QProjectPropertiesDialog::changePage(QTreeWidgetItem *current, QTreeWidgetI
         current = previous;
     pagesWidget->setCurrentWidget(map.value(current));
 }
-void QProjectPropertiesDialog::accept ()
+void QProjectPropertiesDialog::save ()
 {
-    QDialog::accept();
-}
-void QProjectPropertiesDialog::reject ()
-{
-    QDialog::reject();
+    generalTab->save();
+    complierPage->save();
+    windowPage->save();
+
+    buttonsPage->save();
+    positionPage->save();
+    navPage->save();
+    stylesPage->save();
+    mergePage->save();
 }

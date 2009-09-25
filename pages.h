@@ -5,6 +5,7 @@
 #include "chmproject.h"
 #include "qlocalemap.h"
 #include "global.h"
+#include "qmodifyfiledialog.h"
 
 class GeneralTab : public QWidget
 {
@@ -12,7 +13,20 @@ class GeneralTab : public QWidget
 
 public:
     GeneralTab(QSettings* setting=0,QWidget *parent = 0);
+
+    QLineEdit *fileNameEdit;
+    QLineEdit *targetNameEdit;
+    QLineEdit *contentsNameEdit;
+    QLineEdit *indexNameEdit;
+    QLineEdit *logNameEdit;
+    QComboBox *pathValueLabel;
+    QLineEdit* fontBox;
+    QComboBox* languageBox;
     void save();
+    QSettings* settings;
+private slots:
+    void setFont();
+    void setDefaultFile();
 };
 
 class ButtonsPage : public QWidget

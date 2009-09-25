@@ -2,7 +2,8 @@
 #define CONFIGDIALOG_H
 
 #include <QtGui>
-
+#include "pages.h"
+#include "qmodifyfiledialog.h"
 QT_BEGIN_NAMESPACE
 class QListWidget;
 class QListWidgetItem;
@@ -18,8 +19,7 @@ public:
 
 public slots:
     void changePage(QTreeWidgetItem *current, QTreeWidgetItem *previous);
-    virtual void accept ();
-    virtual void reject ();
+    void save();
 private:
     void createIcons();
     QTreeWidgetItem* createItem(QTreeWidgetItem *widget,const QString& title);
@@ -29,6 +29,16 @@ private:
     QStackedWidget *pagesWidget;
     QMap<QTreeWidgetItem*,QWidget*> map;
     QSettings* setting;
+
+    GeneralTab* generalTab;
+    ComplierPage* complierPage;
+    WindowPage* windowPage;
+
+    ButtonsPage* buttonsPage;//Buttons
+    PositionPage* positionPage;//Position
+    NavPage* navPage;//Nav
+    StylesPage* stylesPage;//Styles
+    MergePage* mergePage;
 };
 
 #endif
