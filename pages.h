@@ -24,6 +24,8 @@ public:
     QComboBox* languageBox;
     void save();
     QSettings* settings;
+    QModifyFileDialog* modifyFileDialog;
+    QPushButton* butn;
 private slots:
     void setFont();
     void setDefaultFile();
