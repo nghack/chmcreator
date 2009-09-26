@@ -193,7 +193,7 @@ SettingPage::SettingPage(QSettings* setting,QWidget *parent)
     fontEditor = new QLineEdit(setting->value(PROJECT_FONT,"123456").toString());
     registerField("projectFont", fontEditor);
 
-    QPushButton* fontButton = new QPushButton;
+    QPushButton* fontButton = new QPushButton("Browser...");
     connect(fontButton,SIGNAL(clicked()),this,SLOT(getFont()));
 
     internationalLayout->addWidget(languageLabel);

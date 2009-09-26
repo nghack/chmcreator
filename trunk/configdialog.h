@@ -10,7 +10,7 @@ class QListWidgetItem;
 class QStackedWidget;
 QT_END_NAMESPACE
 
-        class QProjectPropertiesDialog : public QDialog
+class QProjectPropertiesDialog : public QDialog
 {
     Q_OBJECT
 
@@ -29,6 +29,7 @@ private:
     QStackedWidget *pagesWidget;
     QMap<QTreeWidgetItem*,QWidget*> map;
     QSettings* setting;
+    QModifyFileDialog* modifyFileDialog;
 
     GeneralTab* generalTab;
     ComplierPage* complierPage;

@@ -106,9 +106,21 @@ GeneralTab::GeneralTab(QSettings* setting,QWidget *parent)
     QLabel *logLabel = new QLabel(tr("Log File:"));
     logNameEdit = new QLineEdit(setting==0?"":setting->value(PROJECT_LOG_FILE).toString());
 
+
     QLabel *pathLabel = new QLabel(tr("Default File:"));
+    QHBoxLayout *hlayout = new QHBoxLayout;
+
+    //
     pathValueLabel = new QComboBox();
     pathValueLabel->setEditable(true);
+
+    hlayout->addWidget(pathValueLabel);
+    pathValueLabel->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+
+    butn = new QPushButton("Browser...",this);
+    connect(butn,SIGNAL(clicked()),this,SLOT(setDefaultFile()));
+    hlayout->addWidget(butn);
+
 
     QDir directory = QDir(setting->value(PROJECT_PATH).toString());
     directory.setCurrent(setting->value(PROJECT_PATH).toString());
@@ -164,13 +176,22 @@ GeneralTab::GeneralTab(QSettings* setting,QWidget *parent)
     mainLayout->addWidget(logLabel);
     mainLayout->addWidget(logNameEdit);
     mainLayout->addWidget(pathLabel);
-    mainLayout->addWidget(pathValueLabel);
+    mainLayout->addLayout(hlayout);
     mainLayout->addWidget(groupBox);
     mainLayout->addStretch(1);
     setLayout(mainLayout);
 }
 
 void GeneralTab::setDefaultFile(){
+    QModifyFileDialog dialog;
+    dialog.setModel(settings->value(PROJECT_PATH).toString());
+    dialog.exec();
+    QString file = dialog.getSelectFile(pathValueLabel->currentText());
+    if(file!=pathValueLabel->currentText()){
+        pathValueLabel->insertItem(0,file);
+    }
+    pathValueLabel->setCurrentIndex(0);
+    return;
 }
 void GeneralTab::setFont(){
     bool ok;
