@@ -341,8 +341,9 @@ void MainWindow::on_action_Compile_triggered()
     currentProject->toProjectFile();
     QString projectName = currentProject->value(PROJECT_EXT_NAME).toString();
 
-    QString command(myapp);
-    command.append("/hhc.exe ");
+    QString command("\"");
+    command.append(myapp);
+    command.append("/hhc.exe\" ");
 
     QString chmProjectFile = " \"";
     chmProjectFile.append(currentProject->getProjectPath());
