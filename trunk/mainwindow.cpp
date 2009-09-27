@@ -12,12 +12,14 @@ static QString tmpFilePath;
 MainWindow::MainWindow(QString app,QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MainWindow),myapp(app),/*centerView(new QTabEditor),*/currentProject(0),property(0)
 {
+    compileProcessDialog = new QProgressDialog(this);
     ui->setupUi(this);
     setWindowTitle(tr("chmcreator"));
 
     findDialog = new FindDialog(this);
 
     pro = new QProcess;
+    connect(pro,SIGNAL(readyRead()),this,SLOT(updateCompileText()));
     repalceFilesDialog=0;
     createMenus();
     createToolBar();
@@ -337,7 +339,6 @@ void MainWindow::on_action_Compile_triggered()
 {
     QDir dir;
     dir.setCurrent(myapp);
-    //((QTextEdit*)dockConsole->widget())->clear();
     currentProject->toProjectFile();
     QString projectName = currentProject->value(PROJECT_EXT_NAME).toString();
 
@@ -355,8 +356,11 @@ void MainWindow::on_action_Compile_triggered()
     command.append(chmProjectFile.replace("/","\\"));
     qDebug()<<command;
     pro->start(command);
+    compileProcessDialog->exec();
 }
-
+void MainWindow::updateCompileText(){
+    compileProcessDialog->setLabelText(pro->readAllStandardOutput());
+}
 void MainWindow::console(int value)
 {
     QMessageBox::about(0,"Compile Finished!","Compile Finished!");

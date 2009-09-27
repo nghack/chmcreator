@@ -122,6 +122,8 @@ private:
 
     QReplaceFilesDialog* repalceFilesDialog;
     FindDialog* findDialog;
+
+    QProgressDialog* compileProcessDialog;
 private slots:
     void on_action_Replace_triggered();
     void on_actionSelect_All_triggered();
@@ -148,6 +150,7 @@ private slots:
     void on_action_About_triggered();
     void on_action_NewAccepted_triggered();
     void console(int value);
+    void updateCompileText();
     void updateMenus();
 public slots:
     void on_action_TreeView_Clicked_triggered(const QModelIndex &index);
