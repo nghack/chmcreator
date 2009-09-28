@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Tue Sep 22 09:26:43 2009
+** Created: Mon Sep 28 11:54:27 2009
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -60,6 +60,7 @@ public:
     QAction *action_Save;
     QAction *actionSave_All;
     QAction *actionReplace_In_Files;
+    QAction *actionSuggestion;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menu_File;
@@ -150,12 +151,14 @@ public:
         actionSave_All->setObjectName(QString::fromUtf8("actionSave_All"));
         actionReplace_In_Files = new QAction(MainWindow);
         actionReplace_In_Files->setObjectName(QString::fromUtf8("actionReplace_In_Files"));
+        actionSuggestion = new QAction(MainWindow);
+        actionSuggestion->setObjectName(QString::fromUtf8("actionSuggestion"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 800, 19));
+        menuBar->setGeometry(QRect(0, 0, 800, 18));
         menu_File = new QMenu(menuBar);
         menu_File->setObjectName(QString::fromUtf8("menu_File"));
         menu_View = new QMenu(menuBar);
@@ -192,6 +195,7 @@ public:
         menu_Test->addSeparator();
         menu_Test->addAction(action_Run);
         menu_Help->addAction(action_About);
+        menu_Help->addAction(actionSuggestion);
         menu_Edit->addAction(action_Undo);
         menu_Edit->addAction(action_Redo);
         menu_Edit->addSeparator();
@@ -265,6 +269,7 @@ public:
         action_Save->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0, QApplication::UnicodeUTF8));
         actionSave_All->setText(QApplication::translate("MainWindow", "Save All", 0, QApplication::UnicodeUTF8));
         actionReplace_In_Files->setText(QApplication::translate("MainWindow", "Replace In Files", 0, QApplication::UnicodeUTF8));
+        actionSuggestion->setText(QApplication::translate("MainWindow", "Suggestion to us", 0, QApplication::UnicodeUTF8));
         menu_File->setTitle(QApplication::translate("MainWindow", "&File", 0, QApplication::UnicodeUTF8));
         menu_View->setTitle(QApplication::translate("MainWindow", "&View", 0, QApplication::UnicodeUTF8));
         menu_Test->setTitle(QApplication::translate("MainWindow", "&Build", 0, QApplication::UnicodeUTF8));
