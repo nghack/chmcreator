@@ -23,6 +23,7 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
     editor = new QHTMLSourceEditorCodeEditor(this);
 
     editor->setPlainText(stream.readAll());
+    editor->setWordWrapMode(QTextOption::NoWrap);
     //editor->setStyleSheet("font-size : 10px");
     data.close();
 
