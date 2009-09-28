@@ -23,7 +23,29 @@
 #include "qreplacefilesdialog.h"
 #include "qhtmleditor.h"
 #include "qfinddialog.h"
-
+#include "log4qt/logger.h"
+#include "log4qt/basicconfigurator.h"
+#include "log4qt/consoleappender.h"
+#include "log4qt/dailyrollingfileappender.h"
+#include "log4qt/fileappender.h"
+#include "log4qt/helpers/configuratorhelper.h"
+#include "log4qt/helpers/datetime.h"
+#include "log4qt/helpers/factory.h"
+#include "log4qt/helpers/initialisationhelper.h"
+#include "log4qt/helpers/optionconverter.h"
+#include "log4qt/helpers/patternformatter.h"
+#include "log4qt/helpers/properties.h"
+#include "log4qt/logmanager.h"
+#include "log4qt/loggerrepository.h"
+#include "log4qt/patternlayout.h"
+#include "log4qt/propertyconfigurator.h"
+#include "log4qt/rollingfileappender.h"
+#include "log4qt/simplelayout.h"
+#include "log4qt/ttcclayout.h"
+#include "log4qt/varia/denyallfilter.h"
+#include "log4qt/varia/levelmatchfilter.h"
+#include "log4qt/varia/levelrangefilter.h"
+#include "log4qt/varia/stringmatchfilter.h"
 namespace Ui
 {
     class MainWindow;
@@ -33,13 +55,15 @@ using namespace QtConcurrent;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+    LOG4QT_DECLARE_QCLASS_LOGGER
 public:
     MainWindow(QString app,QWidget *parent = 0);
     void loadProject(const QString& proFile);
     ~MainWindow();
     void saveHHC();
     static void copy(QString from,QString to);
+    static void copyDir(QString from,QString to);
+    static void copyDirFiles(QString from,QString to);
 private:
     void setCurrentFile(const QString &fileName);
     void updateRecentFileActions();
@@ -125,6 +149,7 @@ private:
 
     QProgressDialog* compileProcessDialog;
 private slots:
+    void on_actionDirectory_As_Project_triggered();
     void on_actionSuggestion_triggered();
     void on_action_Replace_triggered();
     void on_actionSelect_All_triggered();

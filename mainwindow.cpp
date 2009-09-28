@@ -12,6 +12,19 @@ static QString tmpFilePath;
 MainWindow::MainWindow(QString app,QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MainWindow),myapp(app),/*centerView(new QTabEditor),*/currentProject(0),property(0)
 {
+    Log4Qt::FileAppender *fileappender = new Log4Qt::FileAppender();
+    fileappender->setName("FileAppender");
+    fileappender->setFile("log.txt");
+
+    Log4Qt::TTCCLayout *p_layout = new Log4Qt::TTCCLayout();
+    p_layout->setName(QLatin1String("My Layout"));
+    p_layout->activateOptions();
+
+    fileappender->setLayout(p_layout);
+    fileappender->activateOptions();
+//    Log4Qt::Logger::rootLogger()->setAppender(fileappender);
+    logger()->addAppender(fileappender);
+
     compileProcessDialog = new QProgressDialog(this);
     ui->setupUi(this);
     setWindowTitle(tr("chmcreator"));
@@ -278,12 +291,56 @@ void MainWindow::copy(QString from,QString to)
         return;
     }
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(0,"File already exists","File already exists, if replace?",QMessageBox::Yes | QMessageBox::No);
+    reply = QMessageBox::question(0,tr("File already exists"),QString("File %1 already exists, if replace?").arg(to),QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes)
     {
         QFile::remove(to);
         QFile::copy(from,to);
+    }
+}
+void MainWindow::copyDir(QString from,QString to)
+{
+    Log4Qt::Logger::logger(QLatin1String("My Logger"))->info(from);
+    Log4Qt::Logger::logger(QLatin1String("My Logger"))->info(to);
+    QFileInfo fileInfo(from);
+    QDir dirFrom(from);
+    QDir dirTo(to);
+    dirFrom.setCurrent(from);
+    dirTo.setCurrent(to);
+    if(dirTo.exists(fileInfo.fileName())){
+       QMessageBox::StandardButton reply;
+       reply = QMessageBox::question(0,tr("File already exists"),QString("File %1 already exists, if replace?").arg(fileInfo.fileName()),QMessageBox::Yes | QMessageBox::No);
+
+       if (reply == QMessageBox::No)
+       {
+           return;
+       }
+    }
+    dirTo.mkdir(fileInfo.fileName());
+    copyDirFiles(from,to+"/"+fileInfo.fileName());
+}
+void MainWindow::copyDirFiles(QString from,QString to)
+{
+    QDir dirFrom(from);
+    QDir dirTo(to);
+    dirFrom.setCurrent(from);
+    dirTo.setCurrent(to);
+    QStringList fileList = dirFrom.entryList();
+    foreach(QString fileName,fileList){
+        QFileInfo fileInfo(from+"/"+fileName);
+        if(fileName.compare(".")==0||fileName.compare("..")==0){
+            continue;
+        }
+
+        if(fileInfo.isDir()){
+            if(!dirTo.exists(fileName)){
+                dirTo.mkdir(fileName);
+            }
+            copyDirFiles(from+"/"+fileName,to+"/"+fileName);
+        }else{
+            copy(from+"/"+fileName,to+"/"+fileName);
+        }
     }
 }
 void MainWindow::createNewWizard(){
@@ -328,7 +385,6 @@ void MainWindow::loadProject(const QString& proFile){
     currentProject->setValue(PROJECT_PATH,currentProject->getProjectPath());
 
     QTreeView* treeView = (QTreeView*)dockProject->widget();
-
     treeView->setModel(currentProject->getHHCObject()->getTreeModel());
 
     QString title = currentProject->getProjectName();
@@ -584,4 +640,12 @@ void MainWindow::on_action_Replace_triggered()
 void MainWindow::on_actionSuggestion_triggered()
 {
     QDesktopServices::openUrl(QUrl("http://www.ibooks.org.cn/index.php/2009-08-17-09-39-53", QUrl::TolerantMode));
+}
+
+void MainWindow::on_actionDirectory_As_Project_triggered()
+{
+    QString dirString = QFileDialog::getExistingDirectory(this,"Select Directory",".");
+    if(dirString==QString::null)
+        return;
+    copyDir(dirString,"E:/qtstudy/bin/workspace");
 }

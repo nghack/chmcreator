@@ -49,6 +49,7 @@ private slots:
 public slots:
      void clear();
      void showMenu(const QPoint& point);
+     void showHeaderMenu(QModelIndex i);
 //     void headerClicked(const QModelIndex& index);
  signals:
      void changed(const QMimeData *mimeData = 0);

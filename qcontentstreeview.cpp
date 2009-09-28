@@ -8,29 +8,15 @@ QContentsTreeView::QContentsTreeView(MainWindow* mainWindow)
 {
     this->mainWindow = mainWindow;
     createActions();
-    //setAcceptDrops(false);
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(this,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(showMenu(QPoint)));
-//    connect(header(),SIGNAL(clicked(QModelIndex)),this,SLOT(headerClicked(QModelIndex)));
+    connect(header(),SIGNAL(clicked(QModelIndex)),this,SLOT(showHeaderMenu(QModelIndex)));
 }
-//void QContentsTreeView::headerClicked(const QModelIndex& index)
-//{
-//    QModelIndex current = currentIndex();
-//    if(index.column()==0){
-//        if(current.isValid()){
-//            QTreeItem* item = (QTreeItem*)current.internalPointer();
-//            QList<QTreeItem*> rows = item->childItemList();
-//            qStableSort(rows);
-//        }
-//    }else if(index.column()==1){
-//        if(current.isValid()){
-//            QTreeItem* item = (QTreeItem*)current.internalPointer();
-//            QList<QTreeItem*> rows = item->childItemList();
-//            qStableSort(rows);
-//        }
-//    }
-//}
+
+void QContentsTreeView::showHeaderMenu(QModelIndex i){
+
+}
 void QContentsTreeView::showMenu(const QPoint& point)
 {
     QModelIndex index = indexAt(point);
