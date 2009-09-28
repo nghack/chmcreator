@@ -16,7 +16,7 @@ public:
     ~HHCObject();
     QTreeModel* getTreeModel(){return treeModel;}
     void save();
-    void fromDir(int level,QString dir);
+    void fromDir(int level,QString dir,QString temp);
     void saveAs(const QString fileName);
 private slots:
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
