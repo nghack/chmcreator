@@ -125,6 +125,7 @@ private:
 
     QProgressDialog* compileProcessDialog;
 private slots:
+    void on_actionSuggestion_triggered();
     void on_action_Replace_triggered();
     void on_actionSelect_All_triggered();
     void on_actionDelete_triggered();

@@ -580,3 +580,8 @@ void MainWindow::on_action_Replace_triggered()
 {
     findDialog->exec();
 }
+
+void MainWindow::on_actionSuggestion_triggered()
+{
+    QDesktopServices::openUrl(QUrl("http://www.ibooks.org.cn/index.php/2009-08-17-09-39-53", QUrl::TolerantMode));
+}
