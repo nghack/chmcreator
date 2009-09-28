@@ -37,21 +37,32 @@ void CHMProject::toProjectFile(){
     QTextStream outputProject(&projectFile);
     outputProject.setCodec(QTextCodec::codecForName("gb2312"));
 
+    QStringList mergeList = value(MERGE_FILES_KEY).toStringList();
+
     QStringList keyList = childGroups();
     foreach(QString key,keyList){
         outputProject <<"[";
         outputProject <<key;
         outputProject <<"]\r\n";
         beginGroup(key);
-        QStringList childKeyList = childKeys();
-        foreach(QString childKey,childKeyList){
-            outputProject <<childKey;
-            outputProject <<"=";
-            outputProject <<value(childKey).toString();
-            outputProject <<"\r\n";
+        if(MERGE_FILES.compare(key,Qt::CaseInsensitive)==0){
+            foreach(QString value,mergeList){
+                outputProject <<value;
+                outputProject <<"\r\n";
+            }
+        }else{
+            QStringList childKeyList = childKeys();
+            foreach(QString childKey,childKeyList){
+                outputProject <<childKey;
+                outputProject <<"=";
+                outputProject <<value(childKey).toString();
+                outputProject <<"\r\n";
+            }
         }
         endGroup();
     }
+
+
     outputProject.flush();
     projectFile.close();
 }

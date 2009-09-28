@@ -50,6 +50,14 @@ class ComplierPage : public QWidget
 public:
     ComplierPage(QSettings* setting,QWidget *parent = 0);
     void save();
+private:
+    QSettings* settings;
+    QComboBox* compatibiBox;
+    QCheckBox* dontIncludeFolder;// = new QCheckBox(tr("Don't Include Folder in Compiled File."));
+    QCheckBox* enhancedDecomp;// = new QCheckBox(tr("Support Enhanced Decompliation."));
+    QCheckBox* fullSearchSpt;// = new QCheckBox(tr("Full Text Search Support."));
+    QCheckBox* binaryIndex;// = new QCheckBox(tr("Create Binary Index."));
+    QCheckBox* binaryToc;// = new QCheckBox(tr("Create Binary TOC(Large TOC File.)"));
 };
 //! [0]
 
@@ -93,6 +101,7 @@ class MergePage : public QWidget
 public:
     MergePage(QSettings* setting, QWidget *parent = 0);
     void save();
+    QSettings* settings;
 private slots:
     void add();
     void remove();
