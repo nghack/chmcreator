@@ -374,6 +374,30 @@ void MainWindow::compile()
 //    QProcess pro;
 //    pro.startDetached(QString("hhc ")+currentProject->getProjectFileName());
 }
+void MainWindow::loadDir(const QString& dirName){
+    QFileInfo fileInfo(dirName);
+    /**HHC File*/
+    HHCObject hhcObject(fileInfo.fileName(),dirName);
+    hhcObject.saveAs(dirName+"/"+ "index.hhc");
+
+    /**Project File*/
+    CHMProject setting(dirName+"/"+fileInfo.fileName()+".chmproject");
+
+    QSettings templateSetting(myapp+"/config/template.chmproject",QSettings::IniFormat);
+    QStringList keyList = templateSetting.allKeys();
+    foreach(QString key,keyList){
+        setting.setValue(key,templateSetting.value(key));
+    }
+
+    setting.setValue(PROJECT_EXT_NAME,fileInfo.fileName());
+    setting.sync();
+
+
+    /**Default HHC HHK File Sync*/
+    copy(myapp +"/config/index.hhk",dirName+"/"+ "/index.hhk");
+
+    loadProject(setting.getProjectFileName());
+}
 void MainWindow::loadProject(const QString& proFile){
     setCurrentFile(proFile);
     if(currentProject!=0){
@@ -648,4 +672,7 @@ void MainWindow::on_actionDirectory_As_Project_triggered()
     if(dirString==QString::null)
         return;
     copyDir(dirString,"E:/qtstudy/bin/workspace");
+
+    QFileInfo fileInfo(dirString);
+    loadDir("E:/qtstudy/bin/workspace/"+fileInfo.fileName());
 }

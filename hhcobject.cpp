@@ -7,11 +7,33 @@ HHCObject::HHCObject(QString title,QString fileName)
 
     treeModel = new QTreeModel(title);
 
-    QTreeModelHandler handler(treeModel);
-    QHHCParser parser;
-    parser.parse(fileName,&handler);
+    if(fileName.endsWith(".hhc")){
+        QTreeModelHandler handler(treeModel);
+        QHHCParser parser;
+        parser.parse(fileName,&handler);
+    }else{
+        QFileInfo fileInfo(fileName);
+        if(fileInfo.isDir())
+            fromDir(0,fileName);
+    }
 
     connect(treeModel,SIGNAL(dataChanged(QModelIndex,QModelIndex)),this,SLOT(dataChanged(QModelIndex,QModelIndex)));
+}
+void HHCObject::fromDir(int level,QString dir){
+    QDir dirModel;
+    dirModel.setCurrent(dir);
+    QStringList list = dirModel.entryList();
+    foreach(QString fileName,list){        
+        if(fileName.compare(".")==0||fileName.compare("..")==0){
+            continue;
+        }
+        QFileInfo fileInfo(fileName);
+        if(fileInfo.isDir()){
+            fromDir(level+4,fileName);
+        }else{
+           treeModel->addModelData(level, fileName,fileName);
+        }
+    }
 }
 HHCObject::~HHCObject()
 {
