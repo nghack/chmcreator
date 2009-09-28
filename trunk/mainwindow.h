@@ -59,6 +59,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QString app,QWidget *parent = 0);
     void loadProject(const QString& proFile);
+    void loadDir(const QString& proFile);
     ~MainWindow();
     void saveHHC();
     static void copy(QString from,QString to);
