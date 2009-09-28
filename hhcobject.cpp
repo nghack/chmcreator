@@ -14,12 +14,12 @@ HHCObject::HHCObject(QString title,QString fileName)
     }else{
         QFileInfo fileInfo(fileName);
         if(fileInfo.isDir())
-            fromDir(0,fileName);
+            fromDir(0,fileName,"");
     }
 
     connect(treeModel,SIGNAL(dataChanged(QModelIndex,QModelIndex)),this,SLOT(dataChanged(QModelIndex,QModelIndex)));
 }
-void HHCObject::fromDir(int level,QString dir){
+void HHCObject::fromDir(int level,QString dir,QString temp){
     QDir dirModel;
     dirModel.setCurrent(dir);
     QStringList list = dirModel.entryList();
@@ -27,11 +27,13 @@ void HHCObject::fromDir(int level,QString dir){
         if(fileName.compare(".")==0||fileName.compare("..")==0){
             continue;
         }
-        QFileInfo fileInfo(fileName);
+        QFileInfo fileInfo(dir+"/"+fileName);
+        QString absDir = temp.length()>0?temp+"/"+fileName:fileName;
+        treeModel->addModelData(level, fileName,absDir);
         if(fileInfo.isDir()){
-            fromDir(level+4,fileName);
-        }else{
-           treeModel->addModelData(level, fileName,fileName);
+            level++;
+            fromDir(level*4,dir+"/"+fileName,absDir);
+            level--;
         }
     }
 }
