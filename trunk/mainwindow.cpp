@@ -301,8 +301,6 @@ void MainWindow::copy(QString from,QString to)
 }
 void MainWindow::copyDir(QString from,QString to)
 {
-    Log4Qt::Logger::logger(QLatin1String("My Logger"))->info(from);
-    Log4Qt::Logger::logger(QLatin1String("My Logger"))->info(to);
     QFileInfo fileInfo(from);
     QDir dirFrom(from);
     QDir dirTo(to);
@@ -390,6 +388,7 @@ void MainWindow::loadDir(const QString& dirName){
     }
 
     setting.setValue(PROJECT_EXT_NAME,fileInfo.fileName());
+    setting.setValue(PROJECT_TARGET,fileInfo.fileName()+".chm");
     setting.sync();
 
 
@@ -671,7 +670,7 @@ void MainWindow::on_actionDirectory_As_Project_triggered()
     QString dirString = QFileDialog::getExistingDirectory(this,"Select Directory",".");
     if(dirString==QString::null)
         return;
-    QString workSpace = settings.value(PROJECT_WORKSPACE).toString();
+    QString workSpace = settings.value(WORKSPACE_PATH).toString();
     copyDir(dirString,workSpace);
 
     QFileInfo fileInfo(dirString);
