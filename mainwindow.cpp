@@ -436,7 +436,7 @@ void MainWindow::on_action_Compile_triggered()
     command.append(chmProjectFile.replace("/","\\"));
     qDebug()<<command;
     pro->start(command);
-    compileProcessDialog->exec();
+    //compileProcessDialog->exec();
 }
 void MainWindow::updateCompileText(){
     compileProcessDialog->setLabelText(pro->readAllStandardOutput());
@@ -671,8 +671,9 @@ void MainWindow::on_actionDirectory_As_Project_triggered()
     QString dirString = QFileDialog::getExistingDirectory(this,"Select Directory",".");
     if(dirString==QString::null)
         return;
-    copyDir(dirString,"E:/qtstudy/bin/workspace");
+    QString workSpace = settings.value(PROJECT_WORKSPACE).toString();
+    copyDir(dirString,workSpace);
 
     QFileInfo fileInfo(dirString);
-    loadDir("E:/qtstudy/bin/workspace/"+fileInfo.fileName());
+    loadDir(workSpace+"/"+fileInfo.fileName());
 }
