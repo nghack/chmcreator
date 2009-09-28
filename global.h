@@ -27,6 +27,9 @@
 #define PROJECT_LANG "OPTIONS/Language"
 #define PROJECT_TITLE_CHM "OPTIONS/Title"
 
+#define MERGE_FILES QString("MERGE FILES")
+#define MERGE_FILES_KEY QString("MERGE FILES/MERGE_FILES_KEY")
+
 #define INFOTYPES QString("INFOTYPES")
 
 #endif // GLOBAL_H

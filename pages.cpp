@@ -33,15 +33,21 @@ void ButtonsPage::save(){
 }
 
 void ComplierPage::save(){
-
+    settings->setValue(PROJECT_COMP,compatibiBox->currentText());
+    settings->setValue(PROJECT_FLAT,dontIncludeFolder->isChecked());
+    settings->setValue(PROJECT_ENHANCED_DE,enhancedDecomp->isChecked());
+    settings->setValue(PROJECT_FULL_SEARCH,fullSearchSpt->isChecked());
+    settings->setValue(PROJECT_BIN_INDEX,binaryIndex->isChecked());
+    settings->setValue(PROJECT_BIN_TOC,binaryToc->isChecked());
 }
 ComplierPage::ComplierPage(QSettings* setting,QWidget *parent)
     : QWidget(parent)
 {
+    settings = setting;
     QHBoxLayout *compilerLayout = new QHBoxLayout;
     compilerLayout->addWidget(new QLabel(tr("Compatibility:")));
 
-    QComboBox* compatibiBox = new QComboBox;
+    compatibiBox = new QComboBox;
     compatibiBox->addItem("1.0");
     compatibiBox->addItem(tr("1.1 or Later"));//setting->value(PROJECT_DEFAULT_FILE,tr("index.html")).toString()
     compilerLayout->addWidget(compatibiBox);
@@ -54,11 +60,11 @@ ComplierPage::ComplierPage(QSettings* setting,QWidget *parent)
 
     QVBoxLayout *mainComplierLayout = new QVBoxLayout;
 
-    QCheckBox* dontIncludeFolder = new QCheckBox(tr("Don't Include Folder in Compiled File."));
-    QCheckBox* enhancedDecomp = new QCheckBox(tr("Support Enhanced Decompliation."));
-    QCheckBox* fullSearchSpt = new QCheckBox(tr("Full Text Search Support."));
-    QCheckBox* binaryIndex = new QCheckBox(tr("Create Binary Index."));
-    QCheckBox* binaryToc = new QCheckBox(tr("Create Binary TOC(Large TOC File.)"));
+    dontIncludeFolder = new QCheckBox(tr("Don't Include Folder in Compiled File."));
+    enhancedDecomp = new QCheckBox(tr("Support Enhanced Decompliation."));
+    fullSearchSpt = new QCheckBox(tr("Full Text Search Support."));
+    binaryIndex = new QCheckBox(tr("Create Binary Index."));
+    binaryToc = new QCheckBox(tr("Create Binary TOC(Large TOC File.)"));
 
     dontIncludeFolder->setChecked(setting->value(PROJECT_FLAT,false).toBool());
     enhancedDecomp->setChecked(setting->value(PROJECT_ENHANCED_DE,false).toBool());
@@ -335,12 +341,17 @@ StylesPage::StylesPage(QSettings* setting,QWidget *parent)
 }
 
 void MergePage::save(){
-
+    QStringList datas;
+    for(int i=0;i<listWidget->count();i++){
+        datas.append(listWidget->item(i)->text());
+    }
+    settings->setValue(MERGE_FILES_KEY,datas);
 }
 
 MergePage::MergePage(QSettings* setting, QWidget *parent)
         : QWidget(parent)
 {
+    settings = setting;
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->addWidget(new QLabel("Merge Files:"),0,0);
 
@@ -357,14 +368,19 @@ MergePage::MergePage(QSettings* setting, QWidget *parent)
     listWidget = new QListWidget;
     mainLayout->addWidget(listWidget,1,0);
     mainLayout->addLayout(btnsLayout,1,1);
-
+    QStringList mergeList = settings->value(MERGE_FILES_KEY).toStringList();
+    foreach(QString value,mergeList){
+        QListWidgetItem* item = new QListWidgetItem(value,listWidget);
+        listWidget->addItem(item);
+    }
     setLayout(mainLayout);
 }
 void MergePage::add()
 {
-    QString result = QFileDialog::getOpenFileName(0,"Open");
+    QString result = QFileDialog::getOpenFileName(this,tr("Open"),tr("chm File"),tr("CHM File (*.chm)"));
     if(result!=QString::null){
-        QListWidgetItem* item = new QListWidgetItem(result,listWidget);
+        QFileInfo fileInfo(result);
+        QListWidgetItem* item = new QListWidgetItem(fileInfo.fileName(),listWidget);
         listWidget->addItem(item);
     }
 }
