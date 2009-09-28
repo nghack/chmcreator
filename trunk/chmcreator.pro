@@ -68,3 +68,4 @@ RESOURCES += qt.qrc
 win32:RC_FILE += winresource.rc
 TRANSLATIONS = Language.ts
 OTHER_FILES += winresource.rc
+include(log4qt/log4qt.pri)

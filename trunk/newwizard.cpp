@@ -190,7 +190,7 @@ SettingPage::SettingPage(QSettings* setting,QWidget *parent)
     registerField("projectLanuage", languageBox);
 
     QLabel *fontLabel = new QLabel(tr("Font:"));    
-    fontEditor = new QLineEdit(setting->value(PROJECT_FONT,"123456").toString());
+    fontEditor = new QLineEdit(setting->value(PROJECT_FONT,"MS UI Gothic,12,-1,5,50,0,0,0,0,0").toString());
     registerField("projectFont", fontEditor);
 
     QPushButton* fontButton = new QPushButton("Browser...");
