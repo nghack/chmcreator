@@ -57,7 +57,7 @@ QVariant QTreeModel::data(const QModelIndex &index, int role) const
 
     return item->data(index.column());
 }
-QVariant QTreeModel::objectUrl(const QModelIndex &index) const
+/*QVariant QTreeModel::objectUrl(const QModelIndex &index) const
 {
     if (!index.isValid())
         return QVariant();
@@ -65,7 +65,7 @@ QVariant QTreeModel::objectUrl(const QModelIndex &index) const
     QTreeItem *item = static_cast<QTreeItem*>(index.internalPointer());
 
     return item->objectUrl();
-}
+}*/
 //! [3]
 
 //! [4]

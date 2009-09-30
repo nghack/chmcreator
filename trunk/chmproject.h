@@ -8,7 +8,7 @@
 class CHMProject : public QSettings
 {
 public:
-    CHMProject(QString projectFile);
+    CHMProject(QString projectFile,QWidget* parent=0);
     ~CHMProject();
     HHCObject* getHHCObject(){return hhcFile;}
     HHKObject* getHHKObject(){return hhkFile;}
