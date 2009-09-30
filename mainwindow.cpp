@@ -66,6 +66,12 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     setBaseSize(rect.width(),rect.height());
     connect((viewTree), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_action_TreeView_Clicked_triggered(const QModelIndex &)));
     connect(pro,SIGNAL(finished(int)),this,SLOT(console(int)));
+
+    if(settings.value(WORKSPACE_CURRENT_PROJECT).isValid()){
+        QString projectFile = settings.value(WORKSPACE_CURRENT_PROJECT).toString();
+        if(QFileInfo(projectFile).exists())
+            loadProject(projectFile);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -405,6 +411,7 @@ void MainWindow::loadProject(const QString& proFile){
     currentProject = new CHMProject(proFile);
 
     settings.setValue(PROJECT_PATH,currentProject->getProjectPath());
+    settings.setValue(WORKSPACE_CURRENT_PROJECT,proFile);
     currentProject->setValue(PROJECT_PATH,currentProject->getProjectPath());
 
     QTreeView* treeView = (QTreeView*)dockProject->widget();

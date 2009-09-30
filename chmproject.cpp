@@ -1,7 +1,7 @@
 #include "chmproject.h"
 #include "global.h"
 
-CHMProject::CHMProject(QString projectFile):QSettings(projectFile,QSettings::IniFormat),hhcFile(0),hhkFile(0)
+CHMProject::CHMProject(QString projectFile,QWidget* parent):QSettings(projectFile,QSettings::IniFormat,parent),hhcFile(0),hhkFile(0)
 {
     filePath = projectFile;
 

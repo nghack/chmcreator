@@ -86,7 +86,14 @@ ComplierPage::ComplierPage(QSettings* setting,QWidget *parent)
 WindowPage::WindowPage(QSettings* setting,QWidget *parent)
     : QWidget(parent)
 {
+    QLabel* label = new QLabel(this);
+    label->setText("<b>Window Style Define</b><br/>Window Style");
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->addWidget(label);
+    layout->addWidget(label);
+    layout->addStretch(1);
 
+    setLayout(layout);
 }
 void WindowPage::save(){
 
@@ -321,7 +328,7 @@ StylesPage::StylesPage(QSettings* setting,QWidget *parent)
     tabsLayout->addWidget(new QCheckBox("Client Edge"),1,0);
     tabsLayout->addWidget(new QCheckBox("Static Edge"),2,0);
     tabsLayout->addWidget(new QCheckBox("Right-aligned Text"),3,0);
-    tabsLayout->addWidget(new QCheckBox("Right-to-Left Reading Order"),4,0);
+    tabsLayout->addWidget(new QCheckBox("Right-to-Left"),4,0);
     tabsLayout->addWidget(new QCheckBox("Control Parent Window"),5,0);
 
     tabsLayout->addWidget(new QCheckBox("Accept Files"),0,1);

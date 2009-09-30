@@ -3,6 +3,7 @@
 
 #define APP_PATH "appPath"
 #define WORKSPACE_PATH "workspacePath"
+#define WORKSPACE_CURRENT_PROJECT "currentProject"
 
 #define PROJECT_PATH "projectPath"
 #define PROJECT_WORKSPACE "projectWorkspace"
