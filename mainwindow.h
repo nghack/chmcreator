@@ -65,17 +65,31 @@ public:
     static void copy(QString from,QString to);
     static void copyDir(QString from,QString to);
     static void copyDirFiles(QString from,QString to);
+protected:
+    virtual void closeEvent(QCloseEvent *e);
 private:
+    QTextEdit* currentHTMLEdit();
+    void mergeFormatOnWordOrSelection(const QTextCharFormat &format);
+    void fontChanged(const QFont &f);
+    void colorChanged(const QColor &c);
+    void alignmentChanged(Qt::Alignment a);
+
+
+    bool maybeSave();
     void setCurrentFile(const QString &fileName);
     void updateRecentFileActions();
     void createMenus();
+    void createToolBar();
     Ui::MainWindow *ui;
     QString myapp;
-    void createToolBar();
     QString extractChmFile(QString fileName);
     void createNewWizard();
     QToolBar *fileToolBar;
     QToolBar *compileToolBar;
+    QToolBar *editorFileToolBar;
+    QToolBar *editorEditToolBar;
+    QToolBar *editorFormatToolBar;
+    QToolBar *editorFormatTwoToolBar;
 
     QAction *newProjectAct;
     QAction *openProjectAct;
@@ -134,6 +148,8 @@ private:
     QAction *actionSave_All;
     QWidget *centralWidget;
     QAction *recentFileActs[5];
+
+
     QMenuBar *menuBar;
     QMenu *menu_File;
     QMenu *menu_View;
@@ -149,7 +165,30 @@ private:
     FindDialog* findDialog;
 
     QProgressDialog* compileProcessDialog;
+
+    QString rsrcPath;
+
+    QAction    *actionSave;
+    QAction    *actionTextBold;
+    QAction    *actionTextUnderline;
+    QAction    *actionTextItalic;
+    QAction    *actionTextColor;
+    QAction    *actionAlignLeft;
+    QAction    *actionAlignCenter;
+    QAction    *actionAlignRight;
+    QAction    *actionAlignJustify;
+    QAction    *actionUndo;
+    QAction    *actionRedo;
+    QAction    *actionCut;
+
+    QComboBox *comboStyle;
+    QFontComboBox *comboFont;
+    QComboBox *comboSize;
+
+    QString fileName;
+    QTextEdit *textEdit;
 private slots:
+    void subWindowActivated(QMdiSubWindow*);
     void on_actionDirectory_As_Project_triggered();
     void on_actionSuggestion_triggered();
     void on_action_Replace_triggered();
@@ -181,6 +220,26 @@ private slots:
     void updateMenus();
 public slots:
     void on_action_TreeView_Clicked_triggered(const QModelIndex &index);
+    bool fileSave();
+    bool fileSaveAs();
+    void filePrint();
+    void filePrintPreview();
+    void filePrintPdf();
+
+    void textBold();
+    void textUnderline();
+    void textItalic();
+    void textFamily(const QString &f);
+    void textSize(const QString &p);
+    void textStyle(int styleIndex);
+    void textColor();
+    void textAlign(QAction *a);
+
+    void currentCharFormatChanged(const QTextCharFormat &format);
+    void cursorPositionChanged();
+
+    void clipboardDataChanged();
+    void printPreview(QPrinter *);
 };
 
 #endif // MAINWINDOW_H

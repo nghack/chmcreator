@@ -25,6 +25,8 @@ MainWindow::MainWindow(QString app,QWidget *parent)
 //    Log4Qt::Logger::rootLogger()->setAppender(fileappender);
     logger()->addAppender(fileappender);
 
+    rsrcPath = ":/images";
+
     compileProcessDialog = new QProgressDialog(this);
     ui->setupUi(this);
     setWindowTitle(tr("chmcreator"));
@@ -72,16 +74,63 @@ MainWindow::MainWindow(QString app,QWidget *parent)
         if(QFileInfo(projectFile).exists())
             loadProject(projectFile);
     }
-}
+    connect(&mdiArea,SIGNAL(subWindowActivated(QMdiSubWindow*)),this,SLOT(subWindowActivated(QMdiSubWindow*)));
 
+}
+void MainWindow::subWindowActivated(QMdiSubWindow* subwindow)
+{
+    QTextEdit* htmlEdit = 0;
+    if(0!=subwindow){
+        QHTMLEditor* editor = ((QHTMLEditor*)subwindow->widget());
+        if(editor==0){
+            return;
+        }
+        htmlEdit = editor->htmlEditor();
+    }
+    if(htmlEdit==0)
+        return;
+    connect(htmlEdit, SIGNAL(currentCharFormatChanged(const QTextCharFormat &)),
+            this, SLOT(currentCharFormatChanged(const QTextCharFormat &)));
+    connect(htmlEdit, SIGNAL(cursorPositionChanged()),
+            this, SLOT(cursorPositionChanged()));
+    htmlEdit->setFocus();
+
+    fontChanged(htmlEdit->font());
+    colorChanged(htmlEdit->textColor());
+    alignmentChanged(htmlEdit->alignment());
+
+    connect(htmlEdit->document(), SIGNAL(modificationChanged(bool)),
+            actionSave, SLOT(setEnabled(bool)));
+    connect(htmlEdit->document(), SIGNAL(modificationChanged(bool)),
+            this, SLOT(setWindowModified(bool)));
+    connect(htmlEdit->document(), SIGNAL(undoAvailable(bool)),
+            actionUndo, SLOT(setEnabled(bool)));
+    connect(htmlEdit->document(), SIGNAL(redoAvailable(bool)),
+            actionRedo, SLOT(setEnabled(bool)));
+
+    setWindowModified(htmlEdit->document()->isModified());
+    actionSave->setEnabled(htmlEdit->document()->isModified());
+    actionUndo->setEnabled(htmlEdit->document()->isUndoAvailable());
+    actionRedo->setEnabled(htmlEdit->document()->isRedoAvailable());
+
+    connect(actionUndo, SIGNAL(triggered()), htmlEdit, SLOT(undo()));
+    connect(actionRedo, SIGNAL(triggered()), htmlEdit, SLOT(redo()));
+
+    actionCut->setEnabled(false);
+    actionCopy->setEnabled(false);
+
+    connect(actionCut, SIGNAL(triggered()), htmlEdit, SLOT(cut()));
+    connect(actionCopy, SIGNAL(triggered()), htmlEdit, SLOT(copy()));
+    connect(actionPaste, SIGNAL(triggered()), htmlEdit, SLOT(paste()));
+
+    connect(htmlEdit, SIGNAL(copyAvailable(bool)), actionCut, SLOT(setEnabled(bool)));
+    connect(htmlEdit, SIGNAL(copyAvailable(bool)), actionCopy, SLOT(setEnabled(bool)));
+
+    connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardDataChanged()));
+}
 MainWindow::~MainWindow()
 {
     delete ui;
-    //delete centerView;
-    delete property;
-    if(currentProject!=0){
-        delete currentProject;
-    }
 }
 QString MainWindow::extractChmFile(QString fileName){
 
@@ -181,35 +230,212 @@ QString MainWindow::extractChmFile(QString fileName){
 void MainWindow::createToolBar()
 {
     //Tool Bar
-    fileToolBar = addToolBar(tr("Editor"));
-    compileToolBar = addToolBar(tr("Compile"));
+//    fileToolBar = addToolBar(tr("File"));
+//    compileToolBar = addToolBar(tr("Compile"));
 
     //Editor Tool Bar
-    newProjectAct = new QAction(QIcon(":/images/new.png"), tr("&New Project"),this);
-    connect(newProjectAct, SIGNAL(triggered()), this, SLOT(on_action_New_triggered()));
+//    newProjectAct = new QAction(QIcon(":/images/new.png"), tr("&New Project"),this);
+//    connect(newProjectAct, SIGNAL(triggered()), this, SLOT(on_action_New_triggered()));
+//
+//    openProjectAct = new QAction(QIcon(":/images/open.png"), tr("&Open Project or chm file"),this);
+//    connect(openProjectAct, SIGNAL(triggered()), this, SLOT(on_action_Open_triggered()));
+//
+//    saveProjectAct = new QAction(QIcon(":/images/save.png"), tr("&Save File"),this);
+//    connect(saveProjectAct, SIGNAL(triggered()), this, SLOT(on_action_Save_triggered()));
 
-    openProjectAct = new QAction(QIcon(":/images/open.png"), tr("&Open Project or chm file"),this);
-    connect(openProjectAct, SIGNAL(triggered()), this, SLOT(on_action_Open_triggered()));
 
-    saveProjectAct = new QAction(QIcon(":/images/save.png"), tr("&Save File"),this);
-    connect(saveProjectAct, SIGNAL(triggered()), this, SLOT(on_action_Save_triggered()));
-
-
-    fileToolBar->addAction(newProjectAct);
-    fileToolBar->addAction(openProjectAct);
-    fileToolBar->addAction(saveProjectAct);
+//    fileToolBar->addAction(newProjectAct);
+//    fileToolBar->addAction(openProjectAct);
+//    fileToolBar->addAction(saveProjectAct);
 
     //Editor Tool Bar
-    compileProjectAct = new QAction(QIcon(":/images/compile.png"), tr("&Compile Project"),this);
-    connect(compileProjectAct, SIGNAL(triggered()), this, SLOT(nextPage()));
+//    compileProjectAct = new QAction(QIcon(":/images/compile.png"), tr("&Compile Project"),this);
+//    connect(compileProjectAct, SIGNAL(triggered()), this, SLOT(nextPage()));
+//
+//    viewProjectAct = new QAction(QIcon(":/images/view.png"), tr("&View Project"),this);
+//    connect(viewProjectAct, SIGNAL(triggered()), this, SLOT(nextPage()));
+//
+//    compileToolBar->addAction(compileProjectAct);
+//    compileToolBar->addAction(viewProjectAct);
 
-    viewProjectAct = new QAction(QIcon(":/images/view.png"), tr("&View Project"),this);
-    connect(viewProjectAct, SIGNAL(triggered()), this, SLOT(nextPage()));
+    //Editor File ToolBar
+    editorFileToolBar = addToolBar(tr("Editor"));
+    QAction *a;
+    a = new QAction(QIcon(":/images/filenew.png"), tr("&New"), this);
+    a->setShortcut(QKeySequence::New);
+    connect(a, SIGNAL(triggered()), this, SLOT(on_action_New_triggered()));
+    editorFileToolBar->addAction(a);
 
-    compileToolBar->addAction(compileProjectAct);
-    compileToolBar->addAction(viewProjectAct);
+    a = new QAction(QIcon(rsrcPath + "/fileopen.png"), tr("&Open..."), this);
+    a->setShortcut(QKeySequence::Open);
+    connect(a, SIGNAL(triggered()), this, SLOT(on_action_Open_triggered()));
+    editorFileToolBar->addAction(a);
+
+    actionSave = a = new QAction(QIcon(rsrcPath + "/filesave.png"), tr("&Save"), this);
+    a->setShortcut(QKeySequence::Save);
+    connect(a, SIGNAL(triggered()), this, SLOT(fileSave()));
+    a->setEnabled(false);
+    editorFileToolBar->addAction(a);
+
+    a = new QAction(QIcon(rsrcPath + "/fileprint.png"), tr("&Print..."), this);
+    a->setShortcut(QKeySequence::Print);
+    connect(a, SIGNAL(triggered()), this, SLOT(filePrint()));
+    editorFileToolBar->addAction(a);
+
+    a = new QAction(QIcon(rsrcPath + "/fileprint.png"), tr("Print Preview..."), this);
+    connect(a, SIGNAL(triggered()), this, SLOT(filePrintPreview()));
+
+    a = new QAction(QIcon(rsrcPath + "/exportpdf.png"), tr("&Export PDF..."), this);
+    a->setShortcut(Qt::CTRL + Qt::Key_D);
+    connect(a, SIGNAL(triggered()), this, SLOT(filePrintPdf()));
+    editorFileToolBar->addAction(a);
+
+    //Editor File ToolBar
+    editorEditToolBar = addToolBar(tr("Edit Actions"));
+
+    a = actionUndo = new QAction(QIcon(rsrcPath + "/editundo.png"), tr("&Undo"), this);
+    a->setShortcut(QKeySequence::Undo);
+    editorEditToolBar->addAction(a);
+
+    a = actionRedo = new QAction(QIcon(rsrcPath + "/editredo.png"), tr("&Redo"), this);
+    a->setShortcut(QKeySequence::Redo);
+    editorEditToolBar->addAction(a);
+
+    a = actionCut = new QAction(QIcon(rsrcPath + "/editcut.png"), tr("Cu&t"), this);
+    a->setShortcut(QKeySequence::Cut);
+    editorEditToolBar->addAction(a);
+    //menu->addAction(a);
+    a = actionCopy = new QAction(QIcon(rsrcPath + "/editcopy.png"), tr("&Copy"), this);
+    a->setShortcut(QKeySequence::Copy);
+    editorEditToolBar->addAction(a);
+    //menu->addAction(a);
+    a = actionPaste = new QAction(QIcon(rsrcPath + "/editpaste.png"), tr("&Paste"), this);
+    a->setShortcut(QKeySequence::Paste);
+    editorEditToolBar->addAction(a);
+    //menu->addAction(a);
+    actionPaste->setEnabled(!QApplication::clipboard()->text().isEmpty());
+
+    //Format Actions ToolBar
+    editorFormatToolBar = addToolBar(tr("Format Actions"));
+
+    actionTextBold = new QAction(QIcon(rsrcPath + "/textbold.png"), tr("&Bold"), this);
+    actionTextBold->setShortcut(Qt::CTRL + Qt::Key_B);
+    QFont bold;
+    bold.setBold(true);
+    actionTextBold->setFont(bold);
+    connect(actionTextBold, SIGNAL(triggered()), this, SLOT(textBold()));
+    editorFormatToolBar->addAction(actionTextBold);
+    //menu->addAction(actionTextBold);
+    actionTextBold->setCheckable(true);
+
+    actionTextItalic = new QAction(QIcon(rsrcPath + "/textitalic.png"), tr("&Italic"), this);
+    actionTextItalic->setShortcut(Qt::CTRL + Qt::Key_I);
+    QFont italic;
+    italic.setItalic(true);
+    actionTextItalic->setFont(italic);
+    connect(actionTextItalic, SIGNAL(triggered()), this, SLOT(textItalic()));
+    editorFormatToolBar->addAction(actionTextItalic);
+    //menu->addAction(actionTextItalic);
+    actionTextItalic->setCheckable(true);
+
+    actionTextUnderline = new QAction(QIcon(rsrcPath + "/textunder.png"), tr("&Underline"), this);
+    actionTextUnderline->setShortcut(Qt::CTRL + Qt::Key_U);
+    QFont underline;
+    underline.setUnderline(true);
+    actionTextUnderline->setFont(underline);
+    connect(actionTextUnderline, SIGNAL(triggered()), this, SLOT(textUnderline()));
+    editorFormatToolBar->addAction(actionTextUnderline);
+    //menu->addAction(actionTextUnderline);
+    actionTextUnderline->setCheckable(true);
+
+    //menu->addSeparator();
+
+    QActionGroup *grp = new QActionGroup(this);
+    connect(grp, SIGNAL(triggered(QAction *)), this, SLOT(textAlign(QAction *)));
+
+    actionAlignLeft = new QAction(QIcon(rsrcPath + "/textleft.png"), tr("&Left"), grp);
+    actionAlignLeft->setShortcut(Qt::CTRL + Qt::Key_L);
+    actionAlignLeft->setCheckable(true);
+    actionAlignCenter = new QAction(QIcon(rsrcPath + "/textcenter.png"), tr("C&enter"), grp);
+    actionAlignCenter->setShortcut(Qt::CTRL + Qt::Key_E);
+    actionAlignCenter->setCheckable(true);
+    actionAlignRight = new QAction(QIcon(rsrcPath + "/textright.png"), tr("&Right"), grp);
+    actionAlignRight->setShortcut(Qt::CTRL + Qt::Key_R);
+    actionAlignRight->setCheckable(true);
+    actionAlignJustify = new QAction(QIcon(rsrcPath + "/textjustify.png"), tr("&Justify"), grp);
+    actionAlignJustify->setShortcut(Qt::CTRL + Qt::Key_J);
+    actionAlignJustify->setCheckable(true);
+
+    editorFormatToolBar->addActions(grp->actions());
+
+    QPixmap pix(16, 16);
+    pix.fill(Qt::black);
+    actionTextColor = new QAction(pix, tr("&Color..."), this);
+    connect(actionTextColor, SIGNAL(triggered()), this, SLOT(textColor()));
+    editorFormatToolBar->addAction(actionTextColor);
+
+    addToolBarBreak(Qt::TopToolBarArea);
+    editorFormatTwoToolBar = addToolBar(tr("Text Format Actions"));
+    editorFormatTwoToolBar->setAllowedAreas(Qt::TopToolBarArea | Qt::BottomToolBarArea);
+    editorFormatTwoToolBar->setWindowTitle(tr("Format Actions"));
+
+
+    comboStyle = new QComboBox(editorFormatTwoToolBar);
+    editorFormatTwoToolBar->addWidget(comboStyle);
+    comboStyle->addItem("Standard");
+    comboStyle->addItem("Bullet List (Disc)");
+    comboStyle->addItem("Bullet List (Circle)");
+    comboStyle->addItem("Bullet List (Square)");
+    comboStyle->addItem("Ordered List (Decimal)");
+    comboStyle->addItem("Ordered List (Alpha lower)");
+    comboStyle->addItem("Ordered List (Alpha upper)");
+    connect(comboStyle, SIGNAL(activated(int)),
+            this, SLOT(textStyle(int)));
+
+    comboFont = new QFontComboBox(editorFormatTwoToolBar);
+    editorFormatTwoToolBar->addWidget(comboFont);
+    connect(comboFont, SIGNAL(activated(const QString &)),
+            this, SLOT(textFamily(const QString &)));
+
+    comboSize = new QComboBox(editorFormatTwoToolBar);
+    comboSize->setObjectName("comboSize");
+    editorFormatTwoToolBar->addWidget(comboSize);
+    comboSize->setEditable(true);
+
+    QFontDatabase db;
+    foreach(int size, db.standardSizes())
+        comboSize->addItem(QString::number(size));
+
+    connect(comboSize, SIGNAL(activated(const QString &)),
+            this, SLOT(textSize(const QString &)));
+    comboSize->setCurrentIndex(comboSize->findText(QString::number(QApplication::font()
+                                                                   .pointSize())));
 }
-
+void MainWindow::closeEvent(QCloseEvent *e)
+{
+    if (maybeSave())
+        e->accept();
+    else
+        e->ignore();
+}
+bool MainWindow::maybeSave()
+{
+    /*if (!textEdit->document()->isModified())
+        return true;
+    if (fileName.startsWith(QLatin1String(":/")))
+        return true;
+    QMessageBox::StandardButton ret;
+    ret = QMessageBox::warning(this, tr("Application"),
+                               tr("The document has been modified.\n"
+                                  "Do you want to save your changes?"),
+                               QMessageBox::Save | QMessageBox::Discard
+                               | QMessageBox::Cancel);
+    if (ret == QMessageBox::Save)
+        return fileSave();
+    else if (ret == QMessageBox::Cancel)
+        return false;*/
+    return true;
+}
 
 void MainWindow::on_action_About_triggered()
 {
@@ -258,8 +484,8 @@ void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
     mdiArea.addSubWindow(htmlEditor);
     htmlEditor->show();
 
-    connect(htmlEditor->textEditor(),SIGNAL(undoAvailable(bool)),ui->action_Undo,SLOT(setEnabled(bool)));
-    connect(htmlEditor->textEditor(),SIGNAL(redoAvailable(bool)),ui->action_Redo,SLOT(setEnabled(bool)));
+    //connect(htmlEditor->textEditor(),SIGNAL(undoAvailable(bool)),ui->action_Undo,SLOT(setEnabled(bool)));
+    //connect(htmlEditor->textEditor(),SIGNAL(redoAvailable(bool)),ui->action_Redo,SLOT(setEnabled(bool)));
 }
 void MainWindow::on_action_NewAccepted_triggered()
 {
@@ -549,7 +775,17 @@ void MainWindow::updateMenus()
     ui->actionPaste->setEnabled(false);
     ui->actionSelect_All->setEnabled(false);
 }
-
+QTextEdit* MainWindow::currentHTMLEdit()
+{
+    QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
+    if(0!=subWindow){
+        QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
+        if(editor!=0){
+            return editor->htmlEditor();
+        }
+    }
+    return 0;
+}
 void MainWindow::on_actionExit_triggered()
 {
     close();
@@ -652,7 +888,7 @@ void MainWindow::on_action_Redo_triggered()
 void MainWindow::on_actionDelete_triggered()
 {
     QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
-    QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
+//    QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
 }
 
 void MainWindow::on_actionSelect_All_triggered()
@@ -682,4 +918,298 @@ void MainWindow::on_actionDirectory_As_Project_triggered()
 
     QFileInfo fileInfo(dirString);
     loadDir(workSpace+"/"+fileInfo.fileName());
+}
+
+bool MainWindow::fileSave()
+{
+    textEdit = currentHTMLEdit();
+    if(textEdit==0){
+        return false;
+    }
+    if (fileName.isEmpty())
+        return fileSaveAs();
+
+    QFile file(fileName);
+    if (!file.open(QFile::WriteOnly))
+        return false;
+    QTextStream ts(&file);
+    ts.setCodec(QTextCodec::codecForName("UTF-8"));
+    ts << textEdit->document()->toHtml("UTF-8");
+    textEdit->document()->setModified(false);
+    return true;
+}
+
+bool MainWindow::fileSaveAs()
+{
+    QString fn = QFileDialog::getSaveFileName(this, tr("Save as..."),
+                                              QString(), tr("HTML-Files (*.htm *.html);;All Files (*)"));
+    if (fn.isEmpty())
+        return false;
+    //setCurrentFileName(fn);
+    return fileSave();
+}
+
+void MainWindow::filePrint()
+{
+    textEdit = currentHTMLEdit();
+    if(textEdit==0){
+        return;
+    }
+#ifndef QT_NO_PRINTER
+    QPrinter printer(QPrinter::HighResolution);
+    QPrintDialog *dlg = new QPrintDialog(&printer, this);
+    if (textEdit->textCursor().hasSelection())
+        dlg->addEnabledOption(QAbstractPrintDialog::PrintSelection);
+    dlg->setWindowTitle(tr("Print Document"));
+    if (dlg->exec() == QDialog::Accepted) {
+        textEdit->print(&printer);
+    }
+    delete dlg;
+#endif
+}
+
+void MainWindow::filePrintPreview()
+{
+    textEdit = currentHTMLEdit();
+    if(textEdit==0){
+        return;
+    }
+#ifndef QT_NO_PRINTER
+    QPrinter printer(QPrinter::HighResolution);
+    QPrintPreviewDialog preview(&printer, this);
+    connect(&preview, SIGNAL(paintRequested(QPrinter *)), SLOT(printPreview(QPrinter *)));
+    preview.exec();
+#endif
+}
+
+void MainWindow::printPreview(QPrinter *printer)
+{
+    textEdit = currentHTMLEdit();
+    if(textEdit==0){
+        return;
+    }
+#ifdef QT_NO_PRINTER
+    Q_UNUSED(printer);
+#else
+    textEdit->print(printer);
+#endif
+}
+
+
+void MainWindow::filePrintPdf()
+{
+    textEdit = currentHTMLEdit();
+    if(textEdit==0){
+        return;
+    }
+#ifndef QT_NO_PRINTER
+//! [0]
+    QString fileName = QFileDialog::getSaveFileName(this, "Export PDF",
+                                                    QString(), "*.pdf");
+    if (!fileName.isEmpty()) {
+        if (QFileInfo(fileName).suffix().isEmpty())
+            fileName.append(".pdf");
+        QPrinter printer(QPrinter::HighResolution);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName(fileName);
+        textEdit->document()->print(&printer);
+    }
+//! [0]
+#endif
+}
+
+void MainWindow::textBold()
+{
+    QTextCharFormat fmt;
+    fmt.setFontWeight(actionTextBold->isChecked() ? QFont::Bold : QFont::Normal);
+    mergeFormatOnWordOrSelection(fmt);
+}
+
+void MainWindow::textUnderline()
+{
+    QTextCharFormat fmt;
+    fmt.setFontUnderline(actionTextUnderline->isChecked());
+    mergeFormatOnWordOrSelection(fmt);
+}
+
+void MainWindow::textItalic()
+{
+    QTextCharFormat fmt;
+    fmt.setFontItalic(actionTextItalic->isChecked());
+    mergeFormatOnWordOrSelection(fmt);
+}
+
+void MainWindow::textFamily(const QString &f)
+{
+    QTextCharFormat fmt;
+    fmt.setFontFamily(f);
+    mergeFormatOnWordOrSelection(fmt);
+}
+
+void MainWindow::textSize(const QString &p)
+{
+    QTextCharFormat fmt;
+    fmt.setFontPointSize(p.toFloat());
+    mergeFormatOnWordOrSelection(fmt);
+}
+
+void MainWindow::textStyle(int styleIndex)
+{
+    textEdit = currentHTMLEdit();
+    if(textEdit==0){
+        return;
+    }
+    QTextCursor cursor = textEdit->textCursor();
+
+    if (styleIndex != 0) {
+        QTextListFormat::Style style = QTextListFormat::ListDisc;
+
+        switch (styleIndex) {
+            default:
+            case 1:
+                style = QTextListFormat::ListDisc;
+                break;
+            case 2:
+                style = QTextListFormat::ListCircle;
+                break;
+            case 3:
+                style = QTextListFormat::ListSquare;
+                break;
+            case 4:
+                style = QTextListFormat::ListDecimal;
+                break;
+            case 5:
+                style = QTextListFormat::ListLowerAlpha;
+                break;
+            case 6:
+                style = QTextListFormat::ListUpperAlpha;
+                break;
+        }
+
+        cursor.beginEditBlock();
+
+        QTextBlockFormat blockFmt = cursor.blockFormat();
+
+        QTextListFormat listFmt;
+
+        if (cursor.currentList()) {
+            listFmt = cursor.currentList()->format();
+        } else {
+            listFmt.setIndent(blockFmt.indent() + 1);
+            blockFmt.setIndent(0);
+            cursor.setBlockFormat(blockFmt);
+        }
+
+        listFmt.setStyle(style);
+
+        cursor.createList(listFmt);
+
+        cursor.endEditBlock();
+    } else {
+        // ####
+        QTextBlockFormat bfmt;
+        bfmt.setObjectIndex(-1);
+        cursor.mergeBlockFormat(bfmt);
+    }
+}
+
+void MainWindow::textColor()
+{
+    textEdit = currentHTMLEdit();
+    if(textEdit==0){
+        return;
+    }
+    QColor col = QColorDialog::getColor(textEdit->textColor(), this);
+    if (!col.isValid())
+        return;
+    QTextCharFormat fmt;
+    fmt.setForeground(col);
+    mergeFormatOnWordOrSelection(fmt);
+    colorChanged(col);
+}
+
+void MainWindow::textAlign(QAction *a)
+{
+    textEdit = currentHTMLEdit();
+    if(textEdit==0){
+        return;
+    }
+    if (a == actionAlignLeft)
+        textEdit->setAlignment(Qt::AlignLeft);
+    else if (a == actionAlignCenter)
+        textEdit->setAlignment(Qt::AlignHCenter);
+    else if (a == actionAlignRight)
+        textEdit->setAlignment(Qt::AlignRight);
+    else if (a == actionAlignJustify)
+        textEdit->setAlignment(Qt::AlignJustify);
+}
+
+void MainWindow::currentCharFormatChanged(const QTextCharFormat &format)
+{
+    fontChanged(format.font());
+    colorChanged(format.foreground().color());
+}
+
+void MainWindow::cursorPositionChanged()
+{
+    textEdit = currentHTMLEdit();
+    if(textEdit==0){
+        return;
+    }
+    alignmentChanged(textEdit->alignment());
+}
+
+void MainWindow::clipboardDataChanged()
+{
+    textEdit = currentHTMLEdit();
+    if(textEdit==0){
+        return;
+    }
+    actionPaste->setEnabled(!QApplication::clipboard()->text().isEmpty());
+}
+
+void MainWindow::mergeFormatOnWordOrSelection(const QTextCharFormat &format)
+{
+    textEdit = currentHTMLEdit();
+    if(textEdit==0){
+        return;
+    }
+    QTextCursor cursor = textEdit->textCursor();
+    if (!cursor.hasSelection())
+        cursor.select(QTextCursor::WordUnderCursor);
+    cursor.mergeCharFormat(format);
+    textEdit->mergeCurrentCharFormat(format);
+}
+
+void MainWindow::fontChanged(const QFont &f)
+{
+    textEdit = currentHTMLEdit();
+    if(textEdit==0){
+        return;
+    }
+    comboFont->setCurrentIndex(comboFont->findText(QFontInfo(f).family()));
+    comboSize->setCurrentIndex(comboSize->findText(QString::number(f.pointSize())));
+    actionTextBold->setChecked(f.bold());
+    actionTextItalic->setChecked(f.italic());
+    actionTextUnderline->setChecked(f.underline());
+}
+
+void MainWindow::colorChanged(const QColor &c)
+{
+    QPixmap pix(16, 16);
+    pix.fill(c);
+    actionTextColor->setIcon(pix);
+}
+
+void MainWindow::alignmentChanged(Qt::Alignment a)
+{
+    if (a & Qt::AlignLeft) {
+        actionAlignLeft->setChecked(true);
+    } else if (a & Qt::AlignHCenter) {
+        actionAlignCenter->setChecked(true);
+    } else if (a & Qt::AlignRight) {
+        actionAlignRight->setChecked(true);
+    } else if (a & Qt::AlignJustify) {
+        actionAlignJustify->setChecked(true);
+    }
 }
