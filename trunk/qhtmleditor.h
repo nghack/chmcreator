@@ -23,12 +23,14 @@ public:
     bool isCopyable(){return iscopyable;}
     bool isCutable(){return iscutable;}
     QPlainTextEdit* textEditor(){return editor;}
+    QTextEdit* htmlEditor(){return textEdit;}
 signals:
     void textChanged(bool);
     void linkClicked(QUrl);
 private slots:
     void tabChanged(int index);
-    void changed();
+    void htmlChanged();
+    void sourceChanged();
     void changeUndo(bool undo){isundoable = undo;}
     void changeRedo(bool redo){isredoable = redo;}
     void changeCopy(bool copy){iscopyable = copy;}
@@ -39,9 +41,11 @@ private:
     Highlighter* highlighter;
     int currentIndex;
     bool ischanged;
+    int contentStatus;
     QString filename;
     QTextDocument* document;
     QTextBrowser* browser;
+    QTextEdit *textEdit;
     QHTMLSourceEditorCodeEditor* editor;
     int value;
     bool iseditable;

@@ -10,33 +10,47 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
     setWindowTitle(temp.fileName());
     setWindowIcon(QIcon(":/images/new.png"));
     currentIndex = indexOf(currentWidget());
-    QFile data(filename);
 
-    if (!data.open(QFile::ReadWrite)) {
+    QFile file(filename);
+    if (!file.open(QFile::ReadOnly)){
         QMessageBox::about(0,tr("Error"),("Can't open file:"+fileName));
         return;
     }
-    QTextStream stream(&data);
+
+    QByteArray data = file.readAll();
+    QTextCodec *codec = Qt::codecForHtml(data);
+    QString content = codec->toUnicode(data);
+
+
+    document = new QTextDocument(this);
+    if (Qt::mightBeRichText(content)) {
+        document->setHtml(content);
+    }else{
+        document->setPlainText(content);
+    }
 
     setTabPosition(QTabWidget::South);
 
-    editor = new QHTMLSourceEditorCodeEditor(this);
+    textEdit = new QTextEdit(this);
+    textEdit->setDocument(document);
 
-    editor->setPlainText(stream.readAll());
-    editor->setWordWrapMode(QTextOption::NoWrap);
-    //editor->setStyleSheet("font-size : 10px");
-    data.close();
+    editor = new QHTMLSourceEditorCodeEditor(this);
+    //editor->setDocument(document);
 
     highlighter = new Highlighter(editor->document());
+    editor->setPlainText(content);
+    editor->setWordWrapMode(QTextOption::NoWrap);//editor->setStyleSheet("font-size : 10px");
 
-    browser = new QTextBrowser;
-    //browser->setStyleSheet("font-size : 10px");
-    browser->setHtml(editor->toPlainText());
+    browser = new QTextBrowser;//browser->setStyleSheet("font-size : 10px");
+    browser->setDocument(document);
 
-    addTab(browser,QIcon(":/images/editor.png"),"Preview");
-    addTab(editor,QIcon(":/images/source.png"),"Source");
+    addTab(browser,"Preview");
+    addTab(textEdit,"Editor");
+    addTab(editor,"Source");
 
-    connect(editor,SIGNAL(textChanged()),this,SLOT(changed()));
+    connect(textEdit->document(),SIGNAL(contentsChanged()),this,SLOT(htmlChanged()));
+    connect(editor,SIGNAL(textChanged()),this,SLOT(sourceChanged()));
+
     connect(this,SIGNAL(currentChanged(int)),this,SLOT(tabChanged(int)));
 
     ischanged = false;
@@ -51,6 +65,8 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
     connect(editor,SIGNAL(redoAvailable(bool)),this,SLOT(changeRedo(bool)));
     connect(editor,SIGNAL(copyAvailable(bool)),this,SLOT(changeCopy(bool)));
     connect(editor,SIGNAL(copyAvailable(bool)),this,SLOT(changeCut(bool)));
+
+    contentStatus = 0;//
 }
 void QHTMLEditor::save()
 {
@@ -58,9 +74,11 @@ void QHTMLEditor::save()
 }
 void QHTMLEditor::tabChanged(int index)
 {
-    if(index==0&&ischanged)browser->setText(editor->toPlainText());
-    if(index==1)iseditable = true;
-
+    if(index==2){
+        editor->setPlainText(document->toHtml());
+    }else{
+        document->setHtml(editor->toPlainText());
+    }
 }
 bool QHTMLEditor::isEditable(){
     return iseditable;
@@ -75,14 +93,37 @@ void QHTMLEditor::saveAndClose()
        return;
     save();
 }
-void QHTMLEditor::changed()
+void QHTMLEditor::htmlChanged()
 {
+    if(contentStatus!=0){
+        contentStatus = 0;
+        return;
+    }
+    contentStatus = 1;
     value++;
     QString temp = windowTitle();
     if(ischanged&&value>1&&!temp.endsWith('*')){
         temp+="*";
         setWindowTitle(temp);
     }
+//    editor->setPlainText(document->toHtml());
+    ischanged = true;
+}
+void QHTMLEditor::sourceChanged()
+{
+    if(contentStatus!=0){
+        contentStatus = 0;
+        return;
+    }
+    contentStatus = 2;
+    value++;
+    QString temp = windowTitle();
+    if(ischanged&&value>1&&!temp.endsWith('*')){
+        temp+="*";
+        setWindowTitle(temp);
+    }
+
+//    textEdit->setHtml(editor->toPlainText());
     ischanged = true;
 }
 void QHTMLEditor::saveAs(const QString& fileName)

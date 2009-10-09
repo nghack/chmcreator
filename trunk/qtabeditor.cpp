@@ -16,9 +16,6 @@ void QTabEditor::closeCurrentTab()
     list.removeAt(index);
     tabList.remove(index);
     removeTab(index);
-    if(tabList.count()==0){
-        QMdiArea* area = (QMdiArea*)parent();
-    }
 }
 QTabEditor::~QTabEditor()
 {
