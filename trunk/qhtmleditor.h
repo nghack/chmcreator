@@ -12,6 +12,7 @@ public:
     QHTMLEditor(const QString& fileName,QWidget *parent=0);
     ~QHTMLEditor();
     void save();
+    void addDir(QString& dirPath,QStringList& list);
     void saveAs(const QString& fileName);
     const QPlainTextEdit* getEditor(){return editor;}
     /*const QWebView* getBrowser(){return browser;}*/
@@ -41,6 +42,8 @@ private:
     Highlighter* highlighter;
     int currentIndex;
     bool ischanged;
+    bool isHTMLChanged;
+    bool isSourceChanged;
     int contentStatus;
     QString filename;
     QTextDocument* document;
@@ -53,6 +56,7 @@ private:
     bool isredoable;
     bool iscopyable;
     bool iscutable;
+    QTextCodec *codec;
 };
 
 #endif // QHTMLEDITOR_H

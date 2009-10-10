@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Mon Sep 28 15:20:23 2009
+** Created: Sat Oct 10 14:26:34 2009
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -62,6 +62,8 @@ public:
     QAction *actionReplace_In_Files;
     QAction *actionSuggestion;
     QAction *actionDirectory_As_Project;
+    QAction *actionSave_As;
+    QAction *actionShow_File_Column;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menu_File;
@@ -157,6 +159,11 @@ public:
         actionSuggestion->setObjectName(QString::fromUtf8("actionSuggestion"));
         actionDirectory_As_Project = new QAction(MainWindow);
         actionDirectory_As_Project->setObjectName(QString::fromUtf8("actionDirectory_As_Project"));
+        actionSave_As = new QAction(MainWindow);
+        actionSave_As->setObjectName(QString::fromUtf8("actionSave_As"));
+        actionShow_File_Column = new QAction(MainWindow);
+        actionShow_File_Column->setObjectName(QString::fromUtf8("actionShow_File_Column"));
+        actionShow_File_Column->setCheckable(true);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
@@ -193,6 +200,7 @@ public:
         menu_File->addAction(actionClose_Project);
         menu_File->addSeparator();
         menu_File->addAction(action_Save);
+        menu_File->addAction(actionSave_As);
         menu_File->addSeparator();
         menu_File->addAction(menuImport->menuAction());
         menu_File->addSeparator();
@@ -201,6 +209,8 @@ public:
         menuImport->addAction(actionDirectory_As_Project);
         menu_View->addAction(actionToolBar);
         menu_View->addAction(actionStatusBar);
+        menu_View->addSeparator();
+        menu_View->addAction(actionShow_File_Column);
         menu_Test->addAction(action_Compile);
         menu_Test->addSeparator();
         menu_Test->addAction(action_Run);
@@ -281,6 +291,8 @@ public:
         actionReplace_In_Files->setText(QApplication::translate("MainWindow", "Replace In Files", 0, QApplication::UnicodeUTF8));
         actionSuggestion->setText(QApplication::translate("MainWindow", "Suggestion to us", 0, QApplication::UnicodeUTF8));
         actionDirectory_As_Project->setText(QApplication::translate("MainWindow", "Directory As Project", 0, QApplication::UnicodeUTF8));
+        actionSave_As->setText(QApplication::translate("MainWindow", "Save As...", 0, QApplication::UnicodeUTF8));
+        actionShow_File_Column->setText(QApplication::translate("MainWindow", "Show File Column", 0, QApplication::UnicodeUTF8));
         menu_File->setTitle(QApplication::translate("MainWindow", "&File", 0, QApplication::UnicodeUTF8));
         menuImport->setTitle(QApplication::translate("MainWindow", "Import", 0, QApplication::UnicodeUTF8));
         menu_View->setTitle(QApplication::translate("MainWindow", "&View", 0, QApplication::UnicodeUTF8));
