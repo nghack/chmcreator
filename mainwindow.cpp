@@ -286,7 +286,7 @@ void MainWindow::createToolBar()
     a = new QAction(QIcon(rsrcPath + "/fileprint.png"), tr("Print Preview..."), this);
     connect(a, SIGNAL(triggered()), this, SLOT(filePrintPreview()));
 
-    a = new QAction(QIcon(rsrcPath + "/exportpdf.png"), tr("&Export PDF..."), this);
+    a = new QAction(QIcon(rsrcPath + "/pdf.png"), tr("&Export PDF..."), this);
     a->setShortcut(Qt::CTRL + Qt::Key_D);
     connect(a, SIGNAL(triggered()), this, SLOT(filePrintPdf()));
     editorFileToolBar->addAction(a);

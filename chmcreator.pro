@@ -68,5 +68,5 @@ FORMS += mainwindow.ui \
     qswitchworkspacedialog.ui
 RESOURCES += qt.qrc
 win32:RC_FILE += winresource.rc
-TRANSLATIONS = Language.ts
+TRANSLATIONS = chmcreator.ts
 OTHER_FILES += winresource.rc

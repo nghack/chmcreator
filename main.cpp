@@ -13,6 +13,12 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    QString locale = QLocale::system().name();
+
+    QTranslator translator;
+    translator.load(QString("chmcreator") + locale);
+    a.installTranslator(&translator);
+
     settings.setValue(APP_PATH,QCoreApplication::applicationDirPath ());
     if(!settings.contains(WORKSPACE_PATH)){
         QSwitchWorkspaceDialog* dialog = new QSwitchWorkspaceDialog(&settings);
