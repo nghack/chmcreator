@@ -32,5 +32,6 @@
         <file>images/zoomin.png</file>
         <file>images/zoomout.png</file>
         <file>images/editcopy.png</file>
+        <file>images/pdf.png</file>
     </qresource>
 </RCC>
