@@ -31,7 +31,8 @@ SOURCES += main.cpp \
     qhighlighter.cpp \
     qfinddialog.cpp \
     qswitchworkspacedialog.cpp \
-    qhtmlsourceeditor.cpp
+    qhtmlsourceeditor.cpp \
+    qhtmleditorsubwindow.cpp
 INCLUDEPATH += include \
     ../QtChm
 HEADERS += mainwindow.h \
@@ -57,7 +58,8 @@ HEADERS += mainwindow.h \
     qhighlighter.h \
     qfinddialog.h \
     qswitchworkspacedialog.h \
-    qhtmlsourceeditor.h
+    qhtmlsourceeditor.h \
+    qhtmleditorsubwindow.h
 LIBS += -L../bin \
     -lQtChm
 FORMS += mainwindow.ui \
@@ -68,4 +70,3 @@ RESOURCES += qt.qrc
 win32:RC_FILE += winresource.rc
 TRANSLATIONS = Language.ts
 OTHER_FILES += winresource.rc
-include(log4qt/log4qt.pri)

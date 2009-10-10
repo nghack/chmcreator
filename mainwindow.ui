@@ -42,6 +42,7 @@
     <addaction name="actionClose_Project"/>
     <addaction name="separator"/>
     <addaction name="action_Save"/>
+    <addaction name="actionSave_As"/>
     <addaction name="separator"/>
     <addaction name="menuImport"/>
     <addaction name="separator"/>
@@ -54,6 +55,8 @@
     </property>
     <addaction name="actionToolBar"/>
     <addaction name="actionStatusBar"/>
+    <addaction name="separator"/>
+    <addaction name="actionShow_File_Column"/>
    </widget>
    <widget class="QMenu" name="menu_Test">
     <property name="title">
@@ -344,6 +347,19 @@
   <action name="actionDirectory_As_Project">
    <property name="text">
     <string>Directory As Project</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="text">
+    <string>Save As...</string>
+   </property>
+  </action>
+  <action name="actionShow_File_Column">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show File Column</string>
    </property>
   </action>
  </widget>

@@ -4,6 +4,8 @@ QHTMLEditor::~QHTMLEditor(){
 }
 QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(parent),filename(fileName)
 {
+    isHTMLChanged = false;
+    isSourceChanged = false;
     filename = fileName;
     ischanged = true;
     QFileInfo temp(fileName);
@@ -18,7 +20,7 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
     }
 
     QByteArray data = file.readAll();
-    QTextCodec *codec = Qt::codecForHtml(data);
+    codec = Qt::codecForHtml(data);
     QString content = codec->toUnicode(data);
 
 
@@ -42,13 +44,19 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
     editor->setWordWrapMode(QTextOption::NoWrap);//editor->setStyleSheet("font-size : 10px");
 
     browser = new QTextBrowser;//browser->setStyleSheet("font-size : 10px");
+    QStringList list;
+    QString pa = temp.absoluteDir().absolutePath();
+    addDir(pa,list);
+    browser->setSearchPaths(list);
+
     browser->setDocument(document);
+
 
     addTab(browser,"Preview");
     addTab(textEdit,"Editor");
     addTab(editor,"Source");
 
-    connect(textEdit->document(),SIGNAL(contentsChanged()),this,SLOT(htmlChanged()));
+    connect(textEdit,SIGNAL(textChanged()),this,SLOT(htmlChanged()));
     connect(editor,SIGNAL(textChanged()),this,SLOT(sourceChanged()));
 
     connect(this,SIGNAL(currentChanged(int)),this,SLOT(tabChanged(int)));
@@ -68,17 +76,37 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
 
     contentStatus = 0;//
 }
+
+void QHTMLEditor::addDir(QString& dirPath,QStringList& list)
+{
+    QString dirName = dirPath;
+    list<<dirName;
+
+//    QDir dir(dirName);
+//    dir.setCurrent(dirName);
+//    QStringList listDir = dir.entryList(QDir::Dirs);
+//    foreach(QString entry,listDir){
+//        if(entry=="."||entry=="..")
+//            continue;
+//        QString absEntry = dirPath+"/"+entry;
+//        list<<absEntry;
+//        addDir(absEntry,list);
+//    }
+}
+
 void QHTMLEditor::save()
 {
     saveAs(filename);
 }
 void QHTMLEditor::tabChanged(int index)
 {
-    if(index==2){
+    if(index==2&&isHTMLChanged){
         editor->setPlainText(document->toHtml());
-    }else{
+    }else if(index==1&&isSourceChanged){
         document->setHtml(editor->toPlainText());
     }
+    isHTMLChanged = false;
+    isSourceChanged = false;
 }
 bool QHTMLEditor::isEditable(){
     return iseditable;
@@ -95,35 +123,26 @@ void QHTMLEditor::saveAndClose()
 }
 void QHTMLEditor::htmlChanged()
 {
-    if(contentStatus!=0){
-        contentStatus = 0;
-        return;
-    }
-    contentStatus = 1;
+    isHTMLChanged = true;
     value++;
     QString temp = windowTitle();
-    if(ischanged&&value>1&&!temp.endsWith('*')){
+    if(!temp.endsWith('*')){
         temp+="*";
         setWindowTitle(temp);
     }
-//    editor->setPlainText(document->toHtml());
     ischanged = true;
 }
 void QHTMLEditor::sourceChanged()
 {
-    if(contentStatus!=0){
-        contentStatus = 0;
-        return;
-    }
-    contentStatus = 2;
+    isSourceChanged = true;
     value++;
+
     QString temp = windowTitle();
-    if(ischanged&&value>1&&!temp.endsWith('*')){
+    if(!temp.endsWith('*')){
         temp+="*";
         setWindowTitle(temp);
     }
 
-//    textEdit->setHtml(editor->toPlainText());
     ischanged = true;
 }
 void QHTMLEditor::saveAs(const QString& fileName)
@@ -131,7 +150,12 @@ void QHTMLEditor::saveAs(const QString& fileName)
     QFile data(fileName);
     if (data.open(QFile::WriteOnly)) {
         QTextStream out(&data);
-        out<<editor->toPlainText();
+        out.setCodec(codec->name());
+        if(isHTMLChanged){
+            out<<document->toHtml(codec->name());
+        }else{
+            out<<editor->toPlainText();
+        }
     }
     data.close();
     ischanged = false;

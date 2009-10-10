@@ -23,29 +23,7 @@
 #include "qreplacefilesdialog.h"
 #include "qhtmleditor.h"
 #include "qfinddialog.h"
-#include "log4qt/logger.h"
-#include "log4qt/basicconfigurator.h"
-#include "log4qt/consoleappender.h"
-#include "log4qt/dailyrollingfileappender.h"
-#include "log4qt/fileappender.h"
-#include "log4qt/helpers/configuratorhelper.h"
-#include "log4qt/helpers/datetime.h"
-#include "log4qt/helpers/factory.h"
-#include "log4qt/helpers/initialisationhelper.h"
-#include "log4qt/helpers/optionconverter.h"
-#include "log4qt/helpers/patternformatter.h"
-#include "log4qt/helpers/properties.h"
-#include "log4qt/logmanager.h"
-#include "log4qt/loggerrepository.h"
-#include "log4qt/patternlayout.h"
-#include "log4qt/propertyconfigurator.h"
-#include "log4qt/rollingfileappender.h"
-#include "log4qt/simplelayout.h"
-#include "log4qt/ttcclayout.h"
-#include "log4qt/varia/denyallfilter.h"
-#include "log4qt/varia/levelmatchfilter.h"
-#include "log4qt/varia/levelrangefilter.h"
-#include "log4qt/varia/stringmatchfilter.h"
+
 namespace Ui
 {
     class MainWindow;
@@ -55,7 +33,6 @@ using namespace QtConcurrent;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    LOG4QT_DECLARE_QCLASS_LOGGER
 public:
     MainWindow(QString app,QWidget *parent = 0);
     void loadProject(const QString& proFile);
@@ -187,7 +164,13 @@ private:
 
     QString fileName;
     QTextEdit *textEdit;
+
+    QTabBar *tabBar;
+    QMenu* tabMenu;
+    QContentsTreeView* viewTree;
 private slots:
+    void on_actionShow_File_Column_triggered();
+    void on_actionSave_As_triggered();
     void subWindowActivated(QMdiSubWindow*);
     void on_actionDirectory_As_Project_triggered();
     void on_actionSuggestion_triggered();
@@ -218,10 +201,9 @@ private slots:
     void console(int value);
     void updateCompileText();
     void updateMenus();
+    void openTabMenu(const QPoint& pos);
 public slots:
     void on_action_TreeView_Clicked_triggered(const QModelIndex &index);
-    bool fileSave();
-    bool fileSaveAs();
     void filePrint();
     void filePrintPreview();
     void filePrintPdf();

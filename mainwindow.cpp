@@ -12,28 +12,26 @@ static QString tmpFilePath;
 MainWindow::MainWindow(QString app,QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MainWindow),myapp(app),/*centerView(new QTabEditor),*/currentProject(0),property(0)
 {
-    Log4Qt::FileAppender *fileappender = new Log4Qt::FileAppender();
-    fileappender->setName("FileAppender");
-    fileappender->setFile("log.txt");
-
-    Log4Qt::TTCCLayout *p_layout = new Log4Qt::TTCCLayout();
-    p_layout->setName(QLatin1String("My Layout"));
-    p_layout->activateOptions();
-
-    fileappender->setLayout(p_layout);
-    fileappender->activateOptions();
-//    Log4Qt::Logger::rootLogger()->setAppender(fileappender);
-    logger()->addAppender(fileappender);
-
-    rsrcPath = ":/images";
-
-    compileProcessDialog = new QProgressDialog(this);
     ui->setupUi(this);
     setWindowTitle(tr("chmcreator"));
 
+    rsrcPath = ":/images";
+    compileProcessDialog = new QProgressDialog(this);
     findDialog = new FindDialog(this);
-
     pro = new QProcess;
+    mdiArea.setViewMode(QMdiArea::TabbedView);
+
+    tabBar = qFindChild<QTabBar*>(&mdiArea);
+    QStyleOptionTab opt;
+    if (tabBar) {
+        opt.init(tabBar);
+        opt.shape = tabBar->shape();
+        tabBar->setTabsClosable(true);
+        tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(tabBar, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(openTabMenu(const QPoint&)));
+        connect(tabBar, SIGNAL(tabCloseRequested(int)), &mdiArea,SLOT(closeActiveSubWindow()));
+    }
+
     connect(pro,SIGNAL(readyRead()),this,SLOT(updateCompileText()));
     repalceFilesDialog=0;
     createMenus();
@@ -54,11 +52,11 @@ MainWindow::MainWindow(QString app,QWidget *parent)
 
     tabifyDockWidget(dockIndex,dockProject);
 
-    QContentsTreeView* viewTree = new QContentsTreeView(this);
+    viewTree = new QContentsTreeView(this);
     dockProject->setWidget(viewTree);
 
     //this->connect(viewTree,SIGNAL(clicked(QModelIndex)),this,SLOT(on_action_NewItem_triggered(QModelIndex)));
-    mdiArea.setViewMode(QMdiArea::TabbedView);
+
 
     setCentralWidget(&mdiArea);
 
@@ -75,7 +73,10 @@ MainWindow::MainWindow(QString app,QWidget *parent)
             loadProject(projectFile);
     }
     connect(&mdiArea,SIGNAL(subWindowActivated(QMdiSubWindow*)),this,SLOT(subWindowActivated(QMdiSubWindow*)));
-
+}
+void MainWindow::openTabMenu(const QPoint& pos)
+{
+    tabMenu->exec(tabBar->mapToGlobal(pos));
 }
 void MainWindow::subWindowActivated(QMdiSubWindow* subwindow)
 {
@@ -273,7 +274,7 @@ void MainWindow::createToolBar()
 
     actionSave = a = new QAction(QIcon(rsrcPath + "/filesave.png"), tr("&Save"), this);
     a->setShortcut(QKeySequence::Save);
-    connect(a, SIGNAL(triggered()), this, SLOT(fileSave()));
+    connect(a, SIGNAL(triggered()), this, SLOT(on_action_Save_triggered()));
     a->setEnabled(false);
     editorFileToolBar->addAction(a);
 
@@ -730,6 +731,7 @@ void MainWindow::createMenus()
     connect(ui->menu_View, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
     connect(ui->menu_Test, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
 
+    ui->actionShow_File_Column->setChecked(true);
     /*for (int i = 0; i < 5; ++i) {
          recentFileActs[i] = new QAction(this);
          recentFileActs[i]->setVisible(false);
@@ -737,6 +739,14 @@ void MainWindow::createMenus()
                  this, SLOT(openRecentFile()));
          ui->menu_File->addAction(recentFileActs[i]);
      }*/
+    tabMenu = new QMenu(QLatin1String(""), tabBar);
+    QAction *close_action = tabMenu->addAction(tr("Close"));
+    QAction *close_others_action = tabMenu->addAction(tr("Close Others"));
+    QAction *close_all_action = tabMenu->addAction(tr("Close All"));
+
+    connect(close_action,SIGNAL(triggered()),&mdiArea,SLOT(closeActiveSubWindow()));
+    connect(close_others_action,SIGNAL(triggered()),&mdiArea,SLOT(closeAllSubWindows()));
+    connect(close_all_action,SIGNAL(triggered()),&mdiArea,SLOT(closeAllSubWindows()));
 }
 void MainWindow::updateMenus()
 {
@@ -756,6 +766,7 @@ void MainWindow::updateMenus()
     if(0!=subWindow){
         QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
         if(editor!=0){
+            ui->actionSave_As->setEnabled(true);
             ui->action_Save->setEnabled(editor->isChanged());
             ui->action_Undo->setEnabled(editor->isUndoable());
             ui->action_Redo->setEnabled(editor->isRedoable());
@@ -767,6 +778,7 @@ void MainWindow::updateMenus()
         return;
     }
 
+    ui->actionSave_As->setEnabled(false);
     ui->action_Save->setEnabled(false);
     ui->action_Undo->setEnabled(false);
     ui->action_Redo->setEnabled(false);
@@ -918,35 +930,6 @@ void MainWindow::on_actionDirectory_As_Project_triggered()
 
     QFileInfo fileInfo(dirString);
     loadDir(workSpace+"/"+fileInfo.fileName());
-}
-
-bool MainWindow::fileSave()
-{
-    textEdit = currentHTMLEdit();
-    if(textEdit==0){
-        return false;
-    }
-    if (fileName.isEmpty())
-        return fileSaveAs();
-
-    QFile file(fileName);
-    if (!file.open(QFile::WriteOnly))
-        return false;
-    QTextStream ts(&file);
-    ts.setCodec(QTextCodec::codecForName("UTF-8"));
-    ts << textEdit->document()->toHtml("UTF-8");
-    textEdit->document()->setModified(false);
-    return true;
-}
-
-bool MainWindow::fileSaveAs()
-{
-    QString fn = QFileDialog::getSaveFileName(this, tr("Save as..."),
-                                              QString(), tr("HTML-Files (*.htm *.html);;All Files (*)"));
-    if (fn.isEmpty())
-        return false;
-    //setCurrentFileName(fn);
-    return fileSave();
 }
 
 void MainWindow::filePrint()
@@ -1211,5 +1194,33 @@ void MainWindow::alignmentChanged(Qt::Alignment a)
         actionAlignRight->setChecked(true);
     } else if (a & Qt::AlignJustify) {
         actionAlignJustify->setChecked(true);
+    }
+}
+
+void MainWindow::on_actionSave_As_triggered()
+{
+    if(currentHTMLEdit()==0)
+        return;
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save as..."),
+                                              QString(), tr("HTML-Files (*.htm *.html);;All Files (*)"));
+    if (fileName.isEmpty())
+        return;
+
+    QFile file(fileName);
+    if (!file.open(QFile::WriteOnly))
+        return;
+    QTextStream ts(&file);
+    ts.setCodec(QTextCodec::codecForName("UTF-8"));
+    ts << currentHTMLEdit()->document()->toHtml("UTF-8");
+    currentHTMLEdit()->document()->setModified(false);
+}
+
+void MainWindow::on_actionShow_File_Column_triggered()
+{
+    if(ui->actionShow_File_Column->isChecked())
+    {
+        viewTree->showColumn(1);
+    }else{
+        viewTree->hideColumn(1);
     }
 }
