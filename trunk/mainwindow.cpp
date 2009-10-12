@@ -86,6 +86,7 @@ void MainWindow::subWindowActivated(QMdiSubWindow* subwindow)
         if(editor==0){
             return;
         }
+        encoding->setCurrentIndex(encodeList.indexOf(editor->textCode()->name(),0));
         htmlEdit = editor->htmlEditor();
     }
     if(htmlEdit==0)
@@ -411,6 +412,26 @@ void MainWindow::createToolBar()
             this, SLOT(textSize(const QString &)));
     comboSize->setCurrentIndex(comboSize->findText(QString::number(QApplication::font()
                                                                    .pointSize())));
+    encoding = new QComboBox(editorFormatTwoToolBar);
+    encoding->setObjectName("encoding");
+    editorFormatTwoToolBar->addWidget(encoding);
+    comboSize->setEditable(true);
+
+    encodeList = QTextCodec::availableCodecs();
+    qSort(encodeList);
+    foreach(QByteArray code, encodeList)
+    {
+        encoding->addItem(QString(code));
+    }
+    connect(encoding,SIGNAL(currentIndexChanged(QString)),this,SLOT(encodeChange(QString)));
+}
+void MainWindow::encodeChange(QString encode)
+{
+    QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
+    if(0!=subWindow){
+        QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
+        editor->load(QByteArray(encode.toLatin1().data(),encode.length()));
+    }
 }
 void MainWindow::closeEvent(QCloseEvent *e)
 {
@@ -442,7 +463,7 @@ void MainWindow::on_action_About_triggered()
 {
     QMessageBox::about(this, tr("About chmcreator"),
                        ("The <b>chmcreator</b> is developed by <a href=\"www.ibooks.org.cn\">ibooks</a>.The <b>chmcreator</b> is a excellent chm file editor, which support txt, chm, html format."
-                        "welcome access <a href =\"www.ibooks.org.cn\">www.ibooks.org.cn</a>£¡"));
+                        "welcome access <a href =\"www.ibooks.org.cn\">www.ibooks.org.cn</a>"));
 }
 
 void MainWindow::on_action_Open_triggered()
@@ -485,6 +506,7 @@ void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
     mdiArea.addSubWindow(htmlEditor);
     htmlEditor->show();
 
+    encoding->setCurrentIndex(encodeList.indexOf(htmlEditor->textCode()->name(),0));
     //connect(htmlEditor->textEditor(),SIGNAL(undoAvailable(bool)),ui->action_Undo,SLOT(setEnabled(bool)));
     //connect(htmlEditor->textEditor(),SIGNAL(redoAvailable(bool)),ui->action_Redo,SLOT(setEnabled(bool)));
 }

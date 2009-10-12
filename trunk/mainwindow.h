@@ -161,6 +161,7 @@ private:
     QComboBox *comboStyle;
     QFontComboBox *comboFont;
     QComboBox *comboSize;
+    QComboBox *encoding;
 
     QString fileName;
     QTextEdit *textEdit;
@@ -168,6 +169,7 @@ private:
     QTabBar *tabBar;
     QMenu* tabMenu;
     QContentsTreeView* viewTree;
+    QList<QByteArray> encodeList;
 private slots:
     void on_actionShow_File_Column_triggered();
     void on_actionSave_As_triggered();
@@ -202,6 +204,7 @@ private slots:
     void updateCompileText();
     void updateMenus();
     void openTabMenu(const QPoint& pos);
+    void encodeChange(QString encode);
 public slots:
     void on_action_TreeView_Clicked_triggered(const QModelIndex &index);
     void filePrint();
