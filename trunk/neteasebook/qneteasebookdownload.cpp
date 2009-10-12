@@ -33,7 +33,7 @@ void QNeteaseBookDownload::setProxy(QString hostname,int port){
 }
 
 void QNeteaseBookDownload::saveFile(bool isError){
-    qDebug()<<"Requesting:Finished!";
+    qDebug()<<"Requesting:Finished!"<<http->lastResponse().statusCode();
     if(isError||http->lastResponse().statusCode()==404){
         qDebug()<<"ERROR!"<<http->errorString();
         emit finished();

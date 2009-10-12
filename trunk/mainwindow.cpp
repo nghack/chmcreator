@@ -408,7 +408,7 @@ void MainWindow::createToolBar()
     foreach(int size, db.standardSizes())
         comboSize->addItem(QString::number(size));
 
-    connect(comboSize, SIGNAL(activated(const QString &)),
+    connect(comboSize, SIGNAL(activated(QString)),
             this, SLOT(textSize(const QString &)));
     comboSize->setCurrentIndex(comboSize->findText(QString::number(QApplication::font()
                                                                    .pointSize())));
@@ -1053,9 +1053,12 @@ void MainWindow::textFamily(const QString &f)
 
 void MainWindow::textSize(const QString &p)
 {
-    QTextCharFormat fmt;
-    fmt.setFontPointSize(p.toFloat());
-    mergeFormatOnWordOrSelection(fmt);
+    qreal pointSize = p.toFloat();
+    if (p.toFloat() > 0) {
+        QTextCharFormat fmt;
+        fmt.setFontPointSize(pointSize);
+        mergeFormatOnWordOrSelection(fmt);
+    }
 }
 
 void MainWindow::textStyle(int styleIndex)
@@ -1183,6 +1186,7 @@ void MainWindow::mergeFormatOnWordOrSelection(const QTextCharFormat &format)
     if (!cursor.hasSelection())
         cursor.select(QTextCursor::WordUnderCursor);
     cursor.mergeCharFormat(format);
+    cursor.setCharFormat(format);
     textEdit->mergeCurrentCharFormat(format);
 }
 

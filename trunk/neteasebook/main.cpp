@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     QCoreApplication app(argc, argv);
 
     QNeteaseBookDownload downloader(QString(argv[1]),".");
-    downloader.setProxy("172.28.9.151",8080);
+    //downloader.setProxy("172.28.9.151",8080);
     downloader.download();
     app.connect(&downloader, SIGNAL(finished()), &app, SLOT(quit()));
     return app.exec();
