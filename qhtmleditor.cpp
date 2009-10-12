@@ -13,24 +13,7 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
     setWindowIcon(QIcon(":/images/new.png"));
     currentIndex = indexOf(currentWidget());
 
-    QFile file(filename);
-    if (!file.open(QFile::ReadOnly)){
-        QMessageBox::about(0,tr("Error"),("Can't open file:"+fileName));
-        return;
-    }
-
-    QByteArray data = file.readAll();
-    codec = Qt::codecForHtml(data);
-    QString content = codec->toUnicode(data);
-
-
     document = new QTextDocument(this);
-    if (Qt::mightBeRichText(content)) {
-        document->setHtml(content);
-    }else{
-        document->setPlainText(content);
-    }
-
     setTabPosition(QTabWidget::South);
 
     textEdit = new QTextEdit(this);
@@ -40,7 +23,6 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
     //editor->setDocument(document);
 
     highlighter = new Highlighter(editor->document());
-    editor->setPlainText(content);
     editor->setWordWrapMode(QTextOption::NoWrap);//editor->setStyleSheet("font-size : 10px");
 
     browser = new QTextBrowser;//browser->setStyleSheet("font-size : 10px");
@@ -51,10 +33,11 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
 
     browser->setDocument(document);
 
-
     addTab(browser,"Preview");
     addTab(textEdit,"Editor");
     addTab(editor,"Source");
+
+    load();
 
     connect(textEdit,SIGNAL(textChanged()),this,SLOT(htmlChanged()));
     connect(editor,SIGNAL(textChanged()),this,SLOT(sourceChanged()));
@@ -77,6 +60,45 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
     contentStatus = 0;//
 }
 
+void QHTMLEditor::load(){
+    QFile file(filename);
+    if (!file.open(QFile::ReadOnly)){
+        QMessageBox::about(0,tr("Error"),("Can't open file:"+filename));
+        return;
+    }
+
+    QTextStream stream(&file);
+    codec = stream.codec();
+    QString content = stream.readAll();
+
+    if (Qt::mightBeRichText(content)) {
+        document->setHtml(content);
+    }else{
+        document->setPlainText(content);
+    }
+    editor->setPlainText(content);
+}
+void QHTMLEditor::load(QByteArray encode)
+{
+    QFile file(filename);
+    if (!file.open(QFile::ReadOnly)){
+        QMessageBox::about(0,tr("Error"),("Can't open file:"+filename));
+        return;
+    }
+    QTextStream stream(&file);
+    QString temp(encode);
+    stream.setCodec(QTextCodec::codecForName(encode));
+    QString content = stream.readAll();
+    codec = stream.codec();//QTextCodec::codecForName(encode);
+    file.close();
+
+    if (Qt::mightBeRichText(content)) {
+        document->setHtml(content);
+    }else{
+        document->setPlainText(content);
+    }
+    editor->setPlainText(content);
+}
 void QHTMLEditor::addDir(QString& dirPath,QStringList& list)
 {
     QString dirName = dirPath;

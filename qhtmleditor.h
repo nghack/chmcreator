@@ -25,6 +25,9 @@ public:
     bool isCutable(){return iscutable;}
     QPlainTextEdit* textEditor(){return editor;}
     QTextEdit* htmlEditor(){return textEdit;}
+    QTextCodec * textCode(){return codec;}
+    void load();
+    void load(QByteArray encode);
 signals:
     void textChanged(bool);
     void linkClicked(QUrl);
