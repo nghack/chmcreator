@@ -5,6 +5,7 @@
 #include <QWebView>
 #include "qhighlighter.h"
 #include "qhtmlsourceeditor.h"
+#include "helpwindow.h"
 class QHTMLEditor : public QTabWidget
 {
     Q_OBJECT
@@ -28,6 +29,8 @@ public:
     QTextCodec * textCode(){return codec;}
     void load();
     void load(QByteArray encode);
+protected:
+    void closeEvent(QCloseEvent *e);
 signals:
     void textChanged(bool);
     void linkClicked(QUrl);
@@ -39,9 +42,8 @@ private slots:
     void changeRedo(bool redo){isredoable = redo;}
     void changeCopy(bool copy){iscopyable = copy;}
     void changeCut(bool cut){iscutable = cut;}
-
-
 private:
+    bool maybeSave();
     Highlighter* highlighter;
     int currentIndex;
     bool ischanged;
