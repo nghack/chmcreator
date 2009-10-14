@@ -1,5 +1,4 @@
 #include "qhtmleditor.h"
-#include "helpwindow.h"
 
 QHTMLEditor::~QHTMLEditor(){
 }

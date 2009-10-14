@@ -31,8 +31,7 @@ SOURCES += main.cpp \
     qhighlighter.cpp \
     qfinddialog.cpp \
     qswitchworkspacedialog.cpp \
-    qhtmlsourceeditor.cpp \
-    qhtmleditorsubwindow.cpp
+    qhtmlsourceeditor.cpp
 INCLUDEPATH += include \
     ../QtChm
 HEADERS += mainwindow.h \
