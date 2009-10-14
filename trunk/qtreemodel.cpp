@@ -13,7 +13,7 @@ QTreeModel::QTreeModel(QString title,QObject *parent)
     parents << rootItem;
     indentations << 0;
 
-    addModelData(4,title+".chmproject",title);
+    addModelData(4,title+".chmproject",title+".chmproject");
 }
 
 QTreeModel::~QTreeModel()

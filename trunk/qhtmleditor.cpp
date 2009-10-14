@@ -1,4 +1,5 @@
 #include "qhtmleditor.h"
+#include "helpwindow.h"
 
 QHTMLEditor::~QHTMLEditor(){
 }
@@ -25,12 +26,11 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
     highlighter = new Highlighter(editor->document());
     editor->setWordWrapMode(QTextOption::NoWrap);//editor->setStyleSheet("font-size : 10px");
 
-    browser = new QTextBrowser;//browser->setStyleSheet("font-size : 10px");
+    browser = new QTextBrowser(this);//browser->setStyleSheet("font-size : 10px");
     QStringList list;
     QString pa = temp.absoluteDir().absolutePath();
     addDir(pa,list);
     browser->setSearchPaths(list);
-
     browser->setDocument(document);
 
     addTab(browser,"Preview");
@@ -183,4 +183,28 @@ void QHTMLEditor::saveAs(const QString& fileName)
     ischanged = false;
     QFileInfo temp(fileName);
     setWindowTitle(temp.fileName());
+}
+void QHTMLEditor::closeEvent(QCloseEvent *e)
+{
+    if (maybeSave())
+        e->accept();
+    else
+        e->ignore();
+}
+bool QHTMLEditor::maybeSave()
+{
+    if (!isChanged())
+        return true;
+    QMessageBox::StandardButton ret;
+    ret = QMessageBox::warning(this, tr("CHMCreator"),
+                               tr("The document \"<b>")+filename+
+                                  tr("</b>\" has been modified.\nDo you want to save your changes?"),
+                               QMessageBox::Save | QMessageBox::Discard
+                               | QMessageBox::Cancel);
+    if (ret == QMessageBox::Save){
+        save();
+        return true;
+    }else if (ret == QMessageBox::Cancel)
+        return false;
+    return true;
 }

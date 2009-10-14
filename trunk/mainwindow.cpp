@@ -442,20 +442,11 @@ void MainWindow::closeEvent(QCloseEvent *e)
 }
 bool MainWindow::maybeSave()
 {
-    /*if (!textEdit->document()->isModified())
-        return true;
-    if (fileName.startsWith(QLatin1String(":/")))
-        return true;
-    QMessageBox::StandardButton ret;
-    ret = QMessageBox::warning(this, tr("Application"),
-                               tr("The document has been modified.\n"
-                                  "Do you want to save your changes?"),
-                               QMessageBox::Save | QMessageBox::Discard
-                               | QMessageBox::Cancel);
-    if (ret == QMessageBox::Save)
-        return fileSave();
-    else if (ret == QMessageBox::Cancel)
-        return false;*/
+    QList<QMdiSubWindow*> subWindowList = mdiArea.subWindowList();
+    foreach(QMdiSubWindow* list,subWindowList){
+        if(!list->close())
+            return false;
+    }
     return true;
 }
 
@@ -492,6 +483,13 @@ void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
     QTreeItem *parentItem;
     parentItem = static_cast<QTreeItem*>(index.internalPointer());
 
+    QUrl url(currentProject->getProjectPath()+"/"+parentItem->objectUrl().toString());
+
+    if(url.toString().endsWith(".chmproject")){
+        on_action_Property_triggered();
+        return;
+    }
+
     if(index.column()!=0){
         QModifyFileDialog dialog;
         dialog.setModel(currentProject->getProjectPath());
@@ -499,8 +497,6 @@ void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
         parentItem->setData(index.column(),dialog.getSelectFile(parentItem->data(index.column()).toString()));
         return;
     }
-
-    QUrl url(currentProject->getProjectPath()+"/"+parentItem->objectUrl().toString());
 
     QHTMLEditor* htmlEditor = new QHTMLEditor(url.toString());
     mdiArea.addSubWindow(htmlEditor);

@@ -58,8 +58,7 @@ HEADERS += mainwindow.h \
     qhighlighter.h \
     qfinddialog.h \
     qswitchworkspacedialog.h \
-    qhtmlsourceeditor.h \
-    qhtmleditorsubwindow.h
+    qhtmlsourceeditor.h
 LIBS += -L../bin \
     -lQtChm
 FORMS += mainwindow.ui \
