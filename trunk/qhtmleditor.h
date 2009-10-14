@@ -5,7 +5,6 @@
 #include <QWebView>
 #include "qhighlighter.h"
 #include "qhtmlsourceeditor.h"
-#include "helpwindow.h"
 class QHTMLEditor : public QTabWidget
 {
     Q_OBJECT
