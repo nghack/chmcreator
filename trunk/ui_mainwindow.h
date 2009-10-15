@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Wed Oct 14 17:38:55 2009
+** Created: Thu Oct 15 17:45:04 2009
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -64,12 +64,13 @@ public:
     QAction *actionDirectory_As_Project;
     QAction *actionSave_As;
     QAction *actionShow_File_Column;
+    QAction *actionTo_PDF;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menu_File;
     QMenu *menuImport;
+    QMenu *menuExport;
     QMenu *menu_View;
-    QMenu *menu_Test;
     QMenu *menu_Help;
     QMenu *menu_Edit;
     QMenu *menu_Project;
@@ -164,6 +165,8 @@ public:
         actionShow_File_Column = new QAction(MainWindow);
         actionShow_File_Column->setObjectName(QString::fromUtf8("actionShow_File_Column"));
         actionShow_File_Column->setCheckable(true);
+        actionTo_PDF = new QAction(MainWindow);
+        actionTo_PDF->setObjectName(QString::fromUtf8("actionTo_PDF"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
@@ -174,10 +177,10 @@ public:
         menu_File->setObjectName(QString::fromUtf8("menu_File"));
         menuImport = new QMenu(menu_File);
         menuImport->setObjectName(QString::fromUtf8("menuImport"));
+        menuExport = new QMenu(menu_File);
+        menuExport->setObjectName(QString::fromUtf8("menuExport"));
         menu_View = new QMenu(menuBar);
         menu_View->setObjectName(QString::fromUtf8("menu_View"));
-        menu_Test = new QMenu(menuBar);
-        menu_Test->setObjectName(QString::fromUtf8("menu_Test"));
         menu_Help = new QMenu(menuBar);
         menu_Help->setObjectName(QString::fromUtf8("menu_Help"));
         menu_Edit = new QMenu(menuBar);
@@ -193,7 +196,6 @@ public:
         menuBar->addAction(menu_Edit->menuAction());
         menuBar->addAction(menu_View->menuAction());
         menuBar->addAction(menu_Project->menuAction());
-        menuBar->addAction(menu_Test->menuAction());
         menuBar->addAction(menu_Help->menuAction());
         menu_File->addAction(action_New);
         menu_File->addAction(action_Open);
@@ -203,6 +205,7 @@ public:
         menu_File->addAction(actionSave_As);
         menu_File->addSeparator();
         menu_File->addAction(menuImport->menuAction());
+        menu_File->addAction(menuExport->menuAction());
         menu_File->addSeparator();
         menu_File->addAction(actionExit);
         menu_File->addSeparator();
@@ -211,9 +214,6 @@ public:
         menu_View->addAction(actionStatusBar);
         menu_View->addSeparator();
         menu_View->addAction(actionShow_File_Column);
-        menu_Test->addAction(action_Compile);
-        menu_Test->addSeparator();
-        menu_Test->addAction(action_Run);
         menu_Help->addAction(action_About);
         menu_Help->addAction(actionSuggestion);
         menu_Edit->addAction(action_Undo);
@@ -227,6 +227,9 @@ public:
         menu_Edit->addSeparator();
         menu_Edit->addAction(action_Replace);
         menu_Edit->addAction(actionReplace_In_Files);
+        menu_Project->addAction(action_Compile);
+        menu_Project->addAction(action_Run);
+        menu_Project->addSeparator();
         menu_Project->addAction(action_Property);
 
         retranslateUi(MainWindow);
@@ -293,10 +296,11 @@ public:
         actionDirectory_As_Project->setText(QApplication::translate("MainWindow", "Directory As Project", 0, QApplication::UnicodeUTF8));
         actionSave_As->setText(QApplication::translate("MainWindow", "Save As...", 0, QApplication::UnicodeUTF8));
         actionShow_File_Column->setText(QApplication::translate("MainWindow", "Show File Column", 0, QApplication::UnicodeUTF8));
+        actionTo_PDF->setText(QApplication::translate("MainWindow", "To PDF", 0, QApplication::UnicodeUTF8));
         menu_File->setTitle(QApplication::translate("MainWindow", "&File", 0, QApplication::UnicodeUTF8));
         menuImport->setTitle(QApplication::translate("MainWindow", "Import", 0, QApplication::UnicodeUTF8));
+        menuExport->setTitle(QApplication::translate("MainWindow", "Export", 0, QApplication::UnicodeUTF8));
         menu_View->setTitle(QApplication::translate("MainWindow", "&View", 0, QApplication::UnicodeUTF8));
-        menu_Test->setTitle(QApplication::translate("MainWindow", "&Build", 0, QApplication::UnicodeUTF8));
         menu_Help->setTitle(QApplication::translate("MainWindow", "&Help", 0, QApplication::UnicodeUTF8));
         menu_Edit->setTitle(QApplication::translate("MainWindow", "&Edit", 0, QApplication::UnicodeUTF8));
         menu_Project->setTitle(QApplication::translate("MainWindow", "&Project", 0, QApplication::UnicodeUTF8));

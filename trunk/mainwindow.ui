@@ -37,6 +37,11 @@
      </property>
      <addaction name="actionDirectory_As_Project"/>
     </widget>
+    <widget class="QMenu" name="menuExport">
+     <property name="title">
+      <string>Export</string>
+     </property>
+    </widget>
     <addaction name="action_New"/>
     <addaction name="action_Open"/>
     <addaction name="actionClose_Project"/>
@@ -45,6 +50,7 @@
     <addaction name="actionSave_As"/>
     <addaction name="separator"/>
     <addaction name="menuImport"/>
+    <addaction name="menuExport"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
     <addaction name="separator"/>
@@ -57,14 +63,6 @@
     <addaction name="actionStatusBar"/>
     <addaction name="separator"/>
     <addaction name="actionShow_File_Column"/>
-   </widget>
-   <widget class="QMenu" name="menu_Test">
-    <property name="title">
-     <string>&amp;Build</string>
-    </property>
-    <addaction name="action_Compile"/>
-    <addaction name="separator"/>
-    <addaction name="action_Run"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
     <property name="title">
@@ -93,13 +91,15 @@
     <property name="title">
      <string>&amp;Project</string>
     </property>
+    <addaction name="action_Compile"/>
+    <addaction name="action_Run"/>
+    <addaction name="separator"/>
     <addaction name="action_Property"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
    <addaction name="menu_View"/>
    <addaction name="menu_Project"/>
-   <addaction name="menu_Test"/>
    <addaction name="menu_Help"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -360,6 +360,11 @@
    </property>
    <property name="text">
     <string>Show File Column</string>
+   </property>
+  </action>
+  <action name="actionTo_PDF">
+   <property name="text">
+    <string>To PDF</string>
    </property>
   </action>
  </widget>

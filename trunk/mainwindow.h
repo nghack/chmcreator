@@ -157,6 +157,7 @@ private:
     QAction    *actionUndo;
     QAction    *actionRedo;
     QAction    *actionCut;
+    QAction    *actionToPDF;
 
     QComboBox *comboStyle;
     QFontComboBox *comboFont;
@@ -168,6 +169,7 @@ private:
 
     QTabBar *tabBar;
     QMenu* tabMenu;
+    QMenu* formatMenu;
     QContentsTreeView* viewTree;
     QList<QByteArray> encodeList;
 private slots:
