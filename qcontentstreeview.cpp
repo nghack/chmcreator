@@ -9,6 +9,8 @@ QContentsTreeView::QContentsTreeView(MainWindow* mainWindow)
     this->mainWindow = mainWindow;
     createActions();
     setContextMenuPolicy(Qt::CustomContextMenu);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setSelectionBehavior(QAbstractItemView::SelectItems);
 
     connect(this,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(showMenu(QPoint)));
     connect(header(),SIGNAL(clicked(QModelIndex)),this,SLOT(showHeaderMenu(QModelIndex)));
@@ -22,7 +24,7 @@ void QContentsTreeView::showMenu(const QPoint& point)
     QModelIndex index = indexAt(point);
     if(!index.isValid())
         return;
-    setCurrentIndex(index);
+    //setCurrentIndex(index);
     menu->exec(viewport()->mapToGlobal(point));
 }
 QContentsTreeView::~QContentsTreeView()
@@ -62,31 +64,30 @@ void QContentsTreeView::addExistFiles(){
 
     update(rootIndex());
 }
-void QContentsTreeView::copyFile(){}
+void QContentsTreeView::copyFile(){
+    QClipboard *clipboard = QApplication::clipboard();
+    QTreeItem* item = (QTreeItem*)currentIndex().internalPointer();
+    if(currentIndex().column()==0){
+        clipboard->setText(item->data(0).toString());
+    }else if(currentIndex().column()==1){
+        clipboard->setText(item->data(1).toString());
+    }    
+}
 void QContentsTreeView::pasteFile()
 {
     QClipboard *clipboard = QApplication::clipboard();
     if(clipboard->text()==QString::null)
         return;
     QStringList list(clipboard->text().split("\n"));
-    QTreeItem* parent = (QTreeItem*)currentIndex().internalPointer();
-    if(parent!=0){
-        QList<QTreeItem*> childern = parent->childItemList();
-        int min = list.size()<childern.size()?list.size():childern.size();
-        for(int i=0;i<min;i++)
-        {
-            QString da = list.at(i);
-            childern.at(i)->setData(currentIndex().column(),da.trimmed());
-        }
-    }else{
-        QTreeItem* parentList = (QTreeItem*)model()->index(0,0).internalPointer();
-        QList<QTreeItem*> childern = parentList->childItemList();
-        int min = list.size()<childern.size()?list.size():childern.size();
-        for(int i=0;i<min;i++)
-        {
-            QString da = list.at(i);
-            childern.at(i)->setData(currentIndex().column(),da.trimmed());
-        }
+
+    QModelIndexList indexList = selectedIndexes();
+    int min = list.size()<indexList.size()?list.size():indexList.size();
+    for(int i=0;i<min;i++)
+    {
+        QString da = list.at(i);
+        QModelIndex index = indexList.at(i);
+        QTreeItem* item = (QTreeItem*)index.internalPointer();
+        item->setData(index.column(),da.trimmed());
     }
 }
 void QContentsTreeView::deleteFile()

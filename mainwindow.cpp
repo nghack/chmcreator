@@ -73,6 +73,7 @@ MainWindow::MainWindow(QString app,QWidget *parent)
             loadProject(projectFile);
     }
     connect(&mdiArea,SIGNAL(subWindowActivated(QMdiSubWindow*)),this,SLOT(subWindowActivated(QMdiSubWindow*)));
+    updateMenus();
 }
 void MainWindow::openTabMenu(const QPoint& pos)
 {
@@ -287,10 +288,11 @@ void MainWindow::createToolBar()
     a = new QAction(QIcon(rsrcPath + "/fileprint.png"), tr("Print Preview..."), this);
     connect(a, SIGNAL(triggered()), this, SLOT(filePrintPreview()));
 
-    a = new QAction(QIcon(rsrcPath + "/pdf.png"), tr("&Export PDF..."), this);
+    a = actionToPDF = new QAction(QIcon(rsrcPath + "/pdf.png"), tr("To P&DF..."), this);
     a->setShortcut(Qt::CTRL + Qt::Key_D);
     connect(a, SIGNAL(triggered()), this, SLOT(filePrintPdf()));
     editorFileToolBar->addAction(a);
+    ui->menuExport->addAction(a);
 
     //Editor File ToolBar
     editorEditToolBar = addToolBar(tr("Edit Actions"));
@@ -424,6 +426,21 @@ void MainWindow::createToolBar()
         encoding->addItem(QString(code));
     }
     connect(encoding,SIGNAL(currentIndexChanged(QString)),this,SLOT(encodeChange(QString)));
+    formatMenu = new QMenu(QLatin1String("Format"), ui->menuBar);
+
+    formatMenu->addAction(actionTextBold);
+    formatMenu->addAction(actionTextUnderline);
+    formatMenu->addAction(actionTextItalic);
+    formatMenu->addSeparator();
+
+    formatMenu->addAction(actionAlignLeft);
+    formatMenu->addAction(actionAlignCenter);
+    formatMenu->addAction(actionAlignRight);
+    formatMenu->addAction(actionAlignJustify);
+    formatMenu->addSeparator();
+
+    formatMenu->addAction(actionTextColor);
+    ui->menuBar->insertMenu(ui->menu_View->menuAction(),formatMenu);
 }
 void MainWindow::encodeChange(QString encode)
 {
@@ -747,9 +764,10 @@ void MainWindow::createMenus()
     //connect(ui->menuT_ool, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
     connect(ui->menu_Project, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
     connect(ui->menu_View, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
-    connect(ui->menu_Test, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
+    connect(ui->menuExport, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
 
     ui->actionShow_File_Column->setChecked(true);
+
     /*for (int i = 0; i < 5; ++i) {
          recentFileActs[i] = new QAction(this);
          recentFileActs[i]->setVisible(false);
@@ -792,6 +810,7 @@ void MainWindow::updateMenus()
             ui->action_Cut->setEnabled(editor->isCopyable());
             ui->actionPaste->setEnabled(QApplication::clipboard()->text()!=QString::null);
             ui->actionSelect_All->setEnabled(editor->isEditable());
+            actionToPDF->setEnabled(true);
         }
         return;
     }
@@ -804,6 +823,7 @@ void MainWindow::updateMenus()
     ui->action_Cut->setEnabled(false);
     ui->actionPaste->setEnabled(false);
     ui->actionSelect_All->setEnabled(false);
+    actionToPDF->setEnabled(false);
 }
 QTextEdit* MainWindow::currentHTMLEdit()
 {
