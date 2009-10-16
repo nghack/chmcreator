@@ -15,6 +15,8 @@ public:
     ~QContentsTreeView();
     void createActions();
     void addExistFile(const QString fileName);
+protected:
+    virtual void keyPressEvent ( QKeyEvent * event );
 private:
      MainWindow* mainWindow;
      QMenu* menu;

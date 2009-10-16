@@ -4,6 +4,7 @@
     A container for items of data supplied by the simple tree model.
 */
 
+#include <QMessageBox>
 #include <QStringList>
 
 #include "QTreeItem.h"
@@ -96,13 +97,16 @@ bool QTreeItem::removeRow(int row)
 }
 void QTreeItem::moveUp(int index)
 {
-    if(index>0&&index<itemData.size()){
-        itemData.move(index,index-1);
+    if(index>0&&index<childItems.size()){
+        QMessageBox::about(0,QString("%1").arg(index),QString("%1").arg(index));
+        QTreeItem* temp = childItems.at(index);
+        childItems.removeAt(index);
+        childItems.insert(index-1,temp);
     }
 }
 void QTreeItem::moveDown(int index)
 {
-    if(index>0&&index<(itemData.size()-1)){
-        itemData.move(index,index+1);
+    if(index>0&&index<(childItems.size()-1)){
+        childItems.move(index,index+1);
     }
 }
