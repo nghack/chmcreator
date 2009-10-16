@@ -280,7 +280,7 @@ void MainWindow::createToolBar()
     a->setEnabled(false);
     editorFileToolBar->addAction(a);
 
-    a = new QAction(QIcon(rsrcPath + "/fileprint.png"), tr("&Print..."), this);
+    a = actionPrint = new QAction(QIcon(rsrcPath + "/fileprint.png"), tr("&Print..."), this);
     a->setShortcut(QKeySequence::Print);
     connect(a, SIGNAL(triggered()), this, SLOT(filePrint()));
     editorFileToolBar->addAction(a);
@@ -522,6 +522,7 @@ void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
     encoding->setCurrentIndex(encodeList.indexOf(htmlEditor->textCode()->name(),0));
     //connect(htmlEditor->textEditor(),SIGNAL(undoAvailable(bool)),ui->action_Undo,SLOT(setEnabled(bool)));
     //connect(htmlEditor->textEditor(),SIGNAL(redoAvailable(bool)),ui->action_Redo,SLOT(setEnabled(bool)));
+    updateMenus();
 }
 void MainWindow::on_action_NewAccepted_triggered()
 {
@@ -811,6 +812,7 @@ void MainWindow::updateMenus()
             ui->actionPaste->setEnabled(QApplication::clipboard()->text()!=QString::null);
             ui->actionSelect_All->setEnabled(editor->isEditable());
             actionToPDF->setEnabled(true);
+            actionPrint->setEnabled(true);
         }
         return;
     }
@@ -824,6 +826,7 @@ void MainWindow::updateMenus()
     ui->actionPaste->setEnabled(false);
     ui->actionSelect_All->setEnabled(false);
     actionToPDF->setEnabled(false);
+    actionPrint->setEnabled(false);
 }
 QTextEdit* MainWindow::currentHTMLEdit()
 {

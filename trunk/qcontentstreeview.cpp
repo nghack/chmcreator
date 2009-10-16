@@ -19,6 +19,10 @@ QContentsTreeView::QContentsTreeView(MainWindow* mainWindow)
 void QContentsTreeView::showHeaderMenu(QModelIndex i){
 
 }
+void QContentsTreeView::keyPressEvent ( QKeyEvent * event )
+{
+    QAbstractItemView::keyPressEvent ( event );
+}
 void QContentsTreeView::showMenu(const QPoint& point)
 {
     QModelIndex index = indexAt(point);
@@ -204,7 +208,9 @@ void QContentsTreeView::createActions()
 
     QModelIndex parentIndex = model()->parent(currentIndex());
     QTreeItem* parentItem = ((QTreeItem*)parentIndex.internalPointer());
-    parentItem->moveUp(parentItem->indexOf((QTreeItem*)currentIndex().internalPointer()));
+    //QMessageBox::about(0,parentItem->objectName(),"");
+    //parentItem->moveUp();
+    model()->removeRow(((QTreeItem*)currentIndex().internalPointer())->row(),parentIndex);
  }
  void QContentsTreeView::moveDown()
  {

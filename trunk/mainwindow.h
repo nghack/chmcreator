@@ -157,6 +157,7 @@ private:
     QAction    *actionUndo;
     QAction    *actionRedo;
     QAction    *actionCut;
+    QAction    *actionPrint;
     QAction    *actionToPDF;
 
     QComboBox *comboStyle;
