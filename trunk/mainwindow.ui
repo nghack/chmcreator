@@ -142,7 +142,7 @@
     <string>Co&amp;mpile...</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+F5</string>
+    <string>F6</string>
    </property>
   </action>
   <action name="actionDecompile">
@@ -216,6 +216,9 @@
   <action name="action_Compile">
    <property name="text">
     <string>&amp;Compile</string>
+   </property>
+   <property name="shortcut">
+    <string>F6</string>
    </property>
   </action>
   <action name="action_Build">

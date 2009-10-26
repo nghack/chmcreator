@@ -101,18 +101,13 @@ void QContentsTreeView::deleteFile()
     if (msgBox.exec() == QMessageBox::No)
         return;
 
-    QModelIndex parent = currentIndex().parent();
-    if(!parent.isValid())
-        return;
-    QTreeItem* item = (QTreeItem*)currentIndex().internalPointer();
+    QModelIndexList indexList = selectedIndexes();
+    for(int i=0;i<indexList.size();i++)
+    {
+        QModelIndex index = indexList.at(i);
+        model()->removeRow(index.row(),index.parent());
+    }
 
-    QString deleteFileName ="";
-    deleteFileName.append(settings.value(PROJECT_PATH).toString());
-    deleteFileName.append("/");
-    deleteFileName.append(item->data(1).toString());
-    QFile::remove(deleteFileName);
-
-    model()->removeRow(currentIndex().row(),parent);
     mainWindow->saveHHC();
     update(rootIndex());
 }

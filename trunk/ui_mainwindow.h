@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Thu Oct 15 17:45:04 2009
+** Created: Mon Oct 26 16:34:06 2009
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -249,7 +249,7 @@ public:
         action_Save_Project->setText(QApplication::translate("MainWindow", "&Save Project", 0, QApplication::UnicodeUTF8));
         action_Save_Project->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0, QApplication::UnicodeUTF8));
         actionCo_mpile->setText(QApplication::translate("MainWindow", "Co&mpile...", 0, QApplication::UnicodeUTF8));
-        actionCo_mpile->setShortcut(QApplication::translate("MainWindow", "Ctrl+F5", 0, QApplication::UnicodeUTF8));
+        actionCo_mpile->setShortcut(QApplication::translate("MainWindow", "F6", 0, QApplication::UnicodeUTF8));
         actionDecompile->setText(QApplication::translate("MainWindow", "&Decompile...", 0, QApplication::UnicodeUTF8));
         actionChm_Information->setText(QApplication::translate("MainWindow", "Chm &Information", 0, QApplication::UnicodeUTF8));
         actionPr_eference->setText(QApplication::translate("MainWindow", "Pr&eference", 0, QApplication::UnicodeUTF8));
@@ -263,6 +263,7 @@ public:
         action_About->setText(QApplication::translate("MainWindow", "&About", 0, QApplication::UnicodeUTF8));
         action_Option->setText(QApplication::translate("MainWindow", "&Preference", 0, QApplication::UnicodeUTF8));
         action_Compile->setText(QApplication::translate("MainWindow", "&Compile", 0, QApplication::UnicodeUTF8));
+        action_Compile->setShortcut(QApplication::translate("MainWindow", "F6", 0, QApplication::UnicodeUTF8));
         action_Build->setText(QApplication::translate("MainWindow", "&Build", 0, QApplication::UnicodeUTF8));
         action_Undo->setText(QApplication::translate("MainWindow", "&Undo", 0, QApplication::UnicodeUTF8));
         action_Undo->setShortcut(QApplication::translate("MainWindow", "Ctrl+Z", 0, QApplication::UnicodeUTF8));
