@@ -712,7 +712,8 @@ void MainWindow::updateCompileText(){
 }
 void MainWindow::console(int value)
 {
-    QMessageBox::about(0,"Compile Finished!","Compile Finished!");
+    on_action_Run_triggered();
+    //QMessageBox::about(0,"Compile Finished!","Compile Finished!");
     //((QTextEdit*)dockConsole->widget())->append(pro->readAll());
 }
 
@@ -963,9 +964,10 @@ void MainWindow::on_actionSuggestion_triggered()
 
 void MainWindow::on_actionDirectory_As_Project_triggered()
 {
-    QString dirString = QFileDialog::getExistingDirectory(this,"Select Directory",".");
+    QString dirString = QFileDialog::getExistingDirectory(this,"Select Directory",settings.value("DIR_DEFAULT",".").toString());
     if(dirString==QString::null)
         return;
+    settings.setValue("DIR_DEFAULT",dirString);
     QString workSpace = settings.value(WORKSPACE_PATH).toString();
     copyDir(dirString,workSpace);
 

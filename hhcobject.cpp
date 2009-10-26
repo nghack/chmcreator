@@ -23,8 +23,20 @@ void HHCObject::fromDir(int level,QString dir,QString temp){
     QDir dirModel;
     dirModel.setCurrent(dir);
     QStringList list = dirModel.entryList();
+    if(list.contains("index.html",Qt::CaseInsensitive)){
+        QFileInfo fileInfo(dir+"/index.html");
+        QString absDir = temp.length()>0?temp+"/index.html":"index.html";
+        treeModel->addModelData(level, "index.html",absDir);
+    }else if(list.contains("index.htm",Qt::CaseInsensitive)){
+        QFileInfo fileInfo(dir+"/index.htm");
+        QString absDir = temp.length()>0?temp+"/index.htm":"index.htm";
+        treeModel->addModelData(level, "index.htm",absDir);
+    }
     foreach(QString fileName,list){        
-        if(fileName.compare(".")==0||fileName.compare("..")==0){
+        if(fileName.compare(".")==0||fileName.compare("..")==0||fileName.compare("index.htm")==0||fileName.compare("index.html")==0){
+            continue;
+        }
+        if(!(fileName.endsWith(".htm",Qt::CaseInsensitive)||fileName.endsWith(".html",Qt::CaseInsensitive))){
             continue;
         }
         QFileInfo fileInfo(dir+"/"+fileName);
