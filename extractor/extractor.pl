@@ -39,7 +39,7 @@ foreach $file(readdir CUR_DIR){
 			print HHP_FILE "Title=${paramName} - 图书之家制作\n";
 			
 			close HHP_FILE;
-			system("hhc \"${paramName}/${paramName}.hhp\"");
+			#system("hhc \"${paramName}/${paramName}.hhp\"");
 		}
 	}
 }
