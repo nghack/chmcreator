@@ -21,7 +21,7 @@ foreach $file(readdir CUR_DIR){
 			print HHP_FILE "Binary Index=false\n";
 			print HHP_FILE "Binary TOC=false\n";
 			print HHP_FILE "Compatibility=1.0\n";
-			print HHP_FILE "Compiled file=${paramName}.chm\n";			
+			print HHP_FILE "Compiled file=../${paramName}.chm\n";			
 			print HHP_FILE "Contents file=";
 			print HHP_FILE getContentFile(${paramName})."\n";
 			print HHP_FILE "Default Font=MS UI Gothic,12,-1,5,50,0,0,0,0,0\n";
@@ -39,7 +39,7 @@ foreach $file(readdir CUR_DIR){
 			print HHP_FILE "Title=${paramName} - 图书之家制作\n";
 			
 			close HHP_FILE;
-			#system("hhc \"${paramName}/${paramName}.hhp\"");
+			system("hhc \"${paramName}/${paramName}.hhp\"");
 		}
 	}
 }
