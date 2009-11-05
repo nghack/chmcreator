@@ -3,3 +3,10 @@ www.feiku.com
 FeiKu.Com
 #f1f1f1
 #e7f4fe
+F:F:/makehtml/
+E:E:/makehtml/
+.htm/
+www.qidian.com
+Æðµã
+qidian.com
+<%=PenName%>
