@@ -61,13 +61,13 @@ sub replaceInFile{
  	$count=0;
 	while($count<scalar(@keyword)){
 		$_=$C;
+		#print "Replace:".@keyword[$count]." with:".@replacekeyword[$count]."\n";
 		$C =~ s/@keyword[$count]/@replacekeyword[$count]/gi;
 		$count++;
 	}
  	
  	open( FILE, ">$_[0]");
- 	
+ 
  	print FILE $C;
- 	
  	close(FILE);
 }
