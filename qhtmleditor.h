@@ -51,7 +51,7 @@ private:
     int contentStatus;
     QString filename;
     QTextDocument* document;
-    QTextBrowser* browser;
+    //QTextBrowser* browser;
     QTextEdit *textEdit;
     QHTMLSourceEditorCodeEditor* editor;
     int value;

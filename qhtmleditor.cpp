@@ -25,14 +25,14 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
     highlighter = new Highlighter(editor->document());
     editor->setWordWrapMode(QTextOption::NoWrap);//editor->setStyleSheet("font-size : 10px");
 
-    browser = new QTextBrowser(this);//browser->setStyleSheet("font-size : 10px");
+    /*browser = new QTextBrowser(this);//browser->setStyleSheet("font-size : 10px");
     QStringList list;
     QString pa = temp.absoluteDir().absolutePath();
     addDir(pa,list);
     browser->setSearchPaths(list);
     browser->setDocument(document);
 
-    addTab(browser,"Preview");
+    addTab(browser,"Preview");*/
     addTab(textEdit,"Editor");
     addTab(editor,"Source");
 

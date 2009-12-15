@@ -426,7 +426,7 @@ void MainWindow::createToolBar()
         encoding->addItem(QString(code));
     }
     connect(encoding,SIGNAL(currentIndexChanged(QString)),this,SLOT(encodeChange(QString)));
-    formatMenu = new QMenu(QLatin1String("Format"), ui->menuBar);
+    formatMenu = new QMenu(QLatin1String(tr("Format")), ui->menuBar);
 
     formatMenu->addAction(actionTextBold);
     formatMenu->addAction(actionTextUnderline);
