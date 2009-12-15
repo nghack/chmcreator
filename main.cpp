@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     QString locale = QLocale::system().name();
 
     QTranslator translator;
-    translator.load(QString("chmcreator") + locale);
+    translator.load(QString("chmcreator").append(settings.value(LOCALE).toString()));
     a.installTranslator(&translator);
 
     settings.setValue(APP_PATH,QCoreApplication::applicationDirPath ());
