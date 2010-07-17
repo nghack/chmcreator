@@ -14,6 +14,7 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
     currentIndex = indexOf(currentWidget());
 
     document = new QTextDocument(this);
+
     setTabPosition(QTabWidget::South);
 
     textEdit = new QTextEdit(this);
