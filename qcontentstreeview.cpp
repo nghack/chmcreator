@@ -202,7 +202,7 @@ void QContentsTreeView::createActions()
         return;
 
     QModelIndex parentIndex = model()->parent(currentIndex());
-    QTreeItem* parentItem = ((QTreeItem*)parentIndex.internalPointer());
+    //QTreeItem* parentItem = ((QTreeItem*)parentIndex.internalPointer());
     //QMessageBox::about(0,parentItem->objectName(),"");
     //parentItem->moveUp();
     model()->removeRow(((QTreeItem*)currentIndex().internalPointer())->row(),parentIndex);

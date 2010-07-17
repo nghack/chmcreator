@@ -41,6 +41,9 @@ void CHMProject::toProjectFile(){
 
     QStringList keyList = childGroups();
     foreach(QString key,keyList){
+        if(key.compare("EXTENSENS",Qt::CaseInsensitive)==0){
+            continue;
+        }
         outputProject <<"[";
         outputProject <<key;
         outputProject <<"]\r\n";

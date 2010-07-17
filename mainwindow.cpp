@@ -14,11 +14,12 @@ MainWindow::MainWindow(QString app,QWidget *parent)
 {
     ui->setupUi(this);
     setWindowTitle(tr("chmcreator"));
-
+    sendMailDialog = 0;
     rsrcPath = ":/images";
     compileProcessDialog = new QProgressDialog(this);
     findDialog = new FindDialog(this);
     pro = new QProcess;
+    pro->setProcessChannelMode(QProcess::MergedChannels);
     mdiArea.setViewMode(QMdiArea::TabbedView);
 
     tabBar = qFindChild<QTabBar*>(&mdiArea);
@@ -40,17 +41,26 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     setAcceptDrops(true);
     setDockOptions(QMainWindow::ForceTabbedDocks);
 
-    dockIndex = (new QDockWidget(tr("Index"), this));
-    dockIndex->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
-    addDockWidget(Qt::LeftDockWidgetArea, dockIndex);
-    dockIndex->setWidget(new QListWidget);
-
     dockProject = (new QDockWidget(tr("Project"), this));
     dockProject->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
     dockProject->setAcceptDrops(true);
     addDockWidget(Qt::LeftDockWidgetArea, dockProject);
 
+    dockIndex = (new QDockWidget(tr("Index"), this));
+    dockIndex->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
+    addDockWidget(Qt::LeftDockWidgetArea, dockIndex);
+    dockIndex->setWidget(new QListWidget);
+
     tabifyDockWidget(dockIndex,dockProject);
+    dockProject->showNormal();
+
+    dockConsole = (new QDockWidget(tr("Console"), this));
+    QTextEdit* consoleEditorView = new QTextEdit();
+    consoleEditorView->ensureCursorVisible();
+    dockConsole->setWidget(consoleEditorView);
+    dockConsole->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
+    dockConsole->setAcceptDrops(true);
+    addDockWidget(Qt::BottomDockWidgetArea,dockConsole);
 
     viewTree = new QContentsTreeView(this);
     dockProject->setWidget(viewTree);
@@ -89,6 +99,7 @@ void MainWindow::subWindowActivated(QMdiSubWindow* subwindow)
         }
         encoding->setCurrentIndex(encodeList.indexOf(editor->textCode()->name(),0));
         htmlEdit = editor->htmlEditor();
+        connect(editor,SIGNAL(destroyed()),this,SLOT(updateMenus()));
     }
     if(htmlEdit==0)
         return;
@@ -322,6 +333,11 @@ void MainWindow::createToolBar()
     //Format Actions ToolBar
     editorFormatToolBar = addToolBar(tr("Format Actions"));
 
+    actionTextFormat = new QAction(tr("&Format"), this);
+    actionTextFormat->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_F);
+    connect(actionTextFormat, SIGNAL(triggered()), this, SLOT(textFormat()));
+    editorFormatToolBar->addAction(actionTextFormat);
+
     actionTextBold = new QAction(QIcon(rsrcPath + "/textbold.png"), tr("&Bold"), this);
     actionTextBold->setShortcut(Qt::CTRL + Qt::Key_B);
     QFont bold;
@@ -378,7 +394,7 @@ void MainWindow::createToolBar()
     connect(actionTextColor, SIGNAL(triggered()), this, SLOT(textColor()));
     editorFormatToolBar->addAction(actionTextColor);
 
-    addToolBarBreak(Qt::TopToolBarArea);
+    //addToolBarBreak(Qt::TopToolBarArea);
     editorFormatTwoToolBar = addToolBar(tr("Text Format Actions"));
     editorFormatTwoToolBar->setAllowedAreas(Qt::TopToolBarArea | Qt::BottomToolBarArea);
     editorFormatTwoToolBar->setWindowTitle(tr("Format Actions"));
@@ -428,6 +444,7 @@ void MainWindow::createToolBar()
     connect(encoding,SIGNAL(currentIndexChanged(QString)),this,SLOT(encodeChange(QString)));
     formatMenu = new QMenu(QString(tr("Format")), ui->menuBar);
 
+    formatMenu->addAction(actionTextFormat);
     formatMenu->addAction(actionTextBold);
     formatMenu->addAction(actionTextUnderline);
     formatMenu->addAction(actionTextItalic);
@@ -705,21 +722,21 @@ void MainWindow::on_action_Compile_triggered()
     command.append(chmProjectFile.replace("/","\\"));
     qDebug()<<command;
     pro->start(command);
-    //compileProcessDialog->exec();
 }
 void MainWindow::updateCompileText(){
-    compileProcessDialog->setLabelText(pro->readAllStandardOutput());
+    while(pro->canReadLine())
+    {
+        ((QTextEdit*)dockConsole->widget())->append(pro->readLine());
+    }
 }
 void MainWindow::console(int value)
 {
-    on_action_Run_triggered();
-    //QMessageBox::about(0,"Compile Finished!","Compile Finished!");
-    //((QTextEdit*)dockConsole->widget())->append(pro->readAll());
+    QString finishedPromptTip(tr("\nCompile finished."));
+    ((QTextEdit*)dockConsole->widget())->append(finishedPromptTip);
 }
 
 void MainWindow::on_action_Run_triggered()
 {
-    //((QTextEdit*)dockConsole->widget())->clear();
     QString projectTargetName = currentProject->value(PROJECT_TARGET).toString();
     QFile file(currentProject->getProjectPath()+"/"+ projectTargetName);
     if(!file.exists()){
@@ -786,8 +803,29 @@ void MainWindow::createMenus()
     connect(close_others_action,SIGNAL(triggered()),&mdiArea,SLOT(closeAllSubWindows()));
     connect(close_all_action,SIGNAL(triggered()),&mdiArea,SLOT(closeAllSubWindows()));
 }
+
+void MainWindow::updateActionStatus()
+{
+    QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
+    bool isEnabled = 0!=subWindow?true:false;
+
+    QList<QAction*> editorEditActionList = editorEditToolBar->actions();
+    foreach(QAction* action,editorEditActionList){
+        action->setEnabled(isEnabled);
+    }
+    QList<QAction*> editorFormatActionList = editorFormatToolBar->actions();
+    foreach(QAction* action,editorFormatActionList){
+        action->setEnabled(isEnabled);
+    }
+    QList<QAction*> editorFormatTwoActionList = editorFormatTwoToolBar->actions();
+    foreach(QAction* action,editorFormatTwoActionList){
+        action->setEnabled(isEnabled);
+    }
+}
+
 void MainWindow::updateMenus()
 {
+    updateActionStatus();
     ui->actionCopy->setEnabled(false);
     ui->actionCo_mpile->setEnabled(currentProject!=0);
     ui->action_Compile->setEnabled(currentProject!=0);
@@ -814,10 +852,11 @@ void MainWindow::updateMenus()
             ui->actionSelect_All->setEnabled(editor->isEditable());
             actionToPDF->setEnabled(true);
             actionPrint->setEnabled(true);
+            return;
         }
-        return;
     }
 
+    this->actionSave->setEnabled(false);
     ui->actionSave_As->setEnabled(false);
     ui->action_Save->setEnabled(false);
     ui->action_Undo->setEnabled(false);
@@ -941,7 +980,7 @@ void MainWindow::on_action_Redo_triggered()
 
 void MainWindow::on_actionDelete_triggered()
 {
-    QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
+    //QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
 //    QHTMLEditor* editor = ((QHTMLEditor*)subWindow->widget());
 }
 
@@ -959,7 +998,11 @@ void MainWindow::on_action_Replace_triggered()
 
 void MainWindow::on_actionSuggestion_triggered()
 {
-    QDesktopServices::openUrl(QUrl("http://www.ibooks.org.cn/index.php/2009-08-17-09-39-53", QUrl::TolerantMode));
+    if(sendMailDialog==0){
+        sendMailDialog = new QSendMailDialog();
+    }
+    sendMailDialog->exec();
+    //QDesktopServices::openUrl(QUrl("http://www.ibooks.org.cn/index.php/2009-08-17-09-39-53", QUrl::TolerantMode));
 }
 
 void MainWindow::on_actionDirectory_As_Project_triggered()
@@ -1050,7 +1093,10 @@ void MainWindow::textBold()
     fmt.setFontWeight(actionTextBold->isChecked() ? QFont::Bold : QFont::Normal);
     mergeFormatOnWordOrSelection(fmt);
 }
-
+void MainWindow::textFormat()
+{
+    QTextCharFormat fmt;
+}
 void MainWindow::textUnderline()
 {
     QTextCharFormat fmt;

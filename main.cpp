@@ -1,4 +1,5 @@
 #include <QtGui>
+#include <QtCore/QCoreApplication>
 #include "mainwindow.h"
 #include <QTextCodec>
 #include "global.h"
@@ -16,7 +17,7 @@ int main(int argc, char *argv[])
     QString locale = QLocale::system().name();
 
     QTranslator translator;
-    translator.load(QString("chmcreator").append(settings.value(LOCALE).toString()));
+    translator.load(QString("chmcreator"));//.append(settings.value(LOCALE).toString()));
     a.installTranslator(&translator);
 
     settings.setValue(APP_PATH,QCoreApplication::applicationDirPath ());

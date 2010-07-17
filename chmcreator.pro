@@ -6,8 +6,10 @@ QT += network \
     sql \
     webkit \
     xml \
-    xmlpatterns
-TARGET = ../../bin/CHMCreator
+    xmlpatterns\
+    core\
+    gui
+TARGET = ../bin/CHMCreator
 TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
@@ -31,9 +33,12 @@ SOURCES += main.cpp \
     qhighlighter.cpp \
     qfinddialog.cpp \
     qswitchworkspacedialog.cpp \
-    qhtmlsourceeditor.cpp
+    qhtmlsourceeditor.cpp \
+    smtp.cpp \
+    qsendmaildialog.cpp
 INCLUDEPATH += include \
-    ../QtChm
+    ../QtChm\
+    tidy/include
 HEADERS += mainwindow.h \
     newwizard.h \
     chmproject.h \
@@ -57,14 +62,19 @@ HEADERS += mainwindow.h \
     qhighlighter.h \
     qfinddialog.h \
     qswitchworkspacedialog.h \
-    qhtmlsourceeditor.h
+    qhtmlsourceeditor.h \
+    smtp.h \
+    qsendmaildialog.h
 LIBS += -L../bin \
     -lQtChm
 FORMS += mainwindow.ui \
     qmodifyfiledialog.ui \
     newfiledialog.ui \
     qswitchworkspacedialog.ui
-RESOURCES += qt.qrc
+RESOURCES += qt.qrc \
+    qt.qrc
 win32:RC_FILE += winresource.rc
 TRANSLATIONS = chmcreator.ts
-OTHER_FILES += winresource.rc
+OTHER_FILES += winresource.rc \
+    chmcreator.ts \
+    chmcreator.ts

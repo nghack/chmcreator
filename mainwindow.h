@@ -23,6 +23,7 @@
 #include "qreplacefilesdialog.h"
 #include "qhtmleditor.h"
 #include "qfinddialog.h"
+#include "qsendmaildialog.h"
 
 namespace Ui
 {
@@ -77,7 +78,7 @@ private:
 
     QDockWidget* dockProject;
     QDockWidget* dockIndex;
-    //QDockWidget* dockConsole;
+    QDockWidget* dockConsole;
 
     //QTabEditor* centerView;
     NewWizard wizard;
@@ -142,10 +143,12 @@ private:
     FindDialog* findDialog;
 
     QProgressDialog* compileProcessDialog;
-
+    QSendMailDialog* sendMailDialog;
     QString rsrcPath;
 
     QAction    *actionSave;
+
+    QAction    *actionTextFormat;
     QAction    *actionTextBold;
     QAction    *actionTextUnderline;
     QAction    *actionTextItalic;
@@ -206,6 +209,7 @@ private slots:
     void console(int value);
     void updateCompileText();
     void updateMenus();
+    void updateActionStatus();
     void openTabMenu(const QPoint& pos);
     void encodeChange(QString encode);
 public slots:
@@ -214,6 +218,7 @@ public slots:
     void filePrintPreview();
     void filePrintPdf();
 
+    void textFormat();
     void textBold();
     void textUnderline();
     void textItalic();
