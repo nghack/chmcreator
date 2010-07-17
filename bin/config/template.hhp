@@ -1,0 +1,18 @@
+[EXTENSENS]
+projectName=template
+[OPTIONS]
+Binary Index=false
+Binary TOC=false
+Compatibility=1.1 or later
+Compiled file=template.chm
+Contents file=index.hhc
+Default Font=ËÎÌו,12,-1,5,50,0,0,0,0,0
+Default topic=index.html
+Display compile progress=Yes
+Enhanced decompilation=false
+Error log file=log.txt
+Flat=false
+Full-text search=false
+Index file=index.hhk
+Language=0x804
+Title=Welcome use chmcreator!
