@@ -19,6 +19,12 @@ protected:
 private:
     Ui::NewFileDialog *m_ui;
     QDialogButtonBox* buttonBox;
+    QLineEdit *titleLineEdit;
+    QLineEdit *fileNameLineEdit;
+signals:
+    void onCreateItem(QString,QString);
+public slots:
+    void createItem();
 };
 
 #endif // NEWFILEDIALOG_H
