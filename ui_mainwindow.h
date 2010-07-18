@@ -1,10 +1,10 @@
 /********************************************************************************
-** Form generated from reading ui file 'mainwindow.ui'
+** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Mon Oct 26 16:34:06 2009
-**      by: Qt User Interface Compiler version 4.5.2
+** Created: Sat Jul 17 18:33:11 2010
+**      by: Qt User Interface Compiler version 4.6.3
 **
-** WARNING! All changes made in this file will be lost when recompiling ui file!
+** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
 #ifndef UI_MAINWINDOW_H
@@ -65,6 +65,7 @@ public:
     QAction *actionSave_As;
     QAction *actionShow_File_Column;
     QAction *actionTo_PDF;
+    QAction *actionFormat;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menu_File;
@@ -167,12 +168,14 @@ public:
         actionShow_File_Column->setCheckable(true);
         actionTo_PDF = new QAction(MainWindow);
         actionTo_PDF->setObjectName(QString::fromUtf8("actionTo_PDF"));
+        actionFormat = new QAction(MainWindow);
+        actionFormat->setObjectName(QString::fromUtf8("actionFormat"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 800, 18));
+        menuBar->setGeometry(QRect(0, 0, 800, 17));
         menu_File = new QMenu(menuBar);
         menu_File->setObjectName(QString::fromUtf8("menu_File"));
         menuImport = new QMenu(menu_File);
@@ -298,6 +301,7 @@ public:
         actionSave_As->setText(QApplication::translate("MainWindow", "Save As...", 0, QApplication::UnicodeUTF8));
         actionShow_File_Column->setText(QApplication::translate("MainWindow", "Show File Column", 0, QApplication::UnicodeUTF8));
         actionTo_PDF->setText(QApplication::translate("MainWindow", "To PDF", 0, QApplication::UnicodeUTF8));
+        actionFormat->setText(QApplication::translate("MainWindow", "Format", 0, QApplication::UnicodeUTF8));
         menu_File->setTitle(QApplication::translate("MainWindow", "&File", 0, QApplication::UnicodeUTF8));
         menuImport->setTitle(QApplication::translate("MainWindow", "Import", 0, QApplication::UnicodeUTF8));
         menuExport->setTitle(QApplication::translate("MainWindow", "Export", 0, QApplication::UnicodeUTF8));

@@ -7,21 +7,25 @@ NewFileDialog::NewFileDialog(QWidget *parent) :
 {
     m_ui->setupUi(this);
 
+    this->setWindowTitle("New File");
     QLabel *nameLabel = new QLabel(tr("Title Name:"));
-    QLineEdit *nameLineEdit = new QLineEdit;
+    titleLineEdit = new QLineEdit;
 
     QLabel *emailLabel = new QLabel(tr("File Name:"));
-    QLineEdit *emailLineEdit = new QLineEdit;
+    fileNameLineEdit = new QLineEdit;
 
     buttonBox = new QDialogButtonBox;
     buttonBox->addButton(QDialogButtonBox::Ok);
     buttonBox->addButton(QDialogButtonBox::Cancel);
 
+    connect(buttonBox,SIGNAL(accepted()),this,SLOT(createItem()));
+    connect(buttonBox,SIGNAL(rejected()),this,SLOT(close()));
+
     QGridLayout *layout = new QGridLayout;
     layout->addWidget(nameLabel, 0, 0);
-    layout->addWidget(nameLineEdit, 0, 1);
+    layout->addWidget(titleLineEdit, 0, 1);
     layout->addWidget(emailLabel, 1, 0);
-    layout->addWidget(emailLineEdit, 1, 1);
+    layout->addWidget(fileNameLineEdit, 1, 1);
     layout->addWidget(buttonBox, 2,0,1,2);
 
     setLayout(layout);
@@ -30,6 +34,11 @@ NewFileDialog::NewFileDialog(QWidget *parent) :
 NewFileDialog::~NewFileDialog()
 {
     delete m_ui;
+}
+
+void NewFileDialog::createItem(){
+    emit onCreateItem(titleLineEdit->text(),fileNameLineEdit->text());
+    this->close();
 }
 
 void NewFileDialog::changeEvent(QEvent *e)

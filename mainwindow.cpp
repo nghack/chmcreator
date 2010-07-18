@@ -23,6 +23,7 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     mdiArea.setViewMode(QMdiArea::TabbedView);
 
     tabBar = qFindChild<QTabBar*>(&mdiArea);
+
     QStyleOptionTab opt;
     if (tabBar) {
         opt.init(tabBar);
@@ -61,6 +62,8 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     dockConsole->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea );
     dockConsole->setAcceptDrops(true);
     addDockWidget(Qt::BottomDockWidgetArea,dockConsole);
+
+    setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
 
     viewTree = new QContentsTreeView(this);
     dockProject->setWidget(viewTree);
@@ -245,7 +248,7 @@ void MainWindow::createToolBar()
 {
     //Tool Bar
 //    fileToolBar = addToolBar(tr("File"));
-//    compileToolBar = addToolBar(tr("Compile"));
+
 
     //Editor Tool Bar
 //    newProjectAct = new QAction(QIcon(":/images/new.png"), tr("&New Project"),this);
@@ -261,16 +264,6 @@ void MainWindow::createToolBar()
 //    fileToolBar->addAction(newProjectAct);
 //    fileToolBar->addAction(openProjectAct);
 //    fileToolBar->addAction(saveProjectAct);
-
-    //Editor Tool Bar
-//    compileProjectAct = new QAction(QIcon(":/images/compile.png"), tr("&Compile Project"),this);
-//    connect(compileProjectAct, SIGNAL(triggered()), this, SLOT(nextPage()));
-//
-//    viewProjectAct = new QAction(QIcon(":/images/view.png"), tr("&View Project"),this);
-//    connect(viewProjectAct, SIGNAL(triggered()), this, SLOT(nextPage()));
-//
-//    compileToolBar->addAction(compileProjectAct);
-//    compileToolBar->addAction(viewProjectAct);
 
     //Editor File ToolBar
     editorFileToolBar = addToolBar(tr("Editor"));
@@ -329,6 +322,19 @@ void MainWindow::createToolBar()
     editorEditToolBar->addAction(a);
     //menu->addAction(a);
     actionPaste->setEnabled(!QApplication::clipboard()->text().isEmpty());
+
+    //Compile Tool Bar
+    compileToolBar = addToolBar(tr("Compile"));
+    compileProjectAct = new QAction(QIcon(":/images/build.png"), tr("&Compile Project"),this);
+    connect(compileProjectAct, SIGNAL(triggered()), this, SLOT(on_action_Compile_triggered()));
+
+    viewProjectAct = new QAction(QIcon(":/images/run.png"), tr("&Run Project"),this);
+    connect(viewProjectAct, SIGNAL(triggered()), this, SLOT(on_action_Run_triggered()));
+
+    compileToolBar->addAction(compileProjectAct);
+    compileToolBar->addAction(viewProjectAct);
+
+    addToolBarBreak(Qt::TopToolBarArea);
 
     //Format Actions ToolBar
     editorFormatToolBar = addToolBar(tr("Format Actions"));
@@ -519,6 +525,10 @@ void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
 
     QUrl url(currentProject->getProjectPath()+"/"+parentItem->objectUrl().toString());
 
+    if(!QFile::exists(currentProject->getProjectPath()+"/"+parentItem->objectUrl().toString())){
+        QMessageBox::about(this,"Error","File not exist.");
+        return;
+    }
     if(url.toString().endsWith(".chmproject")){
         on_action_Property_triggered();
         return;
@@ -533,7 +543,8 @@ void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
     }
 
     QHTMLEditor* htmlEditor = new QHTMLEditor(url.toString());
-    mdiArea.addSubWindow(htmlEditor);
+    QMdiSubWindow* window = mdiArea.addSubWindow(htmlEditor);
+
     htmlEditor->show();
 
     encoding->setCurrentIndex(encodeList.indexOf(htmlEditor->textCode()->name(),0));
@@ -640,7 +651,7 @@ void MainWindow::on_action_New_triggered()
 
 void MainWindow::on_actionToolBar_triggered()
 {
-    fileToolBar->setVisible(!fileToolBar->isVisible());
+    editorFileToolBar->setVisible(!editorFileToolBar->isVisible());
     compileToolBar->setVisible(!compileToolBar->isVisible());
 }
 
@@ -721,6 +732,7 @@ void MainWindow::on_action_Compile_triggered()
     qDebug()<<chmProjectFile;;
     command.append(chmProjectFile.replace("/","\\"));
     qDebug()<<command;
+    ((QTextEdit*)dockConsole->widget())->setText("");
     pro->start(command);
 }
 void MainWindow::updateCompileText(){
@@ -779,6 +791,7 @@ void MainWindow::saveHHC()
 void MainWindow::createMenus()
 {
     connect(ui->menu_File, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
+    ui->action_Open->setText(tr("Open Project"));
     connect(ui->menu_Edit, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
     //connect(ui->menuT_ool, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
     connect(ui->menu_Project, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
@@ -836,7 +849,10 @@ void MainWindow::updateMenus()
     if(currentProject!=0){
         QFile file(currentProject->getProjectPath()+"/"+ currentProject->value(PROJECT_TARGET).toString());
         ui->action_Run->setEnabled(file.exists());
+        viewProjectAct->setEnabled(file.exists());
     }
+
+    compileProjectAct->setEnabled(currentProject!=0);
 
     QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
     if(0!=subWindow){
@@ -998,9 +1014,10 @@ void MainWindow::on_action_Replace_triggered()
 
 void MainWindow::on_actionSuggestion_triggered()
 {
-    if(sendMailDialog==0){
-        sendMailDialog = new QSendMailDialog();
+    if(sendMailDialog!=0){
+        delete sendMailDialog;
     }
+    sendMailDialog = new QSendMailDialog();
     sendMailDialog->exec();
     //QDesktopServices::openUrl(QUrl("http://www.ibooks.org.cn/index.php/2009-08-17-09-39-53", QUrl::TolerantMode));
 }

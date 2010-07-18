@@ -48,6 +48,7 @@ void HHCObject::fromDir(int level,QString dir,QString temp){
             level--;
         }
     }
+    save();
 }
 HHCObject::~HHCObject()
 {

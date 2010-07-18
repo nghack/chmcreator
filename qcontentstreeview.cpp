@@ -14,6 +14,34 @@ QContentsTreeView::QContentsTreeView(MainWindow* mainWindow)
 
     connect(this,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(showMenu(QPoint)));
     connect(header(),SIGNAL(clicked(QModelIndex)),this,SLOT(showHeaderMenu(QModelIndex)));
+    connect(&dialog,SIGNAL(onCreateItem(QString,QString)),this,SLOT(onCreateItem(QString,QString)));
+}
+
+void QContentsTreeView::onCreateItem(QString title,QString fileName){
+    QTreeItem* item = (QTreeItem*)currentIndex().internalPointer();
+
+    QString project = settings.value(PROJECT_PATH).toString();
+    project.append("/");
+    project.append(fileName);
+
+    if(fileName.compare("")!=0&&!QFile::exists(project)){
+        QFile file(project);
+        file.open(QIODevice::WriteOnly);
+        file.close();
+    }
+
+    QList<QVariant> columnData;
+    columnData<<title;
+    columnData<<fileName;
+    QTreeItem* newItem = new QTreeItem(columnData,item);
+    item->appendChild(newItem);
+
+    update(currentIndex());
+
+    collapse(currentIndex());
+    expand(currentIndex());
+
+    mainWindow->saveHHC();
 }
 
 void QContentsTreeView::showHeaderMenu(QModelIndex i){
@@ -66,7 +94,12 @@ void QContentsTreeView::addExistFiles(){
     }
     mainWindow->saveHHC();
 
-    update(rootIndex());
+    update(currentIndex());
+
+    collapse(currentIndex());
+    expand(currentIndex());
+
+    if(mainWindow!=0)mainWindow->saveHHC();
 }
 void QContentsTreeView::copyFile(){
     QClipboard *clipboard = QApplication::clipboard();
@@ -75,7 +108,14 @@ void QContentsTreeView::copyFile(){
         clipboard->setText(item->data(0).toString());
     }else if(currentIndex().column()==1){
         clipboard->setText(item->data(1).toString());
-    }    
+    }
+
+    update(currentIndex());
+
+    collapse(currentIndex());
+    expand(currentIndex());
+
+    if(mainWindow!=0)mainWindow->saveHHC();
 }
 void QContentsTreeView::pasteFile()
 {
@@ -93,6 +133,13 @@ void QContentsTreeView::pasteFile()
         QTreeItem* item = (QTreeItem*)index.internalPointer();
         item->setData(index.column(),da.trimmed());
     }
+
+    update(currentIndex());
+
+    collapse(currentIndex());
+    expand(currentIndex());
+
+    if(mainWindow!=0)mainWindow->saveHHC();
 }
 void QContentsTreeView::deleteFile()
 {
@@ -108,8 +155,16 @@ void QContentsTreeView::deleteFile()
         model()->removeRow(index.row(),index.parent());
     }
 
-    mainWindow->saveHHC();
-    update(rootIndex());
+    QModelIndex parent = currentIndex().parent();
+
+    if(!parent.isValid())
+        return;
+    update(parent);
+
+    collapse(parent);
+    expand(parent);
+
+    if(mainWindow!=0)mainWindow->saveHHC();
 }
 void QContentsTreeView::renameFile()
 {
@@ -117,13 +172,17 @@ void QContentsTreeView::renameFile()
         return;
     QTreeItem* renameItem = (QTreeItem*)currentIndex().internalPointer();
     bool ok;
-    QString text = QInputDialog::getText(this, tr("Modify Item Name"),
-                                         tr("Item name:"), QLineEdit::Normal,
+    QString text = QInputDialog::getText(this, tr("Modify Name"),
+                                         tr("New Name:"), QLineEdit::Normal,
                                          renameItem->data(0).toString(), &ok);
     if (ok && !text.isEmpty())
     {
         renameItem->setData(0,text);
     }
+
+    update(currentIndex());
+
+    if(mainWindow!=0)mainWindow->saveHHC();
 }
 void QContentsTreeView::property(){}
 void QContentsTreeView::createActions()
@@ -138,7 +197,7 @@ void QContentsTreeView::createActions()
     newAct->setStatusTip(tr("Create a new file"));
     connect(newAct, SIGNAL(triggered()), this, SLOT(newFile()));
 
-    addExistingAct = new QAction(tr("&Add"), this);
+    addExistingAct = new QAction(tr("&Add Exist Files..."), this);
     addExistingAct->setShortcut(tr("Ctrl+A"));
     addExistingAct->setStatusTip(tr("Open an existing file"));
     connect(addExistingAct, SIGNAL(triggered()), this, SLOT(addExistFiles()));
@@ -202,19 +261,30 @@ void QContentsTreeView::createActions()
         return;
 
     QModelIndex parentIndex = model()->parent(currentIndex());
-    //QTreeItem* parentItem = ((QTreeItem*)parentIndex.internalPointer());
-    //QMessageBox::about(0,parentItem->objectName(),"");
-    //parentItem->moveUp();
-    model()->removeRow(((QTreeItem*)currentIndex().internalPointer())->row(),parentIndex);
+    if(!parentIndex.isValid()){
+        return;
+    }
+    QTreeItem* parentItem = ((QTreeItem*)parentIndex.internalPointer());
+    parentItem->moveUp(currentIndex().row());
+
+    update(parentIndex);
+
+    collapse(parentIndex);
+    expand(parentIndex);
+
+    if(mainWindow!=0)mainWindow->saveHHC();
  }
  void QContentsTreeView::moveDown()
  {
     if(!currentIndex().isValid())
         return;
     QModelIndex parentIndex = model()->parent(currentIndex());
-    QTreeItem* parentItem = ((QTreeItem*)parentIndex.internalPointer());
-    parentItem->moveDown(parentItem->indexOf((QTreeItem*)currentIndex().internalPointer()));
 
+    if(!parentIndex.isValid()){
+        return;
+    }
+    QTreeItem* parentItem = ((QTreeItem*)parentIndex.internalPointer());
+    parentItem->moveDown(currentIndex().row());
  }
 
  void QContentsTreeView::clear()

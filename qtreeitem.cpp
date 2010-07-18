@@ -97,16 +97,13 @@ bool QTreeItem::removeRow(int row)
 }
 void QTreeItem::moveUp(int index)
 {
-    if(index>0&&index<childItems.size()){
-        QMessageBox::about(0,QString("%1").arg(index),QString("%1").arg(index));
-        QTreeItem* temp = childItems.at(index);
-        childItems.removeAt(index);
-        childItems.insert(index-1,temp);
+    if(index>0){
+        childItems.move(index,index-1);
     }
 }
 void QTreeItem::moveDown(int index)
 {
-    if(index>0&&index<(childItems.size()-1)){
+    if(index<(childItems.size()-1)){
         childItems.move(index,index+1);
     }
 }
