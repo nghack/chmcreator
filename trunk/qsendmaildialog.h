@@ -8,6 +8,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QDialogButtonBox>
+#include <QToolButton>
 #include "smtp.h"
 
 class QSendMailDialog : public QDialog
@@ -22,14 +23,13 @@ private:
     QLineEdit* subjectLineEdit;
     QTextEdit* contentEdit;
 
-    QPushButton* sendMailButton;
-    QPushButton* closeButton;
+    QToolButton* sendMailButton;
+    QToolButton* closeButton;
 
-    QLabel* promptLabel;
+    QToolButton* promptButton;
     Smtp *mailSender;
 private slots:
     void onSendMailTriggered();
-    void onSendMailStatus(QString);
     void onSendMailSuccess();
     void onSendMailFailure();
 };

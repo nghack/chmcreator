@@ -11,7 +11,8 @@ QSendMailDialog::QSendMailDialog(QWidget *parent) :
     layout->addWidget(new QLabel("chmcreator"),0,1,1,1);
 
     layout->addWidget(new QLabel(tr("<b>Subject:</b>")),1,0,1,1,Qt::AlignRight);
-    subjectLineEdit = new QLineEdit();
+    subjectLineEdit = new QLineEdit(tr("CHMCreator Suggestion"));
+    subjectLineEdit->setEnabled(false);
     layout->addWidget(subjectLineEdit,1,1,1,1);
 
     layout->addWidget(new QLabel(tr("<b>Content:</b>")),2,0,1,1,Qt::AlignTop);
@@ -19,15 +20,21 @@ QSendMailDialog::QSendMailDialog(QWidget *parent) :
     layout->addWidget(contentEdit,2,1,1,1);
 
     QHBoxLayout *hlayout = new QHBoxLayout;
-    sendMailButton = new QPushButton(tr("Send Mail"));
-    hlayout->addWidget(sendMailButton);
-    closeButton = new QPushButton(tr("Close"));
-    hlayout->addWidget(closeButton);
-    hlayout->addWidget(new QLabel(""));
-    hlayout->setStretch(3,10);
 
-    promptLabel = new QLabel("");
-    layout->addWidget(promptLabel,3,0,1,1);
+    sendMailButton = new QToolButton();
+    sendMailButton->setText(tr("Send Mail"));
+    hlayout->addWidget(sendMailButton);
+    closeButton = new QToolButton();
+    closeButton->setText(tr("Close"));
+    hlayout->addWidget(closeButton);
+
+    sendMailButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    closeButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+
+    //hlayout->addWidget(promptButton);
+    hlayout->addWidget(new QLabel(""));
+    hlayout->setStretch(4,10);
+
     layout->addLayout(hlayout,3,1,1,1);
 
     layout->setColumnStretch(1, 10);
@@ -38,9 +45,10 @@ QSendMailDialog::QSendMailDialog(QWidget *parent) :
     setMinimumSize(600,400);
 
     connect(sendMailButton,SIGNAL(clicked()),this,SLOT(onSendMailTriggered()));
+    connect(closeButton,SIGNAL(clicked()),this,SLOT(close()));
 
-    mailSender = new Smtp("smtp.163.com","zrx285@163.com","141246883");
-    connect(mailSender,SIGNAL(status(QString)),this,SLOT(onSendMailStatus(QString)));
+    mailSender = new Smtp("smtp.163.com","chmcreator@163.com","");
+
     connect(mailSender,SIGNAL(successQuit()),this,SLOT(onSendMailSuccess()));
     connect(mailSender,SIGNAL(errorCloseAll()),this,SLOT(onSendMailFailure()));
 }
@@ -49,16 +57,20 @@ QSendMailDialog::~QSendMailDialog()
 {
 }
 void QSendMailDialog::onSendMailTriggered(){
-    promptLabel->setText("starting");
-    mailSender->send("zrx285@163.com","zrx285@163.com",subjectLineEdit->text(),contentEdit->toPlainText());
-    promptLabel->setText("send end");
-}
-void QSendMailDialog::onSendMailStatus(QString status){
-    promptLabel->setText(status);
+    QIcon icon = QIcon(":/images/loading.png");
+    //sendMailButton->setIcon(icon);
+    sendMailButton->setText(tr("Sending..."));
+    mailSender->send("chmcreator@163.com","chmcreator@163.com",subjectLineEdit->text(),contentEdit->toPlainText());
 }
 void QSendMailDialog::onSendMailSuccess(){
-    promptLabel->setText("Success!");
+    QIcon icon = QIcon(":/images/success.png");
+    //sendMailButton->setIcon(icon);
+    sendMailButton->setText(tr("Send Sucess!"));
+    sendMailButton->setEnabled(false);
 }
 void QSendMailDialog::onSendMailFailure(){
-    promptLabel->setText("Failure!");
+    QIcon icon = QIcon(":/images/failure.png");
+    //sendMailButton->setIcon(icon);
+    sendMailButton->setText(tr("Send Failure!"));
+    sendMailButton->setEnabled(false);
 }
