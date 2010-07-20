@@ -41,6 +41,7 @@ void QContentsTreeView::onCreateItem(QString title,QString fileName){
     collapse(currentIndex());
     expand(currentIndex());
 
+    emit modelChanged();
     mainWindow->saveHHC();
 }
 
@@ -92,7 +93,6 @@ void QContentsTreeView::addExistFiles(){
     foreach(QString file,fileNames){
         addExistFile(file);
     }
-    mainWindow->saveHHC();
 
     update(currentIndex());
 
@@ -100,6 +100,7 @@ void QContentsTreeView::addExistFiles(){
     expand(currentIndex());
 
     if(mainWindow!=0)mainWindow->saveHHC();
+    emit modelChanged();
 }
 void QContentsTreeView::copyFile(){
     QClipboard *clipboard = QApplication::clipboard();
@@ -116,6 +117,7 @@ void QContentsTreeView::copyFile(){
     expand(currentIndex());
 
     if(mainWindow!=0)mainWindow->saveHHC();
+    emit modelChanged();
 }
 void QContentsTreeView::pasteFile()
 {
@@ -140,6 +142,7 @@ void QContentsTreeView::pasteFile()
     expand(currentIndex());
 
     if(mainWindow!=0)mainWindow->saveHHC();
+    emit modelChanged();
 }
 void QContentsTreeView::deleteFile()
 {
@@ -165,6 +168,7 @@ void QContentsTreeView::deleteFile()
     expand(parent);
 
     if(mainWindow!=0)mainWindow->saveHHC();
+    emit modelChanged();
 }
 void QContentsTreeView::renameFile()
 {
@@ -183,6 +187,7 @@ void QContentsTreeView::renameFile()
     update(currentIndex());
 
     if(mainWindow!=0)mainWindow->saveHHC();
+    emit modelChanged();
 }
 void QContentsTreeView::property(){}
 void QContentsTreeView::createActions()
@@ -273,6 +278,8 @@ void QContentsTreeView::createActions()
     expand(parentIndex);
 
     if(mainWindow!=0)mainWindow->saveHHC();
+
+    emit modelChanged();
  }
  void QContentsTreeView::moveDown()
  {
@@ -285,6 +292,8 @@ void QContentsTreeView::createActions()
     }
     QTreeItem* parentItem = ((QTreeItem*)parentIndex.internalPointer());
     parentItem->moveDown(currentIndex().row());
+
+    emit modelChanged();
  }
 
  void QContentsTreeView::clear()

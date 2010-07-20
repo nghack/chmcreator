@@ -212,6 +212,7 @@ private slots:
     void updateActionStatus();
     void openTabMenu(const QPoint& pos);
     void encodeChange(QString encode);
+    void onModelChange();
 public slots:
     void on_action_TreeView_Clicked_triggered(const QModelIndex &index);
     void filePrint();

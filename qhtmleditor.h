@@ -28,6 +28,7 @@ public:
     QTextCodec * textCode(){return codec;}
     void load();
     void load(QByteArray encode);
+    QString getFileName();
 protected:
     void closeEvent(QCloseEvent *e);
 signals:
