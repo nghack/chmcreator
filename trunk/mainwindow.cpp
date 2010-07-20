@@ -68,8 +68,7 @@ MainWindow::MainWindow(QString app,QWidget *parent)
     viewTree = new QContentsTreeView(this);
     dockProject->setWidget(viewTree);
 
-    //this->connect(viewTree,SIGNAL(clicked(QModelIndex)),this,SLOT(on_action_NewItem_triggered(QModelIndex)));
-
+    connect(viewTree,SIGNAL(changed()),this,SLOT(onModelChange()));
 
     setCentralWidget(&mdiArea);
 
@@ -542,11 +541,27 @@ void MainWindow::on_action_TreeView_Clicked_triggered(const QModelIndex &index)
         return;
     }
 
-    QHTMLEditor* htmlEditor = new QHTMLEditor(url.toString());
-    QMdiSubWindow* window = mdiArea.addSubWindow(htmlEditor);
+    bool isNewOpenFile = true;
+    QHTMLEditor* htmlEditor =0;
+
+    QList<QMdiSubWindow*> winList = mdiArea.subWindowList();
+
+    foreach(QMdiSubWindow* subWindow,winList){
+        htmlEditor = (QHTMLEditor*)subWindow->widget();
+        if(htmlEditor->getFileName().compare(url.toString())==0){
+            subWindow->activateWindow();
+            mdiArea.setActiveSubWindow(subWindow);
+            isNewOpenFile = false;
+            break;
+        }
+    }
+
+    if(isNewOpenFile){
+        htmlEditor = new QHTMLEditor(url.toString());
+        mdiArea.addSubWindow(htmlEditor);
+    }
 
     htmlEditor->show();
-
     encoding->setCurrentIndex(encodeList.indexOf(htmlEditor->textCode()->name(),0));
     //connect(htmlEditor->textEditor(),SIGNAL(undoAvailable(bool)),ui->action_Undo,SLOT(setEnabled(bool)));
     //connect(htmlEditor->textEditor(),SIGNAL(redoAvailable(bool)),ui->action_Redo,SLOT(setEnabled(bool)));
@@ -710,6 +725,7 @@ void MainWindow::loadProject(const QString& proFile){
 
     QString title = currentProject->getProjectName();
     setWindowTitle(title.append(tr(" - chmcreator")));
+    updateMenus();
 }
 
 void MainWindow::on_action_Compile_triggered()
@@ -788,6 +804,11 @@ void MainWindow::saveHHC()
         return;
     currentProject->getHHCObject()->save();
 }
+
+void MainWindow::onModelChange(){
+    saveHHC();
+}
+
 void MainWindow::createMenus()
 {
     connect(ui->menu_File, SIGNAL(aboutToShow()), this, SLOT(updateMenus()));
@@ -834,6 +855,7 @@ void MainWindow::updateActionStatus()
     foreach(QAction* action,editorFormatTwoActionList){
         action->setEnabled(isEnabled);
     }
+
 }
 
 void MainWindow::updateMenus()
@@ -853,6 +875,7 @@ void MainWindow::updateMenus()
     }
 
     compileProjectAct->setEnabled(currentProject!=0);
+    viewProjectAct->setEnabled(currentProject!=0);
 
     QMdiSubWindow* subWindow = mdiArea.currentSubWindow();
     if(0!=subWindow){
@@ -921,6 +944,7 @@ void MainWindow::on_actionClose_Project_triggered()
 
     //if(centerView!=0)centerView->close();
     setWindowTitle(tr("chmcreator"));
+    updateMenus();
 }
  void MainWindow::setCurrentFile(const QString &fileName)
  {
@@ -1033,6 +1057,7 @@ void MainWindow::on_actionDirectory_As_Project_triggered()
 
     QFileInfo fileInfo(dirString);
     loadDir(workSpace+"/"+fileInfo.fileName());
+    updateMenus();
 }
 
 void MainWindow::filePrint()

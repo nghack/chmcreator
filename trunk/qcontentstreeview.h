@@ -56,7 +56,7 @@ public slots:
 //     void headerClicked(const QModelIndex& index);
  signals:
      void changed(const QMimeData *mimeData = 0);
-
+     void modelChanged();
 protected:
 //     virtual void mouseReleaseEvent ( QMouseEvent * event );
 };

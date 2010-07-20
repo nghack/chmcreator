@@ -37,8 +37,6 @@ void Smtp::send( const QString &from, const QString &to, const QString &subject,
         message.replace( QString::fromLatin1( "\n" ), QString::fromLatin1( "\r\n" ) );
         message.replace( QString::fromLatin1( "\r\n.\r\n" ),QString::fromLatin1( "\r\n..\r\n" ) );
 
-        qDebug() << "### Launch mail compose....  "  << from << to << subject << body;
-        qDebug() << "### Config server smtp connect to......  "  << smtphost;
         smtpsocket = new QTcpSocket(this);
         connect( this, SIGNAL(connectorSuccess()), this ,SLOT(readLiner()));
         connect( this, SIGNAL(sendLine()), this ,SLOT(putSendLine()));
@@ -50,10 +48,8 @@ void Smtp::send( const QString &from, const QString &to, const QString &subject,
         }
         if (smtpsocket->waitForConnected(Timeout))
         {
-                qDebug() <<"### connected on  " << smtphost;
                 if (smtpsocket->waitForReadyRead(Timeout))
                 {
-                        qDebug() <<"### emit from waitForReadyRead connect go can read";
                         isconnect = true;
                         emit connectorSuccess();
                 }
@@ -69,8 +65,6 @@ void Smtp::readLiner()
 {
         if (isconnect)
         {
-                qDebug() << "### socketType = " << smtpsocket->socketType();
-                qDebug() << "### ReadLiner is start by textstream ";
                 QTextCodec *codecx;
                 codecx = QTextCodec::codecForMib(106);
                 t = new QTextStream( smtpsocket );
@@ -81,13 +75,11 @@ void Smtp::readLiner()
                 {
                         loops++;
                         response = t->readLine();
-                        qDebug() << loops << " in line  " << response;
                 }
                 if (response.size() > 0)
                 {
                         RemoteServerName = response;
                         mailstatus = response.left(3);
-                        qDebug() << "###Status=" << mailstatus;
                         if (mailstatus == "220")
                         {
                                 response="";
@@ -105,14 +97,12 @@ void Smtp::readLiner()
 Smtp::~Smtp()
 
 {
-        qDebug() << "### Class Smtp stop and delete ";
 }
 
 /* LINE SENDER  */
 void Smtp::putSendLine()
 {
         int current = linesend;
-        qDebug() <<"### Go and Send line " << linesend;
         switch(current)
         {
                 case 1:
@@ -120,13 +110,8 @@ void Smtp::putSendLine()
                         if (response.size() > 0)
                         {
                                 errorMSG.append(response);
-                                qDebug() << "1---- " << response;
                                 linesend = 2;
                                 emit sendLine();
-                        }
-                        else
-                        {
-                                qDebug() << "Connection loost1";
                         }
                         response ="";
                         break;
@@ -135,14 +120,10 @@ void Smtp::putSendLine()
                         if (response.size() >=0)
                         {
                                 errorMSG.append(response);
-                                qDebug() << "2---- " << response;
                                 linesend = 3;
                                 emit sendLine();
                         }
-                        else
-                        {
-                                qDebug() << "Connection loost2";
-                        }
+
                         response ="";
 
                         break;
@@ -151,14 +132,10 @@ void Smtp::putSendLine()
                         if (response.size() > 0)
                         {
                                 errorMSG.append(response);
-                                qDebug() << "3---- " << response;
                                 linesend = 4;
                                 emit sendLine();
                         }
-                        else
-                        {
-                                qDebug() << "Connection loost3";
-                        }
+
                         response ="";
                         break;
                 case 4:
@@ -172,20 +149,13 @@ void Smtp::putSendLine()
                                         linesend = 5;
                                         emit sendLine();
                                 }
-                                else
-                                {
-                                        qDebug() <<QString(response)<< "Connection loost4";
-                                }
+
                         }
-                        else
-                        {
-                                qDebug() << "Connection loost5";
-                        }
+
                         response ="";
                         break;
                 case 5:
                         response = sendLineAndGrab("MAIL FROM:<"+from+">");
-                        qDebug() << "5---- " << response;
                         if (response.size() > 0)
                         {
                                 linesend = 6;
@@ -195,7 +165,6 @@ void Smtp::putSendLine()
                         break;
                 case 6:
                         response = sendLineAndGrab("RCPT TO: <"+rcpt+">");
-                        qDebug() << "6---- " << response;
                         if (response.size() > 0)
                         {
                                 errorMSG.append(response);
@@ -213,7 +182,7 @@ void Smtp::putSendLine()
                         break;
                 case 7:
                         response = sendLineAndGrab(message+"\r\n.");
-                        qDebug() << "7---- " << response;
+
                         if (response.size() && response.contains("ok", Qt::CaseInsensitive) )
                         {
                                 errorMSG.append(response);
@@ -226,7 +195,6 @@ void Smtp::putSendLine()
                         sendLineAndGrab("QUIT");
                         break;
                 default:
-                        qDebug() << "Last line ...";
                         /*emit ErrorCloseAll();*/
                         return;
                         break;
@@ -243,7 +211,6 @@ QString Smtp::sendLineAndGrab(QString senddata)
                 int current = linesend;
                 int loops = 0;
 
-                qDebug() << "####Send" << current << "Now => " << senddata;
                 *t << senddata << "\r\n";
                 t->flush();
                 if (senddata != "QUIT") {
@@ -254,7 +221,6 @@ QString Smtp::sendLineAndGrab(QString senddata)
                                         loops++;
                                         QString opera = t->readLine()+"\n";
                                         incommingData = opera + incommingData;
-                                        qDebug() << loops << "|#" << opera << "#|";
                                 }
                         }
                 } else
@@ -283,7 +249,6 @@ void Smtp::disconnected()
 void Smtp::connected()
 {
         output.append("connected");
-        qDebug() << "Connected ";
 }
 
 QString Smtp::encodeBase64( QString xml )
@@ -322,7 +287,7 @@ QString Smtp::TimeStampMail()
 {
         /* mail rtf Date format! http://www.faqs.org/rfcs/rfc788.html */
         QDateTime timer1( QDateTime::currentDateTime() );
-                 /////////timer1.setTimeSpec(Qt::UTC);
+
 
         uint unixtime = timer1.toTime_t();
         QDateTime fromunix;
@@ -332,11 +297,7 @@ QString Smtp::TimeStampMail()
         QStringList RTFdays = QStringList() << "giorno_NULL" << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat" << "Sun";
         QStringList RTFmonth = QStringList() << "mese_NULL" << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun" << "Jul" << "Aug" << "Sep" << "Oct" << "Nov" << "Dec";
         QDate timeroad(dateswap("yyyy",unixtime),dateswap("M",unixtime),dateswap("d",unixtime));
-     /*qDebug() << "### RTFdays " << RTFdays.at(timeroad.dayOfWeek());
-        qDebug() << "### RTFmonth " << RTFmonth.at(dateswap("M",unixtime));
-        qDebug() << "### yyyy " << dateswap("yyyy",unixtime);
-        qDebug() << "### M " << dateswap("M",unixtime);
-        qDebug() << "### d " << dateswap("d",unixtime);*/
+
         QStringList rtfd_line;
         rtfd_line.clear();
         rtfd_line.append("Date: ");
@@ -350,7 +311,7 @@ QString Smtp::TimeStampMail()
         rtfd_line.append(" ");
         rtfd_line.append(fromunix.toString("hh:mm:ss"));
         rtfd_line.append(" +0100");
-        /*qDebug() << "### mail rtf Date format " << rtfd_line.join("");*/
+
         return QString(rtfd_line.join(""));
 }
 

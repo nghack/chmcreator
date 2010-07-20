@@ -60,6 +60,10 @@ QHTMLEditor::QHTMLEditor(const QString& fileName,QWidget *parent):QTabWidget(par
     contentStatus = 0;//
 }
 
+QString QHTMLEditor::getFileName(){
+    return filename;
+}
+
 void QHTMLEditor::load(){
     QFile file(filename);
     if (!file.open(QFile::ReadOnly)){
