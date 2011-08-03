@@ -1,4 +1,4 @@
 #sidebar TableOfContents
   * [ CHM 文件格式 ]
-    * [ chm|CHM 文件格式 ]
-    * [ hhk|HHK 文件格式 ]
+    * [ chm ]
+    * [ hhk ]
