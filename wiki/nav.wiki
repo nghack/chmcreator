@@ -1,7 +1,5 @@
 <ul class="treeleafcontainer">
     <li class="treeopen">CHM 文件格式</li>
-    <ul class="treeleafcontainer">
         <li class="treeleaf"><a class="currentpagelink" href="http://code.google.com/p/chmcreator/wiki/chm">chm文件格式</a></li>
         <li class="treeleaf">[http://code.google.com/p/chmcreator/wiki/hhk hhk文件格式]</li>
-    <ul>
 </ul>
