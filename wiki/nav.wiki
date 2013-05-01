@@ -1,4 +1,4 @@
   * [chm chm文件格式]
     * [chm chm文件格式]
-    * [hhk hhk文件格式]
+    * [hhk hhp文件格式]
   * [doc chmcreator使用说明]
